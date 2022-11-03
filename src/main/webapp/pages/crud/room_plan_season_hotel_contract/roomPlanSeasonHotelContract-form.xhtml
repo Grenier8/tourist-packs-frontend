@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de plan de habitación por temporada de contrato" showEffect="fade" modal="true"
+		widgetVar="manageRoomPlanSeasonHotelContractDialog" responsive="true">
+		<p:outputPanel id="manage-roomPlanSeasonHotelContract-content" class="ui-fluid">
+			<p:outputPanel
+				rendered="#{not empty manageRoomPlanSeasonHotelContractBean.selectedRoomPlanSeasonHotelContract}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Contrato de hotel" />
+							<p:selectOneMenu id="hotelContract"
+								value="#{manageRoomPlanSeasonHotelContractBean.selectedHotelContractTitle}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageHotelContractBean.hotelContracts}" var="hotelContract"
+									itemLabel="#{hotelContract.contractTitle}"
+									itemValue="#{hotelContract.contractTitle}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Plan de habitación por temporada" />
+							<p:selectOneMenu id="roomPlanSeason"
+								value="#{manageRoomPlanSeasonHotelContractBean.selectedRoomPlanSeasonName}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageRoomPlanSeasonBean.roomPlanSeasons}" var="roomPlanSeason"
+									itemLabel="#{roomPlanSeason.roomPlanSeasonName}"
+									itemValue="#{roomPlanSeason.roomPlanSeasonName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{manageRoomPlanSeasonHotelContractBean.saveRoomPlanSeasonHotelContract()}"
+				update="manage-roomPlanSeasonHotelContract-content"
+				process="manage-roomPlanSeasonHotelContract-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageRoomPlanSeasonHotelContractDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

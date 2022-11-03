@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de provincia" showEffect="fade" modal="true" widgetVar="manageProvinceDialog"
+		responsive="true">
+		<p:outputPanel id="manage-province-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageProvinceBean.selectedProvince}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Nombre" />
+							<p:inputText id="name" value="#{manageProvinceBean.selectedProvince.provinceName}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageProvinceBean.saveProvince()}"
+				update="manage-province-content" process="manage-province-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProvinceDialog').hide()"
+				class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

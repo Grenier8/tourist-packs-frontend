@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de servicio de transporte de contrato" showEffect="fade" modal="true"
+		widgetVar="manageTransportServiceTouristPackDialog" responsive="true">
+		<p:outputPanel id="manage-transportServiceTouristPack-content" class="ui-fluid">
+			<p:outputPanel
+				rendered="#{not empty manageTransportServiceTouristPackBean.selectedTransportServiceTouristPack}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="TouristPack" />
+							<p:selectOneMenu id="touristPack"
+								value="#{manageTransportServiceTouristPackBean.selectedTouristPackName}" required="true"
+								style="min-width: 15rem" multiple="true" filter="true" filterMatchMode="startsWith"
+								panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageTouristPackBean.touristPacks}" var="touristPack"
+									itemLabel="#{touristPack.promotionalName}"
+									itemValue="#{touristPack.promotionalName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="TransportService" />
+							<p:selectOneMenu id="transportService"
+								value="#{manageTransportServiceTouristPackBean.selectedTransportServiceName}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageTransportServiceBean.transportServices}"
+									var="transportService" itemLabel="#{transportService.transportServiceName}"
+									itemValue="#{transportService.transportServiceName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{manageTransportServiceTouristPackBean.saveTransportServiceTouristPack()}"
+				update="manage-transportServiceTouristPack-content"
+				process="manage-transportServiceTouristPack-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times"
+				onclick="PF('manageTransportServiceTouristPackDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

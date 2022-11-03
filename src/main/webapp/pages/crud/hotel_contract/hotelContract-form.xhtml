@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de contratos de hotel" showEffect="fade" modal="true"
+		widgetVar="manageHotelContractDialog" responsive="true">
+		<p:outputPanel id="manage-hotelContract-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageHotelContractBean.selectedHotelContract}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Título" />
+							<p:inputText id="title"
+								value="#{manageHotelContractBean.selectedHotelContract.contractTitle}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Hotel" />
+							<p:selectOneMenu id="hotel" value="#{manageHotelContractBean.selectedHotelName}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageHotelBean.hotels}" var="hotel"
+									itemLabel="#{hotel.hotelName}" itemValue="#{hotel.hotelName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Descripción" />
+							<p:inputText id="description"
+								value="#{manageHotelContractBean.selectedHotelContract.contractDescription}" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Fecha de inicio" />
+							<p:datePicker id="startDate"
+								value="#{manageHotelContractBean.selectedHotelContract.startDate}" required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Fecha de fin" />
+							<p:datePicker id="endDate" value="#{manageHotelContractBean.selectedHotelContract.endDate}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Fecha de conciliación" />
+							<p:datePicker id="conciliationDate"
+								value="#{manageHotelContractBean.selectedHotelContract.conciliationDate}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check"
+				actionListener="#{manageHotelContractBean.saveHotelContract()}" update="manage-hotelContract-content"
+				process="manage-hotelContract-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageHotelContractDialog').hide()"
+				class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

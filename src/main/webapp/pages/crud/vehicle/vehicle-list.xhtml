@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+	<ui:define name="title">
+		Listado de Vehiculos
+	</ui:define>
+	<ui:define name="layout">
+		<h:form id="form">
+			<div class="card crud-demo">
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageVehicleBean.openNew}"
+							update=":form:manage-vehicle-content" oncomplete="PF('manageVehicleDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":form:manage-vehicle-content" />
+						</p:commandButton>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-vehicles" fileName="vehicles" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<p:dataTable id="dt-vehicles" widgetVar="dtVehicles" var="vehicle" value="#{manageVehicleBean.vehicles}"
+					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
+					<f:facet name="header">
+						<div class="vehicles-table-header">
+							<span style="font-weight: bold">Vehiculos</span>
+
+							<span class="filter-container ui-input-icon-left">
+								<i class="pi pi-search"></i>
+								<p:inputText id="globalFilter" onkeyup="PF('dtVehicles').filter()"
+									placeholder="Buscar" />
+							</span>
+
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Placa" sortBy="#{vehicle.plate}" filterBy="#{vehicle.plate}">
+						<h:outputText value="#{vehicle.plate}" />
+					</p:column>
+					<p:column headerText="Marca" sortBy="#{vehicle.brand}" filterBy="#{vehicle.brand}">
+						<h:outputText value="#{vehicle.brand}" />
+					</p:column>
+					<p:column headerText="noCapacidad de Equipaje" sortBy="#{vehicle.noBaggageCapacity}"
+						filterBy="#{vehicle.noBaggageCapacity}">
+						<h:outputText value="#{vehicle.noBaggageCapacity}" />
+					</p:column>
+					<p:column headerText="Capacidad de Equipaje" sortBy="#{vehicle.baggageCapacity}"
+						filterBy="#{vehicle.baggageCapacity}">
+						<h:outputText value="#{vehicle.baggageCapacity}" />
+					</p:column>
+					<p:column headerText="Capacidad Total" sortBy="#{vehicle.totalCapacity}"
+						filterBy="#{vehicle.totalCapacity}">
+						<h:outputText value="#{vehicle.totalCapacity}" />
+					</p:column>
+					<p:column headerText="Año de Fabricación" sortBy="#{vehicle.fabricationYear}"
+						filterBy="#{vehicle.fabricationYear}">
+						<h:outputText value="#{vehicle.fabricationYear}" />
+					</p:column>
+
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil" update=":form:manage-vehicle-content"
+							action="#{manageVehicleBean.openForEdit()}" oncomplete="PF('manageVehicleDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success" process="@this">
+							<f:setPropertyActionListener value="#{vehicle}"
+								target="#{manageVehicleBean.selectedVehicle}" />
+							<p:resetInput target=":form:manage-vehicle-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+							action="#{manageVehicleBean.deleteVehicle}">
+							<f:setPropertyActionListener value="#{vehicle}"
+								target="#{manageVehicleBean.selectedVehicle}" />
+							<p:confirm header="Confirmar" message="Está seguro de eliminar el Vehículo?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<ui:include src="vehicle-form.xhtml"></ui:include>
+
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

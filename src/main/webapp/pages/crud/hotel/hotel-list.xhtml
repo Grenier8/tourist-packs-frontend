@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+	<ui:define name="title">
+		Listado de hoteles
+	</ui:define>
+	<ui:define name="layout">
+		<h:form id="form">
+			<div class="card crud-demo">
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageHotelBean.openNew}"
+							update=":form:manage-hotel-context" oncomplete="PF('manageHotelDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":form:manage-hotel-context" />
+						</p:commandButton>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-hotels" fileName="hotels" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<p:dataTable id="dt-hotels" widgetVar="dtHotels" var="hotel" value="#{manageHotelBean.hotels}"
+					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
+					<f:facet name="header">
+						<div class="hotel-table-header">
+							<span style="font-weight: bold">Hoteles</span>
+
+							<span class="filter-container ui-input-icon-left">
+								<i class="pi pi-search"></i>
+								<p:inputText id="globalFilter" onkeyup="PF('dtHotels').filter()" placeholder="Buscar" />
+							</span>
+
+						</div>
+					</f:facet>
+
+
+					<p:column headerText="Nombre" sortBy="#{hotel.hotelName}" filterBy="#{hotel.hotelName}">
+						<h:outputText value="#{hotel.hotelName}" />
+					</p:column>
+					<p:column headerText="Dirección" sortBy="#{hotel.address}" filterBy="#{hotel.address}">
+						<h:outputText value="#{hotel.address}" style="font-weight: 700" />
+					</p:column>
+					<p:column headerText="Categoría" sortBy="#{hotel.category}" filterBy="#{hotel.category}">
+						<h:outputText value="#{hotel.category}" />
+					</p:column>
+					<p:column headerText="Número de teléfono" sortBy="#{hotel.telephoneNumber}"
+						filterBy="#{hotel.telephoneNumber}">
+						<h:outputText value="#{hotel.telephoneNumber}" />
+					</p:column>
+					<p:column headerText="Fax" sortBy="#{hotel.fax}" filterBy="#{hotel.fax}">
+						<h:outputText value="#{hotel.fax}" />
+					</p:column>
+					<p:column headerText="Correo" sortBy="#{hotel.email}" filterBy="#{hotel.email}">
+						<h:outputText value="#{hotel.email}" />
+					</p:column>
+					<p:column headerText="Distancia ciudad cercana" sortBy="#{hotel.distanceToNearestCity}"
+						filterBy="#{hotel.distanceToNearestCity}">
+						<h:outputText value="#{hotel.distanceToNearestCity}" />
+					</p:column>
+					<p:column headerText="Distancia Aeropuerto" sortBy="#{hotel.distanceToAirport}"
+						filterBy="#{hotel.distanceToAirport}">
+						<h:outputText value="#{hotel.distanceToAirport}" />
+					</p:column>
+					<p:column headerText="Cantidad habitaciones" sortBy="#{hotel.roomsAmount}"
+						filterBy="#{hotel.roomsAmount}">
+						<h:outputText value="#{hotel.roomsAmount}" />
+					</p:column>
+					<p:column headerText="Cantidad pisos" sortBy="#{hotel.levelsAmount}"
+						filterBy="#{hotel.levelsAmount}">
+						<h:outputText value="#{hotel.levelsAmount}" />
+					</p:column>
+					<p:column headerText="Localización" sortBy="#{hotel.localization}" filterBy="#{hotel.localization}">
+						<h:outputText value="#{hotel.localization}" />
+					</p:column>
+					<p:column headerText="Cadena hotelera" sortBy="#{hotel.hotelChain.hotelChainName}"
+						filterBy="#{hotel.hotelChain.hotelChainName}">
+						<h:outputText value="#{hotel.hotelChain.hotelChainName}" />
+					</p:column>
+					<p:column headerText="Provincia" sortBy="#{hotel.province.provinceName}"
+						filterBy="#{hotel.province.provinceName}">
+						<h:outputText value="#{hotel.province.provinceName}" />
+					</p:column>
+
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil" update=":form:manage-hotel-context"
+							action="#{manageHotelBean.openForEdit}" oncomplete="PF('manageHotelDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success" process="@this">
+							<f:setPropertyActionListener value="#{hotel}" target="#{manageHotelBean.selectedHotel}" />
+							<p:resetInput target=":form:manage-hotel-context" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+							action="#{manageHotelBean.deleteHotel}">
+							<f:setPropertyActionListener value="#{hotel}" target="#{manageHotelBean.selectedHotel}" />
+							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<ui:include src="hotel-form.xhtml"></ui:include>
+
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

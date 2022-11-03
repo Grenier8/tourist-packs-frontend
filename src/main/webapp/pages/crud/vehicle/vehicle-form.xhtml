@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles del Vehiculo" showEffect="fade" modal="true" widgetVar="manageVehicleDialog"
+		responsive="true">
+		<p:outputPanel id="manage-vehicle-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageVehicleBean.selectedVehicle}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Placa" />
+							<p:inputText id="plate" value="#{manageVehicleBean.selectedVehicle.plate}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Marca" />
+							<p:inputText id="brand" value="#{manageVehicleBean.selectedVehicle.brand}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Capacidad sin Equipaje" />
+							<p:inputNumber id="noBaggageCapacity"
+								value="#{manageVehicleBean.selectedVehicle.noBaggageCapacity}" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Capacidad con Equipaje" />
+							<p:inputNumber id="BaggageCapacity"
+								value="#{manageVehicleBean.selectedVehicle.baggageCapacity}" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Capacidad Total" />
+							<p:inputNumber id="totalCapacity" value="#{manageVehicleBean.selectedVehicle.totalCapacity}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Año de Fabricación" />
+							<p:inputNumber id="fabricationYear"
+								value="#{manageVehicleBean.selectedVehicle.fabricationYear}" required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageVehicleBean.saveVehicle()}"
+				update="manage-vehicle-content" process="manage-vehicle-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageVehiculoDialog').hide()"
+				class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

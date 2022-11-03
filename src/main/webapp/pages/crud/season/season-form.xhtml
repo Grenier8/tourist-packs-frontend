@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de temporada" showEffect="fade" modal="true" widgetVar="manageSeasonDialog"
+		responsive="true">
+		<p:outputPanel id="manage-season-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageSeasonBean.selectedSeason}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Nombre" />
+							<p:inputText id="name" value="#{manageSeasonBean.selectedSeason.seasonName}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Fecha de Inicio" />
+							<p:datePicker id="startDate" value="#{manageSeasonBean.selectedSeason.startSeason}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Fecha de Fin" />
+							<p:datePicker id="endDate" value="#{manageSeasonBean.selectedSeason.endSeason}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Descripción" />
+							<p:inputTextarea id="description" rows="6" cols="33"
+								value="#{manageSeasonBean.selectedSeason.seasonDescription}" required="false" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageSeasonBean.saveSeason()}"
+				update="manage-season-content" process="manage-season-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageSeasonDialog').hide()"
+				class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

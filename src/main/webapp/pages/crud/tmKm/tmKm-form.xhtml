@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de tmKm" showEffect="fade" modal="true"
+		widgetVar="manageTmKmDialog" responsive="true">
+		<p:outputPanel id="manage-tmKm-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageTmKmBean.selectedTmKm}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Costo por Kilometro" />
+							<p:inputNumber id="costPerKm" value="#{manageTmKmBean.selectedTmKm.costPerKm}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Costo por Kilometro Ida y Vuelta" />
+							<p:inputNumber id="costPerKmGoAndBack" value="#{manageTmKmBean.selectedTmKm.costPerKmGoAndBack}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Costo por Horas de Espera" />
+							<p:inputNumber id="costPerWaitingHour" value="#{manageTmKmBean.selectedTmKm.costPerWaitingHour}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageTmKmBean.saveTmKm()}"
+							 update="manage-tmKm-content" process="manage-tmKm-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTmKmDialog').hide()"
+							 class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

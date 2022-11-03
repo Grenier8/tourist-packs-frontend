@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles de Contrato de Transporte y Servicio" showEffect="fade" modal="true" widgetVar="manageTransportContractTransportServiceDialog" responsive="true">
+		<p:outputPanel id="manage-transportContractTransportService-context" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageTransportContractTransportServiceBean.selectedTransportContractTransportService}">
+				<p:panelGrid layout="grid" columns="2">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Contrato de Transporte" />
+							<p:selectOneMenu id="transportContract" value="#{manageTransportContractTransportServiceBean.selectedTransportContract}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageTransportContractBean.transportContracts}" var="transportContract"
+									itemLabel="#{transportContract.contractTitle}" itemValue="#{transportContract.contractTitle}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Contrato de Servicio" />
+							<p:selectOneMenu id="transportService" value="#{manageTransportContractTransportServiceBean.selectedTransportService}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageTransportServiceBean.transportServices}" var="transportService"
+									itemLabel="#{transportService.transportServiceName}" itemValue="#{transportService.transportServiceName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+
+
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageTransportContractTransportServiceBean.saveTransportContractTransportService()}"
+				update="manage-transportContractTransportService-context" process="manage-transportContractTransportService-context @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTransportContractTransportServiceDialog').hide()"
+				class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

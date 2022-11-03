@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="Detalles del viaje" showEffect="fade" modal="true"
+		widgetVar="manageTravelDialog" responsive="true">
+		<p:outputPanel id="manage-travel-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageTravelBean.selectedTravel}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="Nombre de la travesía" />
+							<p:inputText id="travelName" value="#{manageTravelBean.selectedTravel.travelName}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+						
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageTravelBean.saveTravel()}"
+							 update="manage-travel-content" process="manage-travel-content @this" />
+			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTravelDialog').hide()"
+							 class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

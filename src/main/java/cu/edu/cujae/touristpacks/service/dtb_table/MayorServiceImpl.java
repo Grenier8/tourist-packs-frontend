@@ -1,6 +1,6 @@
-package cu.edu.cujae.touristpacks.service.hotel;
+package cu.edu.cujae.touristpacks.service.dtb_table;
 
-import cu.edu.cujae.touristpacks.dto.HotelDto;
+import cu.edu.cujae.touristpacks.dto.MayorDto;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -15,21 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class HotelServiceImpl implements IHotelService {
+public class MayorServiceImpl implements IMayorService {
 
-    private String endpoint = "/api/v1/hotels/";
+    private String endpoint = "/api/v1/dtb_tables/";
 
     @Autowired
     private RestService restService;
 
     @Override
-    public List<HotelDto> getHotels() {
-        List<HotelDto> list = new ArrayList<>();
+    public List<MayorDto> getMayors() {
+        List<MayorDto> list = new ArrayList<>();
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
             String response = (String) restService.GET(endpoint, params, String.class).getBody();
-            list = apiRestMapper.mapList(response, HotelDto.class);
+            list = apiRestMapper.mapList(response, MayorDto.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,57 +37,57 @@ public class HotelServiceImpl implements IHotelService {
     }
 
     @Override
-    public HotelDto getHotelById(int idHotel) {
-        HotelDto hotel = null;
+    public MayorDto getMayorById(int idMayor) {
+        MayorDto minor = null;
 
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idHotel}");
-            String uri = template.expand(idHotel).toString();
+            UriTemplate template = new UriTemplate(endpoint + "/{idMayor}");
+            String uri = template.expand(idMayor).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
-            hotel = apiRestMapper.mapOne(response, HotelDto.class);
+            minor = apiRestMapper.mapOne(response, MayorDto.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return hotel;
+        return minor;
     }
 
     @Override
-    public HotelDto getHotelByName(String hotelName) {
-        HotelDto hotel = null;
+    public MayorDto getMayorByName(String minorName) {
+        MayorDto minor = null;
 
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{hotelName}");
-            String uri = template.expand(hotelName).toString();
+            UriTemplate template = new UriTemplate(endpoint + "/name/{minorName}");
+            String uri = template.expand(minorName).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
-            hotel = apiRestMapper.mapOne(response, HotelDto.class);
+            minor = apiRestMapper.mapOne(response, MayorDto.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return hotel;
+        return minor;
     }
 
     @Override
-    public void createHotel(HotelDto hotel) {
-        restService.POST(endpoint + "", hotel, String.class).getBody();
+    public void createMayor(MayorDto minor) {
+        restService.POST(endpoint + "", minor, String.class).getBody();
     }
 
     @Override
-    public void updateHotel(HotelDto hotel) {
+    public void updateMayor(MayorDto minor) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, hotel, String.class).getBody();
+        restService.PUT(endpoint + "", params, minor, String.class).getBody();
     }
 
     @Override
-    public void deleteHotel(int idHotel) {
+    public void deleteMayor(int idMayor) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idHotel}");
-        String uri = template.expand(idHotel).toString();
+        UriTemplate template = new UriTemplate(endpoint + "/{idMayor}");
+        String uri = template.expand(idMayor).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }
 

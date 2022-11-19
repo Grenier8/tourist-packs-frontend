@@ -24,6 +24,9 @@ public class ManageHotelChainBean {
     private HotelChainDto selectedHotelChain;
 
     @Autowired
+    private IHotelChainService hotelChainService;
+
+    @Autowired
     private IHotelChainService service;
 
     public ManageHotelChainBean() {
@@ -32,7 +35,7 @@ public class ManageHotelChainBean {
 
     @PostConstruct
     public void init() {
-        hotelChains = hotelChains == null ? service.getHotelChains() : hotelChains;
+        hotelChains = hotelChainService.getHotelChains();
     }
 
     public void openNew() {
@@ -45,16 +48,16 @@ public class ManageHotelChainBean {
 
     public void saveHotelChain() {
         if (this.selectedHotelChain.getIdHotelChain() == 0) {
-            int r = (int) (Math.random() * 10000);
-
-            this.selectedHotelChain.setIdHotelChain(r);
-            this.hotelChains.add(this.selectedHotelChain);
+            hotelChainService.createHotelChain(selectedHotelChain);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera insertada"));
         } else {
+            hotelChainService.updateHotelChain(selectedHotelChain);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera modificada"));
         }
+
+        hotelChains = hotelChainService.getHotelChains();
 
         PrimeFaces.current().executeScript("PF('manageHotelChainDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotelChains");
@@ -63,8 +66,11 @@ public class ManageHotelChainBean {
 
     public void deleteHotelChain() {
 
-        this.hotelChains.remove(this.selectedHotelChain);
+        hotelChainService.deleteHotelChain(selectedHotelChain.getIdHotelChain());
         this.selectedHotelChain = null;
+
+        hotelChains = hotelChainService.getHotelChains();
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera eliminada"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelChains");
 

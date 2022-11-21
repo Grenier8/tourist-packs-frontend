@@ -24,9 +24,6 @@ public class ManageHotelChainBean {
     private HotelChainDto selectedHotelChain;
 
     @Autowired
-    private IHotelChainService hotelChainService;
-
-    @Autowired
     private IHotelChainService service;
 
     public ManageHotelChainBean() {
@@ -35,7 +32,7 @@ public class ManageHotelChainBean {
 
     @PostConstruct
     public void init() {
-        hotelChains = hotelChainService.getHotelChains();
+        hotelChains = service.getHotelChains();
     }
 
     public void openNew() {
@@ -48,16 +45,16 @@ public class ManageHotelChainBean {
 
     public void saveHotelChain() {
         if (this.selectedHotelChain.getIdHotelChain() == 0) {
-            hotelChainService.createHotelChain(selectedHotelChain);
+            service.createHotelChain(selectedHotelChain);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera insertada"));
         } else {
-            hotelChainService.updateHotelChain(selectedHotelChain);
+            service.updateHotelChain(selectedHotelChain);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera modificada"));
         }
 
-        hotelChains = hotelChainService.getHotelChains();
+        hotelChains = service.getHotelChains();
 
         PrimeFaces.current().executeScript("PF('manageHotelChainDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotelChains");
@@ -66,10 +63,10 @@ public class ManageHotelChainBean {
 
     public void deleteHotelChain() {
 
-        hotelChainService.deleteHotelChain(selectedHotelChain.getIdHotelChain());
+        service.deleteHotelChain(selectedHotelChain.getIdHotelChain());
         this.selectedHotelChain = null;
 
-        hotelChains = hotelChainService.getHotelChains();
+        hotelChains = service.getHotelChains();
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera eliminada"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelChains");

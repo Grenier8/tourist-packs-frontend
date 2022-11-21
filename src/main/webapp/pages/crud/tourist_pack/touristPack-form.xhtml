@@ -2,8 +2,8 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dialog header="Detalles de paquete turístico" showEffect="fade" modal="true" widgetVar="manageTouristPackDialog"
-		responsive="true">
+	<p:dialog header="#{msgs.label_tourist_pack_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageTouristPackDialog" responsive="true">
 		<p:outputPanel id="manage-touristPack-content" class="ui-fluid">
 			<p:outputPanel rendered="#{not empty manageTouristPackBean.selectedTouristPack}">
 				<p:panelGrid layout="grid" columns="1">

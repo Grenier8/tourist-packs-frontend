@@ -49,7 +49,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
             String response = (String) restService.GET(uri, params, String.class).getBody();
             hotelChain = apiRestMapper.mapOne(response, HotelChainDto.class);
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
         return hotelChain;
     }

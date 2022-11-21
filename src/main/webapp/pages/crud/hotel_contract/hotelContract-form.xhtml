@@ -2,7 +2,7 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dialog header="Detalles de contratos de hotel" showEffect="fade" modal="true"
+	<p:dialog header="#{msgs.label_hotel_contract_form_header}" showEffect="fade" modal="true"
 		widgetVar="manageHotelContractDialog" responsive="true">
 		<p:outputPanel id="manage-hotelContract-content" class="ui-fluid">
 			<p:outputPanel rendered="#{not empty manageHotelContractBean.selectedHotelContract}">

@@ -5,15 +5,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-
-import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
-import cu.edu.cujae.touristpacks.service.diary_activity.IDiaryActivityService;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
+import cu.edu.cujae.touristpacks.service.diary_activity.IDiaryActivityService;
 
 @Component
 @ManagedBean
@@ -32,7 +32,7 @@ public class ManageDiaryActivityBean {
 
     @PostConstruct
     public void init() {
-        diaryActivities = diaryActivities == null ? service.getDiaryActivities() : diaryActivities;
+        diaryActivities = service.getDiaryActivities();
     }
 
     public void openNew() {
@@ -45,41 +45,44 @@ public class ManageDiaryActivityBean {
 
     public void saveDiaryActivity() {
         if (this.selectedDiaryActivity.getIdDiaryActivity() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createDiaryActivity(selectedDiaryActivity);
 
-            this.selectedDiaryActivity.setIdDiaryActivity(r);
-            this.diaryActivities.add(this.selectedDiaryActivity);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria insertada"));
         } else {
+            service.updateDiaryActivity(selectedDiaryActivity);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria modificada"));
         }
 
+        diaryActivities = service.getDiaryActivities();
+
         PrimeFaces.current().executeScript("PF('manageDiaryActivityDialog').hide()");
-        PrimeFaces.current().ajax().update("form:dt-diaryActivities");
+        PrimeFaces.current().ajax().update("form:dt-diaryActivitys");
 
     }
 
     public void deleteDiaryActivity() {
 
-        this.diaryActivities.remove(this.selectedDiaryActivity);
+        service.deleteDiaryActivity(selectedDiaryActivity.getIdDiaryActivity());
         this.selectedDiaryActivity = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-diaryActivities");
+
+        diaryActivities = service.getDiaryActivities();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria eliminada"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-diaryActivitys");
 
     }
 
-    public List<DiaryActivityDto> getdiaryActivities() {
-        return diaryActivities;
+    public List<DiaryActivityDto> getDiaryActivitys() {
+        return this.diaryActivities;
     }
 
-    public void setdiaryActivities(List<DiaryActivityDto> diaryActivities) {
-        this.diaryActivities = diaryActivities;
+    public void setDiaryActivitys(List<DiaryActivityDto> diaryActivitys) {
+        this.diaryActivities = diaryActivitys;
     }
 
     public DiaryActivityDto getSelectedDiaryActivity() {
-        return selectedDiaryActivity;
+        return this.selectedDiaryActivity;
     }
 
     public void setSelectedDiaryActivity(DiaryActivityDto selectedDiaryActivity) {
@@ -87,10 +90,11 @@ public class ManageDiaryActivityBean {
     }
 
     public IDiaryActivityService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IDiaryActivityService service) {
         this.service = service;
     }
+
 }

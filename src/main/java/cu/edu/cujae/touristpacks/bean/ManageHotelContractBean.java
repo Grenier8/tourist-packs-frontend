@@ -5,17 +5,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-
-import cu.edu.cujae.touristpacks.dto.HotelContractDto;
-import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
-import cu.edu.cujae.touristpacks.service.hotel_contract.IHotelContractService;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import cu.edu.cujae.touristpacks.dto.HotelContractDto;
+import cu.edu.cujae.touristpacks.service.hotel_contract.IHotelContractService;
 
 @Component
 @ManagedBean
@@ -24,13 +22,9 @@ public class ManageHotelContractBean {
 
     private List<HotelContractDto> hotelContracts;
     private HotelContractDto selectedHotelContract;
-    private String selectedHotelName;
 
     @Autowired
     private IHotelContractService service;
-
-    @Autowired
-    private IHotelService hotelService;
 
     public ManageHotelContractBean() {
 
@@ -38,7 +32,7 @@ public class ManageHotelContractBean {
 
     @PostConstruct
     public void init() {
-        hotelContracts = hotelContracts == null ? service.getHotelContracts() : hotelContracts;
+        hotelContracts = service.getHotelContracts();
     }
 
     public void openNew() {
@@ -51,19 +45,16 @@ public class ManageHotelContractBean {
 
     public void saveHotelContract() {
         if (this.selectedHotelContract.getIdHotelContract() == 0) {
-            int r = (int) (Math.random() * 10000);
-            this.selectedHotelContract.setIdHotelContract(r);
+            service.createHotelContract(selectedHotelContract);
 
-            HotelDto hotel = hotelService.getHotelByName(selectedHotelName);
-            this.selectedHotelContract.setHotel(hotel);
-
-            this.hotelContracts.add(this.selectedHotelContract);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contrato de hotel insertado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
         } else {
+            service.updateHotelContract(selectedHotelContract);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contrato de hotel modificado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
         }
+
+        hotelContracts = service.getHotelContracts();
 
         PrimeFaces.current().executeScript("PF('manageHotelContractDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotelContracts");
@@ -72,15 +63,18 @@ public class ManageHotelContractBean {
 
     public void deleteHotelContract() {
 
-        this.hotelContracts.remove(this.selectedHotelContract);
+        service.deleteHotelContract(selectedHotelContract.getIdHotelContract());
         this.selectedHotelContract = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Contrato de hotel eliminado"));
+
+        hotelContracts = service.getHotelContracts();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelContracts");
 
     }
 
     public List<HotelContractDto> getHotelContracts() {
-        return hotelContracts;
+        return this.hotelContracts;
     }
 
     public void setHotelContracts(List<HotelContractDto> hotelContracts) {
@@ -88,7 +82,7 @@ public class ManageHotelContractBean {
     }
 
     public HotelContractDto getSelectedHotelContract() {
-        return selectedHotelContract;
+        return this.selectedHotelContract;
     }
 
     public void setSelectedHotelContract(HotelContractDto selectedHotelContract) {
@@ -96,18 +90,11 @@ public class ManageHotelContractBean {
     }
 
     public IHotelContractService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IHotelContractService service) {
         this.service = service;
     }
 
-    public String getSelectedHotelName() {
-        return this.selectedHotelName;
-    }
-
-    public void setSelectedHotelName(String selectedHotelName) {
-        this.selectedHotelName = selectedHotelName;
-    }
 }

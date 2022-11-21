@@ -2,14 +2,14 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dialog header="Detalles de la cadena hotelera" showEffect="fade" modal="true" widgetVar="manageHotelChainDialog"
-		responsive="true">
+	<p:dialog header="#{msgs.label_hotel_chain_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageHotelChainDialog" responsive="true">
 		<p:outputPanel id="manage-hotelChain-content" class="ui-fluid">
 			<p:outputPanel rendered="#{not empty manageHotelChainBean.selectedHotelChain}">
 				<p:panelGrid layout="grid" columns="1">
 					<h:panelGroup>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Nombre" />
+							<p:outputLabel for="@next" value="#{msgs.label_hotel_chain_name}" />
 							<p:inputText id="name" value="#{manageHotelChainBean.selectedHotelChain.hotelChainName}"
 								required="true" />
 							<p:message for="@previous" />
@@ -20,10 +20,11 @@
 		</p:outputPanel>
 
 		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageHotelChainBean.saveHotelChain()}"
-				update="manage-hotelChain-content" process="manage-hotelChain-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageHotelChainDialog').hide()"
-				class="ui-button-secondary" />
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
+				actionListener="#{manageHotelChainBean.saveHotelChain()}" update="manage-hotelChain-content"
+				process="manage-hotelChain-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
+				onclick="PF('manageHotelChainDialog').hide()" class="ui-button-secondary" />
 		</f:facet>
 	</p:dialog>
 </ui:composition>

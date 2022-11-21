@@ -1,5 +1,6 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
 
     <div class="layout-topbar">
         <a class="menu-button" tabindex="0">
@@ -11,7 +12,18 @@
 
         <h:form styleClass="topbar-form">
             <ul class="topbar-menu">
-                
+                <li class="topbar-menu">
+                    <p:commandLink action="#{languageBean.setLanguage('es')}" ajax="false"> <span>Español</span>
+                    </p:commandLink>
+                </li>
+
+                <li class="topbar-menu">
+                    <p:commandLink action="#{languageBean.setLanguage('en')}" ajax="false"> <span>English</span>
+                    </p:commandLink>
+                </li>
+
+
+
             </ul>
         </h:form>
     </div>

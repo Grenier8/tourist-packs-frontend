@@ -5,18 +5,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.dto.RoomPlanSeasonDto;
 import cu.edu.cujae.touristpacks.dto.TouristPackDto;
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
-import cu.edu.cujae.touristpacks.service.room_plan_season.IRoomPlanSeasonService;
 import cu.edu.cujae.touristpacks.service.tourist_pack.ITouristPackService;
 
 @Component
@@ -26,17 +22,9 @@ public class ManageTouristPackBean {
 
     private List<TouristPackDto> touristPacks;
     private TouristPackDto selectedTouristPack;
-    private String selectedHotelName;
-    private String selectedRoomPlanSeasonName;
 
     @Autowired
     private ITouristPackService service;
-
-    @Autowired
-    private IHotelService hotelService;
-
-    @Autowired
-    private IRoomPlanSeasonService roomPlanSeasonService;
 
     public ManageTouristPackBean() {
 
@@ -44,7 +32,7 @@ public class ManageTouristPackBean {
 
     @PostConstruct
     public void init() {
-        touristPacks = touristPacks == null ? service.getTouristPacks() : touristPacks;
+        touristPacks = service.getTouristPacks();
     }
 
     public void openNew() {
@@ -57,23 +45,16 @@ public class ManageTouristPackBean {
 
     public void saveTouristPack() {
         if (this.selectedTouristPack.getIdTouristPack() == 0) {
-            int r = (int) (Math.random() * 10000);
-            this.selectedTouristPack.setIdTouristPack(r);
+            service.createTouristPack(selectedTouristPack);
 
-            HotelDto hotel = hotelService.getHotelByName(selectedHotelName);
-            this.selectedTouristPack.setHotel(hotel);
-
-            RoomPlanSeasonDto roomPlanSeason = roomPlanSeasonService
-                    .getRoomPlanSeasonByName(selectedRoomPlanSeasonName);
-            this.selectedTouristPack.setRoomPlanSeason(roomPlanSeason);
-
-            this.touristPacks.add(this.selectedTouristPack);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
         } else {
+            service.updateTouristPack(selectedTouristPack);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
         }
+
+        touristPacks = service.getTouristPacks();
 
         PrimeFaces.current().executeScript("PF('manageTouristPackDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-touristPacks");
@@ -82,15 +63,18 @@ public class ManageTouristPackBean {
 
     public void deleteTouristPack() {
 
-        this.touristPacks.remove(this.selectedTouristPack);
+        service.deleteTouristPack(selectedTouristPack.getIdTouristPack());
         this.selectedTouristPack = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
+
+        touristPacks = service.getTouristPacks();
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-touristPacks");
 
     }
 
     public List<TouristPackDto> getTouristPacks() {
-        return touristPacks;
+        return this.touristPacks;
     }
 
     public void setTouristPacks(List<TouristPackDto> touristPacks) {
@@ -98,7 +82,7 @@ public class ManageTouristPackBean {
     }
 
     public TouristPackDto getSelectedTouristPack() {
-        return selectedTouristPack;
+        return this.selectedTouristPack;
     }
 
     public void setSelectedTouristPack(TouristPackDto selectedTouristPack) {
@@ -106,43 +90,11 @@ public class ManageTouristPackBean {
     }
 
     public ITouristPackService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(ITouristPackService service) {
         this.service = service;
-    }
-
-    public String getSelectedHotelName() {
-        return this.selectedHotelName;
-    }
-
-    public void setSelectedHotelName(String selectedHotelName) {
-        this.selectedHotelName = selectedHotelName;
-    }
-
-    public String getSelectedRoomPlanSeasonName() {
-        return this.selectedRoomPlanSeasonName;
-    }
-
-    public void setSelectedRoomPlanSeasonName(String selectedRoomPlanSeasonName) {
-        this.selectedRoomPlanSeasonName = selectedRoomPlanSeasonName;
-    }
-
-    public IHotelService getHotelService() {
-        return this.hotelService;
-    }
-
-    public void setHotelService(IHotelService hotelService) {
-        this.hotelService = hotelService;
-    }
-
-    public IRoomPlanSeasonService getRoomPlanSeasonService() {
-        return this.roomPlanSeasonService;
-    }
-
-    public void setRoomPlanSeasonService(IRoomPlanSeasonService roomPlanSeasonService) {
-        this.roomPlanSeasonService = roomPlanSeasonService;
     }
 
 }

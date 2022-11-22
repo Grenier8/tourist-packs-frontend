@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="#{msgs.label_diary_activity_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageDiaryActivityDialog" responsive="true">
+		<p:outputPanel id="manage-diaryActivity-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageDiaryActivityBean.selectedDiaryActivity}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_diary_activity_name}" />
+							<p:inputText id="name"
+								value="#{manageDiaryActivityBean.selectedDiaryActivity.diaryActivityName}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_diary_activity_date}" />
+							<p:datePicker id="date" value="#{manageDiaryActivityBean.selectedDiaryActivity.date}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_diary_activity_description}" />
+							<p:inputText id="description"
+								value="#{manageDiaryActivityBean.selectedDiaryActivity.diaryActivityDescription}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
+				actionListener="#{manageDiaryActivityBean.saveDiaryActivity()}" update="manage-diaryActivity-content"
+				process="manage-diaryActivity-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
+				onclick="PF('manageDiaryActivityDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

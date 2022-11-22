@@ -9,37 +9,37 @@
 				<p:panelGrid layout="grid" columns="1">
 					<h:panelGroup>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Nombre" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_name}" />
 							<p:inputText id="name" value="#{manageTouristPackBean.selectedTouristPack.promotionalName}"
 								required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Total de noches" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_nights_amount}" />
 							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.nightsAmount}" stepFactor="1"
 								min="1" required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Cantidad de personas" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_pax_amount}" />
 							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.paxAmount}" stepFactor="1"
 								min="1" required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Precio hotel" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_hotel_price}" />
 							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.hotelPrice}" stepFactor="0.5"
 								min="0" required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Precio viaje hotel-aeropuerto" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_hotel_airport_price}" />
 							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.hotelAirportPrice}"
 								stepFactor="0.5" min="0" required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Hotel" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_hotel}" />
 							<p:selectOneMenu id="hotel" value="#{manageTouristPackBean.selectedHotelName}"
 								required="true" style="min-width: 15rem" multiple="true" filter="true"
 								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
@@ -49,7 +49,7 @@
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="RoomPlanSeason" />
+							<p:outputLabel for="@next" value="#{msgs.label_tourist_pack_room_plan_season}" />
 							<p:selectOneMenu id="roomPlanSeason"
 								value="#{manageTouristPackBean.selectedRoomPlanSeasonName}" required="true"
 								style="min-width: 15rem" multiple="true" filter="true" filterMatchMode="startsWith"
@@ -66,11 +66,11 @@
 		</p:outputPanel>
 
 		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check"
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
 				actionListener="#{manageTouristPackBean.saveTouristPack()}" update="manage-touristPack-content"
 				process="manage-touristPack-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTouristPackDialog').hide()"
-				class="ui-button-secondary" />
+			<p:commandButton value="#{msgs.button_export}" icon="pi pi-times"
+				onclick="PF('manageTouristPackDialog').hide()" class="ui-button-secondary" />
 		</f:facet>
 	</p:dialog>
 </ui:composition>

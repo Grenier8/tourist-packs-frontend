@@ -5,14 +5,14 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de modalidades de hotel
+		<p:outputLabel value="#{msgs.label_hotel_modality_list_header}" style="font-size: 38px;"></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
 							actionListener="#{manageHotelModalityBean.openNew}"
 							update=":form:manage-hotelModality-content"
 							oncomplete="PF('manageHotelModalityDialog').show()" styleClass="ui-button-success"
@@ -21,7 +21,8 @@
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
+							ajax="false">
 							<p:dataExporter type="pdf" target="dt-hotelModalities" fileName="hotelModalities" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -33,7 +34,9 @@
 					paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="hotelModalities-table-header">
-							<span style="font-weight: bold">Modalidades de hotel</span>
+							<span style="font-weight: bold">
+								<p:outputLabel value="#{msgs.label_hotel_modality_filter}"></p:outputLabel>
+							</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>

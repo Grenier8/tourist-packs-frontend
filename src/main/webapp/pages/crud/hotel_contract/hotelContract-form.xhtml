@@ -9,14 +9,14 @@
 				<p:panelGrid layout="grid" columns="1">
 					<h:panelGroup>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Título" />
+							<p:outputLabel for="@next" value="#{msgs.label_contract_title}" />
 							<p:inputText id="title"
 								value="#{manageHotelContractBean.selectedHotelContract.contractTitle}"
 								required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Hotel" />
+							<p:outputLabel for="@next" value="#{msgs.label_hotel_contract_hotel}" />
 							<p:selectOneMenu id="hotel" value="#{manageHotelContractBean.selectedHotelName}"
 								required="true" style="min-width: 15rem" multiple="true" filter="true"
 								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
@@ -26,25 +26,25 @@
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Descripción" />
+							<p:outputLabel for="@next" value="#{msgs.label_hotel_contract_description}" />
 							<p:inputText id="description"
 								value="#{manageHotelContractBean.selectedHotelContract.contractDescription}" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Fecha de inicio" />
+							<p:outputLabel for="@next" value="#{msgs.label_contract_start_date}" />
 							<p:datePicker id="startDate"
 								value="#{manageHotelContractBean.selectedHotelContract.startDate}" required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Fecha de fin" />
+							<p:outputLabel for="@next" value="#{msgs.label_contract_end_date}" />
 							<p:datePicker id="endDate" value="#{manageHotelContractBean.selectedHotelContract.endDate}"
 								required="true" />
 							<p:message for="@previous" />
 						</div>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Fecha de conciliación" />
+							<p:outputLabel for="@next" value="#{msgs.label_contract_conciliation_date}" />
 							<p:datePicker id="conciliationDate"
 								value="#{manageHotelContractBean.selectedHotelContract.conciliationDate}"
 								required="true" />
@@ -56,11 +56,11 @@
 		</p:outputPanel>
 
 		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check"
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
 				actionListener="#{manageHotelContractBean.saveHotelContract()}" update="manage-hotelContract-content"
 				process="manage-hotelContract-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageHotelContractDialog').hide()"
-				class="ui-button-secondary" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
+				onclick="PF('manageHotelContractDialog').hide()" class="ui-button-secondary" />
 		</f:facet>
 	</p:dialog>
 </ui:composition>

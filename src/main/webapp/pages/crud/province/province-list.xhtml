@@ -5,21 +5,23 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de provincias
+		<p:outputLabel value="#{msgs.label_province_list_header}" style="font-size: 38px;"></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageProvinceBean.openNew}"
-							update=":form:manage-province-content" oncomplete="PF('manageProvinceDialog').show()"
-							styleClass="ui-button-success" style="margin-right: .5rem">
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
+							actionListener="#{manageProvinceBean.openNew}" update=":form:manage-province-content"
+							oncomplete="PF('manageProvinceDialog').show()" styleClass="ui-button-success"
+							style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-province-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
+							ajax="false">
 							<p:dataExporter type="pdf" target="dt-provinces" fileName="provinces" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -31,7 +33,9 @@
 					paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="provinces-table-header">
-							<span style="font-weight: bold">Provincias</span>
+							<span style="font-weight: bold">
+								<p:outputLabel value="#{msgs.label_province_filter}" />
+							</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
@@ -43,7 +47,8 @@
 					</f:facet>
 
 
-					<p:column headerText="Nombre" sortBy="#{province.provinceName}" filterBy="#{province.provinceName}">
+					<p:column headerText="#{msgs.label_province_name}" sortBy="#{province.provinceName}"
+						filterBy="#{province.provinceName}">
 						<h:outputText value="#{province.provinceName}" />
 					</p:column>
 

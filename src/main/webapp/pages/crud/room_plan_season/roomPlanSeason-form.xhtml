@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="#{msgs.label_room_plan_season_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageRoomPlanSeasonDialog" responsive="true">
+		<p:outputPanel id="manage-roomPlanSeason-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageRoomPlanSeasonBean.selectedRoomPlanSeason}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_room_plan_season_name}" />
+							<p:inputText id="name"
+								value="#{manageRoomPlanSeasonBean.selectedRoomPlanSeason.roomPlanSeasonName}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_room_plan_season_room_type}" />
+							<p:selectOneMenu id="roomType" value="#{manageRoomPlanSeasonBean.selectedRoomTypeName}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageRoomTypeBean.roomTypes}" var="roomType"
+									itemLabel="#{roomType.roomTypeName}" itemValue="#{roomType.roomTypeName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_room_plan_season_alimentary_plan}" />
+							<p:selectOneMenu id="alimentaryPlan" value="#{manageMayorBean.selectedAlimentaryPlanName}"
+								required="true" style="min-width: 15rem" multiple="true" filter="true"
+								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageAlimentaryPlanBean.alimentaryPlans}" var="alimentaryPlan"
+									itemLabel="#{alimentaryPlan.alimentaryPlanName}"
+									itemValue="#{alimentaryPlan.alimentaryPlanName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_room_plan_season_season}" />
+							<p:selectOneMenu id="season" value="#{manageMayorBean.selectedSeasonName}" required="true"
+								style="min-width: 15rem" multiple="true" filter="true" filterMatchMode="startsWith"
+								panelStyle="width: 30rem" scrollHeight="250">
+								<f:selectItems value="#{manageSeasonBean.seasons}" var="season"
+									itemLabel="#{season.seasonName}" itemValue="#{season.seasonName}" />
+							</p:selectOneMenu>
+							<p:message for="@previous" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_room_plan_season_price}" />
+							<p:spinner value="#{manageHotelBean.selectedHotel.distanceToAirport}" stepFactor="0.05"
+								min="0" />
+							<p:message for="@previous" />
+						</div>
+
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
+				actionListener="#{manageRoomPlanSeasonBean.saveRoomPlanSeason()}" update="manage-roomPlanSeason-content"
+				process="manage-roomPlanSeason-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
+				onclick="PF('manageRoomPlanSeasonDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

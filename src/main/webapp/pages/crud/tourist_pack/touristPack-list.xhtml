@@ -5,14 +5,14 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de paquetes turísticos
+		<p:outputLabel value="#{msgs.label_tourist_pack_list_header}" style="font-size: 38px;"></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
 							actionListener="#{manageTouristPackBean.openNew}" update=":form:manage-touristPack-content"
 							oncomplete="PF('manageTouristPackDialog').show()" styleClass="ui-button-success"
 							style="margin-right: .5rem">
@@ -20,7 +20,8 @@
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
+							ajax="false">
 							<p:dataExporter type="pdf" target="dt-touristPacks" fileName="touristPacks" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -32,51 +33,53 @@
 					paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="touristPacks-table-header">
-							<span style="font-weight: bold">Paquetes turísticos</span>
+							<span style="font-weight: bold">
+								<p:outputLabel value="#{msgs.label_tourist_pack_filter}" />
+							</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTouristPacks').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
 
-					<p:column headerText="Nombre" sortBy="#{touristPack.promotionalName}"
+					<p:column headerText="#{msgs.label_tourist_pack_name}" sortBy="#{touristPack.promotionalName}"
 						filterBy="#{touristPack.promotionalName}">
 						<h:outputText value="#{touristPack.promotionalName}" />
 					</p:column>
-					<p:column headerText="Total de días" sortBy="#{touristPack.daysAmount}"
+					<p:column headerText="#{msgs.label_tourist_pack_days_amount}" sortBy="#{touristPack.daysAmount}"
 						filterBy="#{touristPack.daysAmount}">
 						<h:outputText value="#{touristPack.daysAmount}" />
 					</p:column>
-					<p:column headerText="Total de noches" sortBy="#{touristPack.nightsAmount}"
+					<p:column headerText="#{msgs.label_tourist_pack_nights_amount}" sortBy="#{touristPack.nightsAmount}"
 						filterBy="#{touristPack.nightsAmount}">
 						<h:outputText value="#{touristPack.nightsAmount}" />
 					</p:column>
-					<p:column headerText="Cantidad de personas" sortBy="#{touristPack.paxAmount}"
+					<p:column headerText="#{msgs.label_tourist_pack_pax_amount}" sortBy="#{touristPack.paxAmount}"
 						filterBy="#{touristPack.paxAmount}">
 						<h:outputText value="#{touristPack.paxAmount}" />
 					</p:column>
-					<p:column headerText="Precio hotel" sortBy="#{touristPack.hotelPrice}"
+					<p:column headerText="#{msgs.label_tourist_pack_hotel_price}" sortBy="#{touristPack.hotelPrice}"
 						filterBy="#{touristPack.hotelPrice}">
 						<h:outputText value="#{touristPack.hotelPrice}" />
 					</p:column>
-					<p:column headerText="Precio viaje hotel-aeropuerto" sortBy="#{touristpack.hotelAirportPrice}"
-						filterBy="#{touristpack.hotelAirportPrice}">
+					<p:column headerText="#{msgs.label_tourist_pack_hotel_airport_price}"
+						sortBy="#{touristpack.hotelAirportPrice}" filterBy="#{touristpack.hotelAirportPrice}">
 						<h:outputText value="#{touristpack.hotelAirportPrice}" />
 					</p:column>
-					<p:column headerText="Precio total" sortBy="#{touristPack.totalPrice}"
+					<p:column headerText="#{msgs.label_tourist_pack_total_price}" sortBy="#{touristPack.totalPrice}"
 						filterBy="#{touristPack.totalPrice}">
 						<h:outputText value="#{touristPack.totalPrice}" />
 					</p:column>
-					<p:column headerText="Hotel" sortBy="#{touristPack.hotel.hotelName}"
+					<p:column headerText="#{msgs.label_tourist_pack_hotel}" sortBy="#{touristPack.hotel.hotelName}"
 						filterBy="#{touristPack.hotel.hotelName}">
 						<h:outputText value="#{touristPack.hotel.hotelName}" />
 					</p:column>
-					<p:column headerText="Plan de habitación por temporada"
+					<p:column headerText="#{msgs.label_tourist_pack_room_plan_season}"
 						sortBy="#{touristPack.roomPlanSeason.roomPlanSeasonName}"
 						filterBy="#{touristPack.roomPlanSeason.roomPlanSeasonName}">
 						<h:outputText value="#{touristPack.roomPlanSeason.roomPlanSeasonName}" />
@@ -108,9 +111,10 @@
 
 
 				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-						icon="pi pi-times" />
+					<p:commandButton value="#{msgs.button_yes}" type="button" styleClass="ui-confirmdialog-yes"
+						icon="pi pi-check" />
+					<p:commandButton value="#{msgs.button_no}" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
 				</p:confirmDialog>
 			</div>
 		</h:form>

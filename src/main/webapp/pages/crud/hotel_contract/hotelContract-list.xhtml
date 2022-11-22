@@ -5,14 +5,14 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de contratos de hotel
+		<p:outputLabel value="#{msgs.label_hotel_contract_list_header}" style="font-size: 38px;"></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
 							actionListener="#{manageHotelContractBean.openNew}"
 							update=":form:manage-hotelContract-content"
 							oncomplete="PF('manageHotelContractDialog').show()" styleClass="ui-button-success"
@@ -21,7 +21,8 @@
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="msgs.button_export" icon="pi pi-upload" styleClass="ui-button-help"
+							ajax="false">
 							<p:dataExporter type="pdf" target="dt-hotelContracts" fileName="hotelContracts" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -33,37 +34,43 @@
 					paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="hotelContracts-table-header">
-							<span style="font-weight: bold">Contratos de hotel</span>
+							<span style="font-weight: bold">
+								<p:outputLabel value="#{msgs.label_hotel_contract_filter}"></p:outputLabel>
+							</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtHotelContracts').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
 
-					<p:column headerText="Título" sortBy="#{hotelContract.contractTitle}"
+					<p:column headerText="#{msgs.label_contract_title}" sortBy="#{hotelContract.contractTitle}"
 						filterBy="#{hotelContract.contractTitle}">
 						<h:outputText value="#{hotelContract.contractTitle}" />
 					</p:column>
-					<p:column headerText="Descripción" sortBy="#{hotelContract.contractDescription}"
-						filterBy="#{hotelContract.contractDescription}">
+					<p:column headerText="#{msgs.label_hotel_contract_description}"
+						sortBy="#{hotelContract.contractDescription}" filterBy="#{hotelContract.contractDescription}">
 						<h:outputText value="#{hotelContract.contractDescription}" />
 					</p:column>
-					<p:column headerText="Fecha de inicio" sortBy="#{hotelContract.startDate}"
+					<p:column headerText="#{msgs.label_contract_start_date}" sortBy="#{hotelContract.startDate}"
 						filterBy="#{hotelContract.startDate}">
 						<h:outputText value="#{hotelContract.startDate}" />
 					</p:column>
-					<p:column headerText="Fecha de fin" sortBy="#{hotelContract.endDate}"
+					<p:column headerText="#{msgs.label_contract_end_date}" sortBy="#{hotelContract.endDate}"
 						filterBy="#{hotelContract.endDate}">
 						<h:outputText value="#{hotelContract.endDate}" />
 					</p:column>
-					<p:column headerText="Fecha de conciliación" sortBy="#{hotelContract.conciliationDate}"
-						filterBy="#{hotelContract.conciliationDate}">
+					<p:column headerText="#{msgs.label_contract_conciliation_date}"
+						sortBy="#{hotelContract.conciliationDate}" filterBy="#{hotelContract.conciliationDate}">
 						<h:outputText value="#{hotelContract.conciliationDate}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_hotel_contract_hotel}" sortBy="#{hotelContract.hotel.hotelName}"
+						filterBy="#{hotelContract.hotel.hotelName}">
+						<h:outputText value="#{hotelContract.hotel.hotelName}" />
 					</p:column>
 
 					<p:column exportable="false">

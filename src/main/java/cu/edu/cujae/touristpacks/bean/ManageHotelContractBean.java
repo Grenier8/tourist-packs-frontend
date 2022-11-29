@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.HotelContractDto;
 import cu.edu.cujae.touristpacks.service.hotel_contract.IHotelContractService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageHotelContractBean {
         if (this.selectedHotelContract.getIdHotelContract() == 0) {
             service.createHotelContract(selectedHotelContract);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_hotel_contract");
         } else {
             service.updateHotelContract(selectedHotelContract);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_hotel_contract");
         }
 
         hotelContracts = service.getHotelContracts();
@@ -68,7 +69,7 @@ public class ManageHotelContractBean {
 
         hotelContracts = service.getHotelContracts();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_hotel_contract");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelContracts");
 
     }

@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.TouristPackDto;
+import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
+import cu.edu.cujae.touristpacks.service.room_plan_season.IRoomPlanSeasonService;
 import cu.edu.cujae.touristpacks.service.tourist_pack.ITouristPackService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -22,6 +25,15 @@ public class ManageTouristPackBean {
 
     private List<TouristPackDto> touristPacks;
     private TouristPackDto selectedTouristPack;
+
+    private String selectedHotelName;
+    private String selectedRoomPlanSeasonName;
+
+    @Autowired
+    private IHotelService hotelService;
+
+    @Autowired
+    private IRoomPlanSeasonService roomPlanSeasonService;
 
     @Autowired
     private ITouristPackService service;
@@ -44,14 +56,17 @@ public class ManageTouristPackBean {
     }
 
     public void saveTouristPack() {
+        selectedTouristPack.setHotel(hotelService.getHotelByName(selectedHotelName));
+        selectedTouristPack.setRoomPlanSeason(roomPlanSeasonService.getRoomPlanSeasonByName(selectedRoomPlanSeasonName));
+
         if (this.selectedTouristPack.getIdTouristPack() == 0) {
             service.createTouristPack(selectedTouristPack);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_tourist_pack");
         } else {
             service.updateTouristPack(selectedTouristPack);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_tourist_pack");
         }
 
         touristPacks = service.getTouristPacks();
@@ -68,7 +83,7 @@ public class ManageTouristPackBean {
 
         touristPacks = service.getTouristPacks();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_tourist_pack");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-touristPacks");
 
     }
@@ -96,5 +111,39 @@ public class ManageTouristPackBean {
     public void setService(ITouristPackService service) {
         this.service = service;
     }
+
+
+    public String getSelectedHotelName() {
+        return this.selectedHotelName;
+    }
+
+    public void setSelectedHotelName(String selectedHotelName) {
+        this.selectedHotelName = selectedHotelName;
+    }
+
+    public String getSelectedRoomPlanSeasonName() {
+        return this.selectedRoomPlanSeasonName;
+    }
+
+    public void setSelectedRoomPlanSeasonName(String selectedRoomPlanSeasonName) {
+        this.selectedRoomPlanSeasonName = selectedRoomPlanSeasonName;
+    }
+
+    public IHotelService getHotelService() {
+        return this.hotelService;
+    }
+
+    public void setHotelService(IHotelService hotelService) {
+        this.hotelService = hotelService;
+    }
+
+    public IRoomPlanSeasonService getRoomPlanSeasonService() {
+        return this.roomPlanSeasonService;
+    }
+
+    public void setRoomPlanSeasonService(IRoomPlanSeasonService roomPlanSeasonService) {
+        this.roomPlanSeasonService = roomPlanSeasonService;
+    }
+
 
 }

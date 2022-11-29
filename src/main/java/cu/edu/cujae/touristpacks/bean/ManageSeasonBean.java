@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.SeasonDto;
 import cu.edu.cujae.touristpacks.service.season.ISeasonService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageSeasonBean {
         if (this.selectedSeason.getIdSeason() == 0) {
             service.createSeason(selectedSeason);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_season");
         } else {
             service.updateSeason(selectedSeason);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_season");
         }
 
         seasons = service.getSeasons();
@@ -68,7 +69,7 @@ public class ManageSeasonBean {
 
         seasons = service.getSeasons();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_season");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-seasons");
 
     }

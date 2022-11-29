@@ -1,5 +1,7 @@
 package cu.edu.cujae.touristpacks.dto;
 
+import java.util.List;
+
 public class HotelDto {
 
 	private int idHotel;
@@ -16,6 +18,7 @@ public class HotelDto {
 	private String localization;
 	private HotelChainDto hotelChain;
 	private ProvinceDto province;
+	private List<HotelModalityDto> hotelModalities;
 
 	public HotelDto() {
 	}
@@ -176,4 +179,13 @@ public class HotelDto {
 	public void setProvince(ProvinceDto province) {
 		this.province = province;
 	}
+
+	public List<HotelModalityDto> getHotelModalities() {
+		return this.hotelModalities;
+	}
+
+	public void setHotelModalities(List<HotelModalityDto> hotelModalities) {
+		this.hotelModalities = hotelModalities;
+	}
+
 }

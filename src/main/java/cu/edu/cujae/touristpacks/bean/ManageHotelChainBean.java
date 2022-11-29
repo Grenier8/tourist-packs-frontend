@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.HotelChainDto;
 import cu.edu.cujae.touristpacks.service.hotel_chain.IHotelChainService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -44,15 +45,18 @@ public class ManageHotelChainBean {
     }
 
     public void saveHotelChain() {
+        String msg = "";
         if (this.selectedHotelChain.getIdHotelChain() == 0) {
             service.createHotelChain(selectedHotelChain);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_hotel_chain");
+            
         } else {
             service.updateHotelChain(selectedHotelChain);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_hotel_chain");
         }
+
 
         hotelChains = service.getHotelChains();
 
@@ -68,7 +72,7 @@ public class ManageHotelChainBean {
 
         hotelChains = service.getHotelChains();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_hotel_chain");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelChains");
 
     }

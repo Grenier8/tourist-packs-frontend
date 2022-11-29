@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.ProvinceDto;
 import cu.edu.cujae.touristpacks.service.province.IProvinceService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageProvinceBean {
         if (this.selectedProvince.getIdProvince() == 0) {
             service.createProvince(selectedProvince);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_province");
         } else {
             service.updateProvince(selectedProvince);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_province");
         }
 
         provinces = service.getProvinces();
@@ -68,7 +69,7 @@ public class ManageProvinceBean {
 
         provinces = service.getProvinces();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_province");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-provinces");
 
     }

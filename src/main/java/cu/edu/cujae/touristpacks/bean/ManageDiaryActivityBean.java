@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
 import cu.edu.cujae.touristpacks.service.diary_activity.IDiaryActivityService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageDiaryActivityBean {
         if (this.selectedDiaryActivity.getIdDiaryActivity() == 0) {
             service.createDiaryActivity(selectedDiaryActivity);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_diary_activity");
         } else {
             service.updateDiaryActivity(selectedDiaryActivity);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_diary_activity");
         }
 
         diaryActivities = service.getDiaryActivities();
@@ -68,17 +69,18 @@ public class ManageDiaryActivityBean {
 
         diaryActivities = service.getDiaryActivities();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Actividad diaria eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_diary_activity");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-diaryActivitys");
 
     }
 
-    public List<DiaryActivityDto> getDiaryActivitys() {
+
+    public List<DiaryActivityDto> getDiaryActivities() {
         return this.diaryActivities;
     }
 
-    public void setDiaryActivitys(List<DiaryActivityDto> diaryActivitys) {
-        this.diaryActivities = diaryActivitys;
+    public void setDiaryActivities(List<DiaryActivityDto> diaryActivities) {
+        this.diaryActivities = diaryActivities;
     }
 
     public DiaryActivityDto getSelectedDiaryActivity() {
@@ -96,5 +98,6 @@ public class ManageDiaryActivityBean {
     public void setService(IDiaryActivityService service) {
         this.service = service;
     }
+    
 
 }

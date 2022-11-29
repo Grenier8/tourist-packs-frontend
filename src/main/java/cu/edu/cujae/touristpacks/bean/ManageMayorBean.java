@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.MayorDto;
 import cu.edu.cujae.touristpacks.service.dtb_table.IMayorService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageMayorBean {
         if (this.selectedMayor.getIdMayor() == 0) {
             service.createMayor(selectedMayor);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_dtb_table");
         } else {
             service.updateMayor(selectedMayor);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_dtb_table");
         }
 
         minors = service.getMayors();
@@ -68,7 +69,7 @@ public class ManageMayorBean {
 
         minors = service.getMayors();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_dtb_table");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-minors");
 
     }

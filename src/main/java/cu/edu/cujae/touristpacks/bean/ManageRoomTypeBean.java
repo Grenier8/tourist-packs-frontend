@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.RoomTypeDto;
 import cu.edu.cujae.touristpacks.service.room_type.IRoomTypeService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageRoomTypeBean {
         if (this.selectedRoomType.getIdRoomType() == 0) {
             service.createRoomType(selectedRoomType);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_room_type");
         } else {
             service.updateRoomType(selectedRoomType);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_room_type");
         }
 
         roomTypes = service.getRoomTypes();
@@ -68,7 +69,7 @@ public class ManageRoomTypeBean {
 
         roomTypes = service.getRoomTypes();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Espanolo eliminada"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_room_type");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-roomTypes");
 
     }

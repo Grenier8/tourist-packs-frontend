@@ -1,90 +1,141 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_hotel_modality_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageHotelModalityBean.openNew}"
+                update=":form:manage-hotelModality-content"
+                oncomplete="PF('manageHotelModalityDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput target=":form:manage-hotelModality-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-hotelModalities"
+                  fileName="hotelModalities"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
 
-<ui:composition template="/pages/template/layout.xhtml">
-	<ui:define name="title">
-		<p:outputLabel value="#{msgs.label_hotel_modality_list_header}" style="font-size: 38px;"></p:outputLabel>
-	</ui:define>
-	<ui:define name="layout">
-		<h:form id="form">
-			<div class="card crud-demo">
-				<p:toolbar>
-					<p:toolbarGroup>
-						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
-							actionListener="#{manageHotelModalityBean.openNew}"
-							update=":form:manage-hotelModality-content"
-							oncomplete="PF('manageHotelModalityDialog').show()" styleClass="ui-button-success"
-							style="margin-right: .5rem">
-							<p:resetInput target=":form:manage-hotelModality-content" />
-						</p:commandButton>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right">
-						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
-							ajax="false">
-							<p:dataExporter type="pdf" target="dt-hotelModalities" fileName="hotelModalities" />
-						</p:commandButton>
-					</p:toolbarGroup>
-				</p:toolbar>
+          <p:dataTable
+            id="dt-hotelModalities"
+            widgetVar="dtHotelModalities"
+            var="hotelModality"
+            value="#{manageHotelModalityBean.hotelModalities}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="hotelModalities-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel
+                    value="#{msgs.label_hotel_modality_filter}"
+                  ></p:outputLabel>
+                </span>
 
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtHotelModalities').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
 
-				<p:dataTable id="dt-hotelModalities" widgetVar="dtHotelModalities" var="hotelModality"
-					value="#{manageHotelModalityBean.hotelModalities}" reflow="true" paginator="true" rows="10"
-					paginatorPosition="bottom">
-					<f:facet name="header">
-						<div class="hotelModalities-table-header">
-							<span style="font-weight: bold">
-								<p:outputLabel value="#{msgs.label_hotel_modality_filter}"></p:outputLabel>
-							</span>
+            <p:column
+              headerText="#{msgs.label_hotel_modality_name}"
+              sortBy="#{hotelModality.hotelModalityName}"
+              filterBy="#{hotelModality.hotelModalityName}"
+            >
+              <h:outputText value="#{hotelModality.hotelModalityName}" />
+            </p:column>
 
-							<span class="filter-container ui-input-icon-left">
-								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtHotelModalities').filter()"
-									placeholder="Buscar" />
-							</span>
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-hotelModality-content"
+                action="#{manageHotelModalityBean.openForEdit}"
+                oncomplete="PF('manageHotelModalityDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{hotelModality}"
+                  target="#{manageHotelModalityBean.selectedHotelModality}"
+                />
+                <p:resetInput target=":form:manage-hotelModality-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageHotelModalityBean.deleteHotelModality}"
+              >
+                <f:setPropertyActionListener
+                  value="#{hotelModality}"
+                  target="#{manageHotelModalityBean.selectedHotelModality}"
+                />
+                <p:confirm
+                  header="Confirmar"
+                  message="Está seguro de eliminar la cadena hotelera?"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
 
-						</div>
-					</f:facet>
+          <ui:include src="hotelModality-form.xhtml"></ui:include>
 
-
-					<p:column headerText="Nombre" sortBy="#{hotelModality.hotelModalityName}"
-						filterBy="#{hotelModality.hotelModalityName}">
-						<h:outputText value="#{hotelModality.hotelModalityName}" />
-					</p:column>
-
-					<p:column exportable="false">
-						<p:commandButton icon="pi pi-pencil" update=":form:manage-hotelModality-content"
-							action="#{manageHotelModalityBean.openForEdit}"
-							oncomplete="PF('manageHotelModalityDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success" process="@this">
-							<f:setPropertyActionListener value="#{hotelModality}"
-								target="#{manageHotelModalityBean.selectedHotelModality}" />
-							<p:resetInput target=":form:manage-hotelModality-content" />
-						</p:commandButton>
-						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-							action="#{manageHotelModalityBean.deleteHotelModality}">
-							<f:setPropertyActionListener value="#{hotelModality}"
-								target="#{manageHotelModalityBean.selectedHotelModality}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la cadena hotelera?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-
-
-				<ui:include src="hotelModality-form.xhtml"></ui:include>
-
-
-				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-						icon="pi pi-times" />
-				</p:confirmDialog>
-			</div>
-		</h:form>
-	</ui:define>
-</ui:composition>
-
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="#{msgs.button_yes}"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="#{msgs.button_no}"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.AlimentaryPlanDto;
 import cu.edu.cujae.touristpacks.service.alimentary_plan.IAlimentaryPlanService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -47,11 +48,11 @@ public class ManageAlimentaryPlanBean {
         if (this.selectedAlimentaryPlan.getIdAlimentaryPlan() == 0) {
             service.createAlimentaryPlan(selectedAlimentaryPlan);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Plan alimenticio insertado"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_alimentary_plan");
         } else {
             service.updateAlimentaryPlan(selectedAlimentaryPlan);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Plan alimenticio modificado"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_alimentary_plan");
         }
 
         alimentaryPlans = service.getAlimentaryPlans();
@@ -68,7 +69,7 @@ public class ManageAlimentaryPlanBean {
 
         alimentaryPlans = service.getAlimentaryPlans();
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Plan alimenticio eliminado"));
+        JsfUtils.addInfoMessageFromBundle("message_deleted_alimentary_plan");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-alimentaryPlans");
 
     }

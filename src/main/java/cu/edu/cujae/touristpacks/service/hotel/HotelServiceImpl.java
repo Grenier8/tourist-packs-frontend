@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HotelServiceImpl implements IHotelService {
@@ -59,12 +61,15 @@ public class HotelServiceImpl implements IHotelService {
         HotelDto hotel = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", hotelName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{hotelName}");
-            String uri = template.expand(hotelName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
             hotel = apiRestMapper.mapOne(response, HotelDto.class);
         } catch (Exception e) {
             e.printStackTrace();

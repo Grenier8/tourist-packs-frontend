@@ -1,6 +1,8 @@
 package cu.edu.cujae.touristpacks.utils;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -26,6 +28,15 @@ public class RestService {
 
     public ResponseEntity GET(String endpoint, MultiValueMap<String, String> queryParams, Class clss) {
         return this.GET(endpoint, queryParams, clss, null);
+    }
+
+    public ResponseEntity GETEntity(String endpoint, Map<String, String> queryParams, Class clss) {
+        try {
+            return buildRestTemplate().getForEntity(
+                    getUrlBackend() + endpoint, clss, queryParams);
+        } catch (HttpServerErrorException e) {
+            return handleRequestException(e);
+        }
     }
 
     public ResponseEntity GET(String endpoint, MultiValueMap<String, String> queryParams, Class clss, String jwt) {

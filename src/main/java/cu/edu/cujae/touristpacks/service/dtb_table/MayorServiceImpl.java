@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MayorServiceImpl implements IMayorService {
@@ -59,12 +61,15 @@ public class MayorServiceImpl implements IMayorService {
         MayorDto minor = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", minorName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{minorName}");
-            String uri = template.expand(minorName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
             minor = apiRestMapper.mapOne(response, MayorDto.class);
         } catch (Exception e) {
             e.printStackTrace();

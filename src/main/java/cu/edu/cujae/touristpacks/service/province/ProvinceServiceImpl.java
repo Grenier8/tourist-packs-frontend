@@ -5,14 +5,19 @@ import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProvinceServiceImpl implements IProvinceService {
@@ -44,7 +49,7 @@ public class ProvinceServiceImpl implements IProvinceService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idProvince}");
+            UriTemplate template = new UriTemplate(endpoint + "/{id}");
             String uri = template.expand(idProvince).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             province = apiRestMapper.mapOne(response, ProvinceDto.class);
@@ -59,12 +64,15 @@ public class ProvinceServiceImpl implements IProvinceService {
         ProvinceDto province = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", provinceName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{provinceName}");
-            String uri = template.expand(provinceName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
             province = apiRestMapper.mapOne(response, ProvinceDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +94,7 @@ public class ProvinceServiceImpl implements IProvinceService {
     @Override
     public void deleteProvince(int idProvince) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idProvince}");
+        UriTemplate template = new UriTemplate(endpoint + "/{id}");
         String uri = template.expand(idProvince).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

@@ -45,18 +45,16 @@ public class ManageHotelChainBean {
     }
 
     public void saveHotelChain() {
-        String msg = "";
         if (this.selectedHotelChain.getIdHotelChain() == 0) {
             service.createHotelChain(selectedHotelChain);
 
             JsfUtils.addInfoMessageFromBundle("message_inserted_hotel_chain");
-            
+
         } else {
             service.updateHotelChain(selectedHotelChain);
 
             JsfUtils.addInfoMessageFromBundle("message_updated_hotel_chain");
         }
-
 
         hotelChains = service.getHotelChains();
 

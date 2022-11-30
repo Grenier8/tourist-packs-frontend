@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TouristPackServiceImpl implements ITouristPackService {
@@ -55,21 +57,24 @@ public class TouristPackServiceImpl implements ITouristPackService {
     }
 
     @Override
-    public TouristPackDto getTouristPackByName(String touristPacksName) {
-        TouristPackDto touristPacks = null;
+    public TouristPackDto getTouristPackByName(String touristPackName) {
+        TouristPackDto touristPack = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", touristPackName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{touristPacksName}");
-            String uri = template.expand(touristPacksName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
-            touristPacks = apiRestMapper.mapOne(response, TouristPackDto.class);
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+            touristPack = apiRestMapper.mapOne(response, TouristPackDto.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return touristPacks;
+        return touristPack;
     }
 
     @Override

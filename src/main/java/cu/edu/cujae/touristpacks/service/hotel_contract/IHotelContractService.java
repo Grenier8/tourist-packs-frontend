@@ -9,7 +9,7 @@ public interface IHotelContractService {
 
     HotelContractDto getHotelContractById(int hotelContractId);
 
-    HotelContractDto getHotelContractByName(String hotelContractName);
+    HotelContractDto getHotelContractByTitle(String hotelContractName);
 
     void createHotelContract(HotelContractDto hotelContract);
 

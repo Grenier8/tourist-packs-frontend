@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
@@ -59,12 +61,15 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
         RoomPlanSeasonDto roomPlanSeason = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", roomPlanSeasonName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{roomPlanSeasonName}");
-            String uri = template.expand(roomPlanSeasonName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
             roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
         } catch (Exception e) {
             e.printStackTrace();

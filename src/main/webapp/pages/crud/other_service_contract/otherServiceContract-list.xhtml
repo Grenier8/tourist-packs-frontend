@@ -1,127 +1,210 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_other_service_contract_list_header}"
+        style="font-size: 38px"
+      >
+      </p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageOtherServiceContractBean.openNew}"
+                update=":form:manage-otherServiceContract-content"
+                oncomplete="PF('manageOtherServiceContractDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput
+                  target=":form:manage-otherServiceContract-content"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-otherServiceContracts"
+                  fileName="otherServiceContracts"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
 
-<ui:composition template="/pages/template/layout.xhtml">
-	<ui:define name="title">
-		<p:outputLabel value="#{msgs.label_other_service_contract_list_header}" style="font-size: 38px;">
-		</p:outputLabel>
-	</ui:define>
-	<ui:define name="layout">
-		<h:form id="form">
-			<div class="card crud-demo">
-				<p:toolbar>
-					<p:toolbarGroup>
-						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
-							actionListener="#{manageOtherServiceContractBean.openNew}"
-							update=":form:manage-otherServiceContract-content"
-							oncomplete="PF('manageOtherServiceContractDialog').show()" styleClass="ui-button-success"
-							style="margin-right: .5rem">
-							<p:resetInput target=":form:manage-otherServiceContract-content" />
-						</p:commandButton>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right">
-						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
-							ajax="false">
-							<p:dataExporter type="pdf" target="dt-otherServiceContracts"
-								fileName="otherServiceContracts" />
-						</p:commandButton>
-					</p:toolbarGroup>
-				</p:toolbar>
+          <p:dataTable
+            id="dt-otherServiceContracts"
+            widgetVar="dtOtherServiceContracts"
+            var="otherServiceContract"
+            value="#{manageOtherServiceContractBean.otherServiceContracts}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="otherServiceContracts-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel
+                    value="#{msgs.label_other_service_contract_filter}"
+                  />
+                </span>
 
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtOtherServiceContracts').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
 
-				<p:dataTable id="dt-otherServiceContracts" widgetVar="dtOtherServiceContracts"
-					var="otherServiceContract" value="#{manageOtherServiceContractBean.otherServiceContracts}"
-					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
-					<f:facet name="header">
-						<div class="otherServiceContracts-table-header">
-							<span style="font-weight: bold">
-								<p:outputLabel value="#{msgs.label_other_service_contract_filter}" />
-							</span>
+            <p:column
+              headerText="#{msgs.label_contract_title}"
+              sortBy="#{otherServiceContract.contractTitle}"
+              filterBy="#{otherServiceContract.contractTitle}"
+            >
+              <h:outputText value="#{otherServiceContract.contractTitle}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_other_service_contract_description}"
+              sortBy="#{otherServiceContract.contractDescription}"
+              filterBy="#{otherServiceContract.contractDescription}"
+            >
+              <h:outputText
+                value="#{otherServiceContract.contractDescription}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_contract_start_date}"
+              sortBy="#{otherServiceContract.startDate}"
+              filterBy="#{otherServiceContract.startDate}"
+            >
+              <h:outputText value="#{otherServiceContract.startDate}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_contract_end_date}"
+              sortBy="#{otherServiceContract.endDate}"
+              filterBy="#{otherServiceContract.endDate}"
+            >
+              <h:outputText value="#{otherServiceContract.endDate}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_contract_conciliation_date}"
+              sortBy="#{otherServiceContract.conciliationDate}"
+              filterBy="#{otherServiceContract.conciliationDate}"
+            >
+              <h:outputText value="#{otherServiceContract.conciliationDate}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_other_service_contract_service_type}"
+              sortBy="#{otherServiceContract.serviceType.serviceTypeName}"
+              filterBy="#{otherServiceContract.serviceType.serviceTypeName}"
+            >
+              <h:outputText
+                value="#{otherServiceContract.serviceType.serviceTypeName}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_other_service_contract_province}"
+              sortBy="#{otherServiceContract.province.provinceName}"
+              filterBy="#{otherServiceContract.province.provinceName}"
+            >
+              <h:outputText
+                value="#{otherServiceContract.province.provinceName}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_other_service_contract_cost_per_pax}"
+              sortBy="#{otherServiceContract.costPerPax}"
+              filterBy="#{otherServiceContract.costPerPax}"
+            >
+              <h:outputText value="#{otherServiceContract.costPerPax}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_other_service_contract_diary_activities}"
+              sortBy="#{manageOtherServiceContractBean.getDiaryActivitiesNames(otherServiceContract)}"
+              filterBy="#{manageOtherServiceContractBean.getDiaryActivitiesNames(otherServiceContract)}"
+            >
+              <h:outputText
+                value="#{manageOtherServiceContractBean.getDiaryActivitiesNames(otherServiceContract)}"
+              />
+            </p:column>
 
-							<span class="filter-container ui-input-icon-left">
-								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtOtherServiceContracts').filter()"
-									placeholder="#{msgs.input_search}" />
-							</span>
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-otherServiceContract-content"
+                action="#{manageOtherServiceContractBean.openForEdit}"
+                oncomplete="PF('manageOtherServiceContractDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{otherServiceContract}"
+                  target="#{manageOtherServiceContractBean.selectedOtherServiceContract}"
+                />
+                <p:resetInput
+                  target=":form:manage-otherServiceContract-content"
+                />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageOtherServiceContractBean.deleteOtherServiceContract}"
+              >
+                <f:setPropertyActionListener
+                  value="#{otherServiceContract}"
+                  target="#{manageOtherServiceContractBean.selectedOtherServiceContract}"
+                />
+                <p:confirm
+                  header="#{msgs.message_confirm}"
+                  message="#{msgs.message_delete_other_service_contract}"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
 
-						</div>
-					</f:facet>
+          <ui:include src="otherServiceContract-form.xhtml"></ui:include>
 
-
-					<p:column headerText="#{msgs.label_contract_title}" sortBy="#{otherServiceContract.contractTitle}"
-						filterBy="#{otherServiceContract.contractTitle}">
-						<h:outputText value="#{otherServiceContract.contractTitle}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_other_service_contract_description}"
-						sortBy="#{otherServiceContract.contractDescription}"
-						filterBy="#{otherServiceContract.contractDescription}">
-						<h:outputText value="#{otherServiceContract.contractDescription}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_contract_start_date}" sortBy="#{otherServiceContract.startDate}"
-						filterBy="#{otherServiceContract.startDate}">
-						<h:outputText value="#{otherServiceContract.startDate}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_contract_end_date}" sortBy="#{otherServiceContract.endDate}"
-						filterBy="#{otherServiceContract.endDate}">
-						<h:outputText value="#{otherServiceContract.endDate}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_contract_conciliation_date}"
-						sortBy="#{otherServiceContract.conciliationDate}"
-						filterBy="#{otherServiceContract.conciliationDate}">
-						<h:outputText value="#{otherServiceContract.conciliationDate}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_other_service_contract_service_type}"
-						sortBy="#{otherServiceContract.serviceType.serviceTypeName}"
-						filterBy="#{otherServiceContract.serviceType.serviceTypeName}">
-						<h:outputText value="#{otherServiceContract.serviceType.serviceTypeName}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_other_service_contract_province}"
-						sortBy="#{otherServiceContract.province.provinceName}"
-						filterBy="#{otherServiceContract.province.provinceName}">
-						<h:outputText value="#{otherServiceContract.province.provinceName}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_other_service_contract_cost_per_pax}"
-						sortBy="#{otherServiceContract.costPerPax}" filterBy="#{otherServiceContract.costPerPax}">
-						<h:outputText value="#{otherServiceContract.costPerPax}" />
-					</p:column>
-
-
-					<p:column exportable="false">
-						<p:commandButton icon="pi pi-pencil" update=":form:manage-otherServiceContract-content"
-							action="#{manageOtherServiceContractBean.openForEdit}"
-							oncomplete="PF('manageOtherServiceContractDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success" process="@this">
-							<f:setPropertyActionListener value="#{otherServiceContract}"
-								target="#{manageOtherServiceContractBean.selectedOtherServiceContract}" />
-							<p:resetInput target=":form:manage-otherServiceContract-content" />
-						</p:commandButton>
-						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-							action="#{manageOtherServiceContractBean.deleteOtherServiceContract}">
-							<f:setPropertyActionListener value="#{otherServiceContract}"
-								target="#{manageOtherServiceContractBean.selectedOtherServiceContract}" />
-							<p:confirm header="#{msgs.message_confirm}"
-								message="#{msgs.message_delete_other_service_contract}"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-
-
-				<ui:include src="otherServiceContract-form.xhtml"></ui:include>
-
-
-				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="#{msgs.button_yes}" type="button" styleClass="ui-confirmdialog-yes"
-						icon="pi pi-check" />
-					<p:commandButton value="#{msgs.button_no}" type="button"
-						styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
-				</p:confirmDialog>
-			</div>
-		</h:form>
-	</ui:define>
-</ui:composition>
-
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="#{msgs.button_yes}"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="#{msgs.button_no}"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

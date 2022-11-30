@@ -1,19 +1,22 @@
 package cu.edu.cujae.touristpacks.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
 import cu.edu.cujae.touristpacks.dto.OtherServiceContractDto;
+import cu.edu.cujae.touristpacks.service.diary_activity.IDiaryActivityService;
 import cu.edu.cujae.touristpacks.service.other_service_contract.IOtherServiceContractService;
+import cu.edu.cujae.touristpacks.service.province.IProvinceService;
+import cu.edu.cujae.touristpacks.service.service_type.IServiceTypeService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
@@ -24,8 +27,21 @@ public class ManageOtherServiceContractBean {
     private List<OtherServiceContractDto> otherServiceContracts;
     private OtherServiceContractDto selectedOtherServiceContract;
 
+    private String selectedServiceTypeName;
+    private String selectedProvinceName;
+    private List<String> selectedDiaryActivitiesNames;
+
     @Autowired
     private IOtherServiceContractService service;
+
+    @Autowired
+    private IServiceTypeService serviceTypeService;
+
+    @Autowired
+    private IProvinceService provinceService;
+
+    @Autowired
+    private IDiaryActivityService diaryActivityService;
 
     public ManageOtherServiceContractBean() {
 
@@ -45,6 +61,15 @@ public class ManageOtherServiceContractBean {
     }
 
     public void saveOtherServiceContract() {
+        selectedOtherServiceContract.setServiceType(serviceTypeService.getServiceTypeByName(selectedServiceTypeName));
+        selectedOtherServiceContract.setProvince(provinceService.getProvinceByName(selectedProvinceName));
+
+        List<DiaryActivityDto> diaryActivities = new ArrayList<>();
+        for (String name : selectedDiaryActivitiesNames) {
+            diaryActivities.add(diaryActivityService.getDiaryActivityByName(name));
+        }
+        selectedOtherServiceContract.setDiaryActivities(diaryActivities);
+
         if (this.selectedOtherServiceContract.getIdOtherServiceContract() == 0) {
             service.createOtherServiceContract(selectedOtherServiceContract);
 
@@ -72,6 +97,14 @@ public class ManageOtherServiceContractBean {
         JsfUtils.addInfoMessageFromBundle("message_deleted_other_service_contract");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-otherServiceContracts");
 
+    }
+
+    public String getDiaryActivitiesNames(OtherServiceContractDto otherServiceContract) {
+        String names = "";
+        for (DiaryActivityDto diaryActivity : otherServiceContract.getDiaryActivities()) {
+            names += diaryActivity.getDiaryActivityName() + ",";
+        }
+        return names.substring(0, names.length() - 1);
     }
 
     public List<OtherServiceContractDto> getOtherServiceContracts() {

@@ -118,6 +118,15 @@
             >
               <h:outputText value="#{hotelContract.hotel.hotelName}" />
             </p:column>
+            <p:column
+              headerText="#{msgs.label_hotel_contract_room_plan_seasons}"
+              sortBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
+              filterBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
+            >
+              <h:outputText
+                value="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
+              />
+            </p:column>
 
             <p:column exportable="false">
               <p:commandButton

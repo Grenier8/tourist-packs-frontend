@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
@@ -59,12 +61,15 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
         AlimentaryPlanDto alimentaryPlan = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", alimentaryPlanName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{alimentaryPlanName}");
-            String uri = template.expand(alimentaryPlanName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
             alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
         } catch (Exception e) {
             e.printStackTrace();

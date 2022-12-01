@@ -104,7 +104,7 @@ public class ManageOtherServiceContractBean {
         for (DiaryActivityDto diaryActivity : otherServiceContract.getDiaryActivities()) {
             names += diaryActivity.getDiaryActivityName() + ",";
         }
-        return names.substring(0, names.length() - 1);
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
     }
 
     public List<OtherServiceContractDto> getOtherServiceContracts() {
@@ -129,6 +129,54 @@ public class ManageOtherServiceContractBean {
 
     public void setService(IOtherServiceContractService service) {
         this.service = service;
+    }
+
+    public String getSelectedServiceTypeName() {
+        return this.selectedServiceTypeName;
+    }
+
+    public void setSelectedServiceTypeName(String selectedServiceTypeName) {
+        this.selectedServiceTypeName = selectedServiceTypeName;
+    }
+
+    public String getSelectedProvinceName() {
+        return this.selectedProvinceName;
+    }
+
+    public void setSelectedProvinceName(String selectedProvinceName) {
+        this.selectedProvinceName = selectedProvinceName;
+    }
+
+    public List<String> getSelectedDiaryActivitiesNames() {
+        return this.selectedDiaryActivitiesNames;
+    }
+
+    public void setSelectedDiaryActivitiesNames(List<String> selectedDiaryActivitiesNames) {
+        this.selectedDiaryActivitiesNames = selectedDiaryActivitiesNames;
+    }
+
+    public IServiceTypeService getServiceTypeService() {
+        return this.serviceTypeService;
+    }
+
+    public void setServiceTypeService(IServiceTypeService serviceTypeService) {
+        this.serviceTypeService = serviceTypeService;
+    }
+
+    public IProvinceService getProvinceService() {
+        return this.provinceService;
+    }
+
+    public void setProvinceService(IProvinceService provinceService) {
+        this.provinceService = provinceService;
+    }
+
+    public IDiaryActivityService getDiaryActivityService() {
+        return this.diaryActivityService;
+    }
+
+    public void setDiaryActivityService(IDiaryActivityService diaryActivityService) {
+        this.diaryActivityService = diaryActivityService;
     }
 
 }

@@ -30,7 +30,7 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, RoomPlanSeasonDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idRoomPlanSeason}");
+            UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
             String uri = template.expand(idRoomPlanSeason).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
@@ -91,7 +91,7 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
     @Override
     public void deleteRoomPlanSeason(int idRoomPlanSeason) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idRoomPlanSeason}");
+        UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
         String uri = template.expand(idRoomPlanSeason).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

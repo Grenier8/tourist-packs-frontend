@@ -30,7 +30,7 @@ public class ServiceTypeServiceImpl implements IServiceTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ServiceTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, ServiceTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class ServiceTypeServiceImpl implements IServiceTypeService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ServiceTypeDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idServiceType}");
+            UriTemplate template = new UriTemplate(endpoint + "{idServiceType}");
             String uri = template.expand(idServiceType).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             serviceType = apiRestMapper.mapOne(response, ServiceTypeDto.class);
@@ -91,7 +91,7 @@ public class ServiceTypeServiceImpl implements IServiceTypeService {
     @Override
     public void deleteServiceType(int idServiceType) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idServiceType}");
+        UriTemplate template = new UriTemplate(endpoint + "{idServiceType}");
         String uri = template.expand(idServiceType).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

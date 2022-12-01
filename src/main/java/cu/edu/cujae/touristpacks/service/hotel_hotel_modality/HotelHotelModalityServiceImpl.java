@@ -28,7 +28,7 @@ public class HotelHotelModalityServiceImpl implements IHotelHotelModalityService
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelHotelModalityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, HotelHotelModalityDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class HotelHotelModalityServiceImpl implements IHotelHotelModalityService
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelHotelModalityDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idHotelHotelModality}");
+            UriTemplate template = new UriTemplate(endpoint + "{idHotelHotelModality}");
             String uri = template.expand(idHotelHotelModality).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             hotelHotelModality = apiRestMapper.mapOne(response, HotelHotelModalityDto.class);
@@ -68,7 +68,7 @@ public class HotelHotelModalityServiceImpl implements IHotelHotelModalityService
     @Override
     public void deleteHotelHotelModality(int idHotelHotelModality) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idHotelHotelModality}");
+        UriTemplate template = new UriTemplate(endpoint + "{idHotelHotelModality}");
         String uri = template.expand(idHotelHotelModality).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

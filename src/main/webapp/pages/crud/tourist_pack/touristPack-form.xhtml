@@ -16,7 +16,7 @@
       <p:outputPanel
         rendered="#{not empty manageTouristPackBean.selectedTouristPack}"
       >
-        <p:panelGrid layout="grid" columns="1">
+        <p:panelGrid layout="grid" columns="2">
           <h:panelGroup>
             <div class="p-field">
               <p:outputLabel
@@ -82,6 +82,9 @@
               />
               <p:message for="@previous" />
             </div>
+          </h:panelGroup>
+
+          <h:panelGroup>
             <div class="p-field">
               <p:outputLabel
                 for="@next"
@@ -138,7 +141,7 @@
                 value="#{msgs.label_tourist_pack_transport_services}"
               ></p:outputLabel>
               <p:selectCheckboxMenu
-                id="multiple"
+                id="multiple_transport_services"
                 required="true"
                 value="#{manageTouristPackBean.selectedTransportServicesNames}"
                 label="#{msgs.input_select}"
@@ -163,7 +166,7 @@
                 value="#{msgs.label_tourist_pack_diary_activities}"
               ></p:outputLabel>
               <p:selectCheckboxMenu
-                id="multiple"
+                id="multiple_diary_activities"
                 required="true"
                 value="#{manageTouristPackBean.selectedDiaryActivitiesNames}"
                 label="#{msgs.input_select}"
@@ -196,7 +199,7 @@
         process="manage-touristPack-content @this"
       />
       <p:commandButton
-        value="#{msgs.button_export}"
+        value="#{msgs.button_cancel}"
         icon="pi pi-times"
         onclick="PF('manageTouristPackDialog').hide()"
         class="ui-button-secondary"

@@ -30,7 +30,7 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, AlimentaryPlanDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idAlimentaryPlan}");
+            UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
             String uri = template.expand(idAlimentaryPlan).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
@@ -91,7 +91,7 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
     @Override
     public void deleteAlimentaryPlan(int idAlimentaryPlan) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idAlimentaryPlan}");
+        UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
         String uri = template.expand(idAlimentaryPlan).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

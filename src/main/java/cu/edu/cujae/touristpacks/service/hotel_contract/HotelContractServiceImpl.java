@@ -30,7 +30,7 @@ public class HotelContractServiceImpl implements IHotelContractService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, HotelContractDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class HotelContractServiceImpl implements IHotelContractService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idHotelContract}");
+            UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
             String uri = template.expand(idHotelContract).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             hotelContract = apiRestMapper.mapOne(response, HotelContractDto.class);
@@ -91,7 +91,7 @@ public class HotelContractServiceImpl implements IHotelContractService {
     @Override
     public void deleteHotelContract(int idHotelContract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idHotelContract}");
+        UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
         String uri = template.expand(idHotelContract).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

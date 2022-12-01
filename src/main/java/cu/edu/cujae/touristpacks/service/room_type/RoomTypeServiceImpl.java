@@ -30,7 +30,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, RoomTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idRoomType}");
+            UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
             String uri = template.expand(idRoomType).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
@@ -91,7 +91,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
     @Override
     public void deleteRoomType(int idRoomType) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idRoomType}");
+        UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
         String uri = template.expand(idRoomType).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

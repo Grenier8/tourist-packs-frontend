@@ -120,11 +120,11 @@
             </p:column>
             <p:column
               headerText="#{msgs.label_hotel_contract_room_plan_seasons}"
-              sortBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
-              filterBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
+              sortBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
+              filterBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
             >
               <h:outputText
-                value="#{manageHotelContractBean.getRoomPlanSeasonsNames(roomPLanSeason)}"
+                value="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
               />
             </p:column>
 
@@ -147,7 +147,8 @@
                 class="ui-button-warning rounded-button"
                 icon="pi pi-trash"
                 process="@this"
-                action="#{manageHotelContractBean.deleteHotelContract}"
+                actionListener="#{manageHotelContractBean.deleteHotelContract}"
+                action="#{manageContractBean.updateContracts()}"
               >
                 <f:setPropertyActionListener
                   value="#{hotelContract}"

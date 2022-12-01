@@ -30,7 +30,7 @@ public class MayorServiceImpl implements IMayorService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, MayorDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class MayorServiceImpl implements IMayorService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idMayor}");
+            UriTemplate template = new UriTemplate(endpoint + "{idMayor}");
             String uri = template.expand(idMayor).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             minor = apiRestMapper.mapOne(response, MayorDto.class);
@@ -91,7 +91,7 @@ public class MayorServiceImpl implements IMayorService {
     @Override
     public void deleteMayor(int idMayor) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idMayor}");
+        UriTemplate template = new UriTemplate(endpoint + "{idMayor}");
         String uri = template.expand(idMayor).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

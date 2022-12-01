@@ -30,7 +30,7 @@ public class SeasonServiceImpl implements ISeasonService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<SeasonDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, SeasonDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class SeasonServiceImpl implements ISeasonService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<SeasonDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idSeason}");
+            UriTemplate template = new UriTemplate(endpoint + "{idSeason}");
             String uri = template.expand(idSeason).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             season = apiRestMapper.mapOne(response, SeasonDto.class);
@@ -91,7 +91,7 @@ public class SeasonServiceImpl implements ISeasonService {
     @Override
     public void deleteSeason(int idSeason) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idSeason}");
+        UriTemplate template = new UriTemplate(endpoint + "{idSeason}");
         String uri = template.expand(idSeason).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

@@ -26,7 +26,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
 
     @Override
     public List<HotelChainDto> getHotelChains() {
-        List<HotelChainDto> list = new ArrayList<HotelChainDto>();
+        List<HotelChainDto> list = new ArrayList<>();
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelChainDto> apiRestMapper = new ApiRestMapper<>();
@@ -46,7 +46,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelChainDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{id}");
+            UriTemplate template = new UriTemplate(endpoint + "{id}");
             String uri = template.expand(idHotelChain).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             hotelChain = apiRestMapper.mapOne(response, HotelChainDto.class);
@@ -91,7 +91,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
     @Override
     public void deleteHotelChain(int idHotelChain) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{id}");
+        UriTemplate template = new UriTemplate(endpoint + "{id}");
         String uri = template.expand(idHotelChain).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

@@ -30,7 +30,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, OtherServiceContractDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idOtherServiceContract}");
+            UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
             String uri = template.expand(idOtherServiceContract).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             otherServiceContract = apiRestMapper.mapOne(response, OtherServiceContractDto.class);
@@ -61,7 +61,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         OtherServiceContractDto otherServiceContract = null;
 
         try {
-            String uri = endpoint + "title/{title}";
+            String uri = endpoint + "/title/{title}";
             Map<String, String> map = new HashMap<>();
             map.put("title", otherServiceContractTitle);
 
@@ -91,7 +91,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
     @Override
     public void deleteOtherServiceContract(int idOtherServiceContract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idOtherServiceContract}");
+        UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
         String uri = template.expand(idOtherServiceContract).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

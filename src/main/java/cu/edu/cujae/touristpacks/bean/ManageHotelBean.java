@@ -104,7 +104,7 @@ public class ManageHotelBean {
         for (HotelModalityDto hotelModality : hotel.getHotelModalities()) {
             names += hotelModality.getHotelModalityName() + ",";
         }
-        return names.substring(0, names.length() - 1);
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
     }
 
     public List<HotelDto> getHotels() {

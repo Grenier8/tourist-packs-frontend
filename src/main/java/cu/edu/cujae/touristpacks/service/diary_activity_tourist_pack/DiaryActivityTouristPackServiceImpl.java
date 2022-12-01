@@ -28,7 +28,7 @@ public class DiaryActivityTouristPackServiceImpl implements IDiaryActivityTouris
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityTouristPackDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, DiaryActivityTouristPackDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class DiaryActivityTouristPackServiceImpl implements IDiaryActivityTouris
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityTouristPackDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idDiaryActivityTouristPack}");
+            UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivityTouristPack}");
             String uri = template.expand(idDiaryActivityTouristPack).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             diaryActivityTouristPack = apiRestMapper.mapOne(response, DiaryActivityTouristPackDto.class);
@@ -68,7 +68,7 @@ public class DiaryActivityTouristPackServiceImpl implements IDiaryActivityTouris
     @Override
     public void deleteDiaryActivityTouristPack(int idDiaryActivityTouristPack) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idDiaryActivityTouristPack}");
+        UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivityTouristPack}");
         String uri = template.expand(idDiaryActivityTouristPack).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

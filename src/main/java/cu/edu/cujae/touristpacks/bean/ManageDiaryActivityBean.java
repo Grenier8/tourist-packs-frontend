@@ -58,7 +58,7 @@ public class ManageDiaryActivityBean {
         diaryActivities = service.getDiaryActivities();
 
         PrimeFaces.current().executeScript("PF('manageDiaryActivityDialog').hide()");
-        PrimeFaces.current().ajax().update("form:dt-diaryActivitys");
+        PrimeFaces.current().ajax().update("form:dt-diaryActivities");
 
     }
 
@@ -70,10 +70,9 @@ public class ManageDiaryActivityBean {
         diaryActivities = service.getDiaryActivities();
 
         JsfUtils.addInfoMessageFromBundle("message_deleted_diary_activity");
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-diaryActivitys");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-diaryActivities");
 
     }
-
 
     public List<DiaryActivityDto> getDiaryActivities() {
         return this.diaryActivities;
@@ -98,6 +97,5 @@ public class ManageDiaryActivityBean {
     public void setService(IDiaryActivityService service) {
         this.service = service;
     }
-    
 
 }

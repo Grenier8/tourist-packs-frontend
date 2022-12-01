@@ -33,7 +33,7 @@ public class ProvinceServiceImpl implements IProvinceService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, ProvinceDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class ProvinceServiceImpl implements IProvinceService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{id}");
+            UriTemplate template = new UriTemplate(endpoint + "{id}");
             String uri = template.expand(idProvince).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             province = apiRestMapper.mapOne(response, ProvinceDto.class);
@@ -94,7 +94,7 @@ public class ProvinceServiceImpl implements IProvinceService {
     @Override
     public void deleteProvince(int idProvince) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{id}");
+        UriTemplate template = new UriTemplate(endpoint + "{id}");
         String uri = template.expand(idProvince).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

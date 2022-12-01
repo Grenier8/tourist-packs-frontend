@@ -30,7 +30,7 @@ public class HotelModalityServiceImpl implements IHotelModalityService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelModalityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, HotelModalityDto.class);
         } catch (IOException e) {
             e.printStackTrace();

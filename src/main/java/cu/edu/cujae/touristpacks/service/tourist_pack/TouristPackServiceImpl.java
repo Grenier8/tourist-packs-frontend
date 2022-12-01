@@ -30,7 +30,7 @@ public class TouristPackServiceImpl implements ITouristPackService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, TouristPackDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class TouristPackServiceImpl implements ITouristPackService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idTouristPack}");
+            UriTemplate template = new UriTemplate(endpoint + "{idTouristPack}");
             String uri = template.expand(idTouristPack).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             touristPacks = apiRestMapper.mapOne(response, TouristPackDto.class);
@@ -91,7 +91,7 @@ public class TouristPackServiceImpl implements ITouristPackService {
     @Override
     public void deleteTouristPack(int idTouristPack) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idTouristPack}");
+        UriTemplate template = new UriTemplate(endpoint + "{idTouristPack}");
         String uri = template.expand(idTouristPack).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

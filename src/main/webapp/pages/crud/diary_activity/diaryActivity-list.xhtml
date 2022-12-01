@@ -1,101 +1,153 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_diary_activity_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageDiaryActivityBean.openNew}"
+                update=":form:manage-diaryActivity-content"
+                oncomplete="PF('manageDiaryActivityDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput target=":form:manage-diaryActivity-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-diaryActivities"
+                  fileName="diaryActivities"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
 
-<ui:composition template="/pages/template/layout.xhtml">
-	<ui:define name="title">
-		<p:outputLabel value="#{msgs.label_diary_activity_list_header}" style="font-size: 38px;"></p:outputLabel>
-	</ui:define>
-	<ui:define name="layout">
-		<h:form id="form">
-			<div class="card crud-demo">
-				<p:toolbar>
-					<p:toolbarGroup>
-						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
-							actionListener="#{manageDiaryActivityBean.openNew}"
-							update=":form:manage-diaryActivity-content"
-							oncomplete="PF('manageDiaryActivityDialog').show()" styleClass="ui-button-success"
-							style="margin-right: .5rem">
-							<p:resetInput target=":form:manage-diaryActivity-content" />
-						</p:commandButton>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right">
-						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
-							ajax="false">
-							<p:dataExporter type="pdf" target="dt-diaryActivities" fileName="diaryActivities" />
-						</p:commandButton>
-					</p:toolbarGroup>
-				</p:toolbar>
+          <p:dataTable
+            id="dt-diaryActivities"
+            widgetVar="dtDiaryActivities"
+            var="diaryActivity"
+            value="#{manageDiaryActivityBean.diaryActivities}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="diaryActivities-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel value="#{msgs.label_diary_activity_filter}" />
+                </span>
 
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtDiaryActivities').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
 
-				<p:dataTable id="dt-diaryActivities" widgetVar="dtDiaryActivities" var="diaryActivity"
-					value="#{manageDiaryActivityBean.diaryActivities}" reflow="true" paginator="true" rows="10"
-					paginatorPosition="bottom">
-					<f:facet name="header">
-						<div class="diaryActivities-table-header">
-							<span style="font-weight: bold">
-								<p:outputLabel value="#{msgs.label_diary_activity_filter}" />
-							</span>
+            <p:column
+              headerText="#{msgs.label_diary_activity_name}"
+              sortBy="#{diaryActivity.diaryActivityName}"
+              filterBy="#{diaryActivity.diaryActivityName}"
+            >
+              <h:outputText value="#{diaryActivity.diaryActivityName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_diary_activity_date}"
+              sortBy="#{diaryActivity.date}"
+              filterBy="#{diaryActivity.date}"
+            >
+              <h:outputText value="#{diaryActivity.date}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_diary_activity_description}"
+              sortBy="#{diaryActivity.diaryActivityName}"
+              filterBy="#{diaryActivity.description}"
+            >
+              <h:outputText value="#{diaryActivity.description}" />
+            </p:column>
 
-							<span class="filter-container ui-input-icon-left">
-								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtDiaryActivities').filter()"
-									placeholder="#{msgs.input_search}" />
-							</span>
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-diaryActivity-content"
+                action="#{manageDiaryActivityBean.openForEdit}"
+                oncomplete="PF('manageDiaryActivityDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{diaryActivity}"
+                  target="#{manageDiaryActivityBean.selectedDiaryActivity}"
+                />
+                <p:resetInput target=":form:manage-diaryActivity-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageDiaryActivityBean.deleteDiaryActivity}"
+              >
+                <f:setPropertyActionListener
+                  value="#{diaryActivity}"
+                  target="#{manageDiaryActivityBean.selectedDiaryActivity}"
+                />
+                <p:confirm
+                  header="#{msgs.message_confirm}"
+                  message="#{msgs.message_delete_diary_activity}"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
 
-						</div>
-					</f:facet>
+          <ui:include src="diaryActivity-form.xhtml"></ui:include>
 
-
-					<p:column headerText="#{msgs.label_diary_activity_name}" sortBy="#{diaryActivity.diaryActivityName}"
-						filterBy="#{diaryActivity.diaryActivityName}">
-						<h:outputText value="#{diaryActivity.diaryActivityName}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_diary_activity_date}" sortBy="#{diaryActivity.diaryActivityDate}"
-						filterBy="#{diaryActivity.diaryActivityDate}">
-						<h:outputText value="#{diaryActivity.diaryActivityDate}" />
-					</p:column>
-					<p:column headerText="#{msgs.label_diary_activity_description}"
-						sortBy="#{diaryActivity.diaryActivityName}"
-						filterBy="#{diaryActivity.diaryActivityDescription}">
-						<h:outputText value="#{diaryActivity.diaryActivityDescription}" />
-					</p:column>
-
-
-					<p:column exportable="false">
-						<p:commandButton icon="pi pi-pencil" update=":form:manage-diaryActivity-content"
-							action="#{manageDiaryActivityBean.openForEdit}"
-							oncomplete="PF('manageDiaryActivityDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success" process="@this">
-							<f:setPropertyActionListener value="#{diaryActivity}"
-								target="#{manageDiaryActivityBean.selectedDiaryActivity}" />
-							<p:resetInput target=":form:manage-diaryActivity-content" />
-						</p:commandButton>
-						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-							action="#{manageDiaryActivityBean.deleteDiaryActivity}">
-							<f:setPropertyActionListener value="#{diaryActivity}"
-								target="#{manageDiaryActivityBean.selectedDiaryActivity}" />
-							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_diary_activity}"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-
-
-				<ui:include src="diaryActivity-form.xhtml"></ui:include>
-
-
-				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="#{msgs.button_yes}" type="button" styleClass="ui-confirmdialog-yes"
-						icon="pi pi-check" />
-					<p:commandButton value="#{msgs.button_no}" type="button"
-						styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
-				</p:confirmDialog>
-			</div>
-		</h:form>
-	</ui:define>
-</ui:composition>
-
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="#{msgs.button_yes}"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="#{msgs.button_no}"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

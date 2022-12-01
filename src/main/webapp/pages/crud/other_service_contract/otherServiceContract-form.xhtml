@@ -16,7 +16,7 @@
       <p:outputPanel
         rendered="#{not empty manageOtherServiceContractBean.selectedOtherServiceContract}"
       >
-        <p:panelGrid layout="grid" columns="1">
+        <p:panelGrid layout="grid" columns="2">
           <h:panelGroup>
             <div class="p-field">
               <p:outputLabel for="@next" value="#{msgs.label_contract_title}" />
@@ -74,6 +74,9 @@
               />
               <p:message for="@previous" />
             </div>
+          </h:panelGroup>
+
+          <h:panelGroup>
             <div class="p-field">
               <p:outputLabel
                 for="@next"
@@ -81,7 +84,7 @@
               />
               <p:selectOneMenu
                 id="serviceType"
-                value="#{manageMayorBean.selectedServiceTypeName}"
+                value="#{manageOtherServiceContractBean.selectedServiceTypeName}"
                 required="true"
                 style="min-width: 15rem"
                 multiple="true"
@@ -106,7 +109,7 @@
               />
               <p:selectOneMenu
                 id="province"
-                value="#{manageMayorBean.selectedProvinceName}"
+                value="#{manageOtherServiceContractBean.selectedProvinceName}"
                 required="true"
                 style="min-width: 15rem"
                 multiple="true"
@@ -171,6 +174,7 @@
         value="#{msgs.button_save}"
         icon="pi pi-check"
         actionListener="#{manageOtherServiceContractBean.saveOtherServiceContract()}"
+        action="#{manageContractBean.updateContracts()}"
         update="manage-otherServiceContract-content"
         process="manage-otherServiceContract-content @this"
       />

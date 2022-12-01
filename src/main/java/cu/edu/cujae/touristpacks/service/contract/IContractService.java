@@ -9,7 +9,7 @@ public interface IContractService {
 
     ContractDto getContractById(int contractId);
 
-    ContractDto getContractByName(String contractName);
+    ContractDto getContractByTitle(String contractTitle);
 
     void createContract(ContractDto contract);
 

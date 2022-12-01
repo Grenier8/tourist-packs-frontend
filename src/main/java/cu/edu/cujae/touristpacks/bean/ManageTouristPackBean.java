@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +117,7 @@ public class ManageTouristPackBean {
         for (TransportServiceDto transportService : touristPack.getTransportServices()) {
             names += transportService.getTransportServiceName() + ",";
         }
-        return names.substring(0, names.length() - 1);
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
     }
 
     public String getDiaryActivitiesNames(TouristPackDto touristPack) {
@@ -127,7 +125,7 @@ public class ManageTouristPackBean {
         for (DiaryActivityDto diaryActivity : touristPack.getDiaryActivities()) {
             names += diaryActivity.getDiaryActivityName() + ",";
         }
-        return names.substring(0, names.length() - 1);
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
     }
 
     public List<TouristPackDto> getTouristPacks() {

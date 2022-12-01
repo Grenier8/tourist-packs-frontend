@@ -30,7 +30,7 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, DiaryActivityDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idDiaryActivity}");
+            UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivity}");
             String uri = template.expand(idDiaryActivity).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             diaryActivity = apiRestMapper.mapOne(response, DiaryActivityDto.class);
@@ -91,7 +91,7 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
     @Override
     public void deleteDiaryActivity(int idDiaryActivity) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idDiaryActivity}");
+        UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivity}");
         String uri = template.expand(idDiaryActivity).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

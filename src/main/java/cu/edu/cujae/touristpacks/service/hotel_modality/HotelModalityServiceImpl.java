@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HotelModalityServiceImpl implements IHotelModalityService {
@@ -28,7 +30,7 @@ public class HotelModalityServiceImpl implements IHotelModalityService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelModalityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, HotelModalityDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +46,7 @@ public class HotelModalityServiceImpl implements IHotelModalityService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelModalityDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idHotelModality}");
+            UriTemplate template = new UriTemplate(endpoint + "{idHotelModality}");
             String uri = template.expand(idHotelModality).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             hotelModality = apiRestMapper.mapOne(response, HotelModalityDto.class);
@@ -59,12 +61,15 @@ public class HotelModalityServiceImpl implements IHotelModalityService {
         HotelModalityDto hotelModality = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<HotelModalityDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", hotelModalityName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{hotelModalityName}");
-            String uri = template.expand(hotelModalityName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<HotelModalityDto> apiRestMapper = new ApiRestMapper<>();
             hotelModality = apiRestMapper.mapOne(response, HotelModalityDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +91,7 @@ public class HotelModalityServiceImpl implements IHotelModalityService {
     @Override
     public void deleteHotelModality(int idHotelModality) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idHotelModality}");
+        UriTemplate template = new UriTemplate(endpoint + "{idHotelModality}");
         String uri = template.expand(idHotelModality).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

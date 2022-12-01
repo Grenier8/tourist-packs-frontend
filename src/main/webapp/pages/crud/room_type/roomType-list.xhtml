@@ -1,87 +1,139 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_room_type_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageRoomTypeBean.openNew}"
+                update=":form:manage-roomType-content"
+                oncomplete="PF('manageRoomTypeDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput target=":form:manage-roomType-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-roomTypes"
+                  fileName="roomTypes"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
 
-<ui:composition template="/pages/template/layout.xhtml">
-	<ui:define name="title">
-		<p:outputLabel value="#{msgs.label_room_type_list_header}" style="font-size: 38px;"></p:outputLabel>
-	</ui:define>
-	<ui:define name="layout">
-		<h:form id="form">
-			<div class="card crud-demo">
-				<p:toolbar>
-					<p:toolbarGroup>
-						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
-							actionListener="#{manageMayorBean.openNew}" update=":form:manage-minor-content"
-							oncomplete="PF('manageMayorDialog').show()" styleClass="ui-button-success"
-							style="margin-right: .5rem">
-							<p:resetInput target=":form:manage-minor-content" />
-						</p:commandButton>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right">
-						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
-							ajax="false">
-							<p:dataExporter type="pdf" target="dt-minors" fileName="minors" />
-						</p:commandButton>
-					</p:toolbarGroup>
-				</p:toolbar>
+          <p:dataTable
+            id="dt-roomTypes"
+            widgetVar="dtRoomTypes"
+            var="roomType"
+            value="#{manageRoomTypeBean.roomTypes}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="roomTypes-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel value="#{msgs.label_room_type_filter}" />
+                </span>
 
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtRoomTypes').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
 
-				<p:dataTable id="dt-minors" widgetVar="dtMayors" var="minor" value="#{manageMayorBean.minors}"
-					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
-					<f:facet name="header">
-						<div class="minors-table-header">
-							<span style="font-weight: bold">
-								<p:outputLabel value="#{msgs.label_dtbtable_filter}" />
-							</span>
+            <p:column
+              headerText="#{msgs.label_room_type_name}"
+              sortBy="#{roomType.roomTypeName}"
+              filterBy="#{roomType.roomTypeName}"
+            >
+              <h:outputText value="#{roomType.roomTypeName}" />
+            </p:column>
 
-							<span class="filter-container ui-input-icon-left">
-								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtMayors').filter()"
-									placeholder="#{msgs.input_search}" />
-							</span>
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-roomType-content"
+                action="#{manageRoomTypeBean.openForEdit}"
+                oncomplete="PF('manageRoomTypeDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{roomType}"
+                  target="#{manageRoomTypeBean.selectedRoomType}"
+                />
+                <p:resetInput target=":form:manage-roomType-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageRoomTypeBean.deleteRoomType}"
+              >
+                <f:setPropertyActionListener
+                  value="#{roomType}"
+                  target="#{manageRoomTypeBean.selectedRoomType}"
+                />
+                <p:confirm
+                  header="#{msgs.message_confirm}"
+                  message="#{msgs.message_delete_room_type}"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
 
-						</div>
-					</f:facet>
+          <ui:include src="roomType-form.xhtml"></ui:include>
 
-
-					<p:column headerText="#{msgs.label_dtbtable_atrib}" sortBy="#{minor.minorAtrib}"
-						filterBy="#{minor.minorAtrib}">
-						<h:outputText value="#{minor.minorAtrib}" />
-					</p:column>
-
-
-					<p:column exportable="false">
-						<p:commandButton icon="pi pi-pencil" update=":form:manage-minor-content"
-							action="#{manageMayorBean.openForEdit}" oncomplete="PF('manageMayorDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success" process="@this">
-							<f:setPropertyActionListener value="#{minor}" target="#{manageMayorBean.selectedMayor}" />
-							<p:resetInput target=":form:manage-minor-content" />
-						</p:commandButton>
-						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-							action="#{manageMayorBean.deleteMayor}">
-							<f:setPropertyActionListener value="#{minor}" target="#{manageMayorBean.selectedMayor}" />
-							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_dtbtable}"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-
-
-				<ui:include src="minor-form.xhtml"></ui:include>
-
-
-				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="#{msgs.button_yes}" type="button" styleClass="ui-confirmdialog-yes"
-						icon="pi pi-check" />
-					<p:commandButton value="#{msgs.button_no}" type="button"
-						styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
-				</p:confirmDialog>
-			</div>
-		</h:form>
-	</ui:define>
-</ui:composition>
-
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="#{msgs.button_yes}"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="#{msgs.button_no}"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

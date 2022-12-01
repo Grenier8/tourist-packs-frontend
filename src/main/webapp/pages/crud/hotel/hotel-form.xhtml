@@ -1,112 +1,227 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_hotel_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageHotelDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-hotel-context" class="ui-fluid">
+      <p:outputPanel rendered="#{not empty manageHotelBean.selectedHotel}">
+        <p:panelGrid layout="grid" columns="3">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_name}" />
+              <p:inputText
+                value="#{manageHotelBean.selectedHotel.hotelName}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_address}" />
+              <p:inputText
+                value="#{manageHotelBean.selectedHotel.address}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_category}" />
+              <p:inputText
+                id="txt"
+                value="#{manageHotelBean.selectedHotel.category}"
+              />
+              <p:slider for="txt" range="false" minValue="1" maxValue="5" />
+              <p:message for="txt" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_telephone}"
+              />
+              <p:inputText
+                value="#{manageHotelBean.selectedHotel.telephoneNumber}"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_fax}" />
+              <p:inputText value="#{manageHotelBean.selectedHotel.fax}" />
+              <p:message for="@previous" />
+            </div>
+          </h:panelGroup>
 
-	<p:dialog header="#{msgs.label_hotel_form_header}" showEffect="fade" modal="true" widgetVar="manageHotelDialog"
-		responsive="true">
-		<p:outputPanel id="manage-hotel-context" class="ui-fluid">
-			<p:outputPanel rendered="#{not empty manageHotelBean.selectedHotel}">
-				<p:panelGrid layout="grid" columns="2">
-					<h:panelGroup>
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_email}" />
+              <p:inputText
+                id="email"
+                value="#{manageHotelBean.selectedHotel.email}"
+                validatorMessage="Email mal formado"
+              >
+                <f:validateRegex
+                  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"
+                />
+              </p:inputText>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_distance_nearest_city}"
+              />
+              <p:spinner
+                value="#{manageHotelBean.selectedHotel.distanceToNearestCity}"
+                stepFactor="0.05"
+                min="0"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_distance_airport}"
+              />
+              <p:spinner
+                value="#{manageHotelBean.selectedHotel.distanceToAirport}"
+                stepFactor="0.05"
+                min="0"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_room_amount}"
+              />
+              <p:spinner
+                value="#{manageHotelBean.selectedHotel.roomsAmount}"
+                min="1"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_level_amount}"
+              />
+              <p:spinner
+                value="#{manageHotelBean.selectedHotel.levelsAmount}"
+                min="1"
+              />
+              <p:message for="@previous" />
+            </div>
+          </h:panelGroup>
 
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_name}" />
-							<p:inputText value="#{manageHotelBean.selectedHotel.hotelName}" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_address}" />
-							<p:inputText value="#{manageHotelBean.selectedHotel.address}" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_category}" />
-							<p:inputText id="txt" value="#{manageHotelBean.selectedHotel.category}" />
-							<p:slider for="txt" range="false" minValue="1" maxValue="5" />
-							<p:message for="txt" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_telephone}" />
-							<p:inputText value="#{manageHotelBean.selectedHotel.telephoneNumber}" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_fax}" />
-							<p:inputText value="#{manageHotelBean.selectedHotel.fax}" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_email}" />
-							<p:inputText id="email" value="#{manageHotelBean.selectedHotel.email}"
-								validatorMessage="Email mal formado">
-								<f:validateRegex
-									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_localization}"
+              />
+              <p:inputText
+                value="#{manageHotelBean.selectedHotel.localization}"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_hotel_chain}"
+              />
+              <p:selectOneMenu
+                id="hotelChain"
+                value="#{manageHotelBean.selectedHotelChainName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageHotelChainBean.hotelChains}"
+                  var="hotelChain"
+                  itemLabel="#{hotelChain.hotelChainName}"
+                  itemValue="#{hotelChain.hotelChainName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_hotel_province}" />
+              <p:selectOneMenu
+                id="province"
+                value="#{manageHotelBean.selectedProvinceName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageProvinceBean.provinces}"
+                  var="province"
+                  itemLabel="#{province.provinceName}"
+                  itemValue="#{province.provinceName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_hotel_hotel_modalities}"
+              ></p:outputLabel>
+              <p:selectCheckboxMenu
+                id="multiple"
+                required="true"
+                value="#{manageHotelBean.selectedHotelModalitiesNames}"
+                label="#{msgs.input_select}"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageHotelModalityBean.hotelModalities}"
+                  var="hotelModality"
+                  itemLabel="#{hotelModality.hotelModalityName}"
+                  itemValue="#{hotelModality.hotelModalityName}"
+                />
+              </p:selectCheckboxMenu>
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
 
-							</p:inputText>
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_distance_nearest_city}" />
-							<p:spinner value="#{manageHotelBean.selectedHotel.distanceToNearestCity}" stepFactor="0.05"
-								min="0" />
-							<p:message for="@previous" />
-						</div>
-					</h:panelGroup>
-					<h:panelGroup>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_distance_airport}" />
-							<p:spinner value="#{manageHotelBean.selectedHotel.distanceToAirport}" stepFactor="0.05"
-								min="0" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_room_amount}" />
-							<p:spinner value="#{manageHotelBean.selectedHotel.roomsAmount}" min="1" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_floor_amount}" />
-							<p:spinner value="#{manageHotelBean.selectedHotel.levelsAmount}" min="1" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_localization}" />
-							<p:inputText value="#{manageHotelBean.selectedHotel.localization}" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_hotel_chain}" />
-							<p:selectOneMenu id="hotelChain" value="#{manageHotelBean.selectedHotelChainName}"
-								required="true" style="min-width: 15rem" multiple="true" filter="true"
-								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
-								<f:selectItems value="#{manageHotelChainBean.hotelChains}" var="hotelChain"
-									itemLabel="#{hotelChain.hotelChainName}" itemValue="#{hotelChain.hotelChainName}" />
-							</p:selectOneMenu>
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_hotel_province}" />
-							<p:selectOneMenu id="province" value="#{manageHotelBean.selectedProvinceName}"
-								required="true" style="min-width: 15rem" multiple="true" filter="true"
-								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
-								<f:selectItems value="#{manageProvinceBean.provinces}" var="province"
-									itemLabel="#{province.provinceName}" itemValue="#{province.provinceName}" />
-							</p:selectOneMenu>
-							<p:message for="@previous" />
-						</div>
-
-
-					</h:panelGroup>
-				</p:panelGrid>
-			</p:outputPanel>
-		</p:outputPanel>
-
-		<f:facet name="footer">
-			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
-				actionListener="#{manageHotelBean.saveHotel()}" update="manage-hotel-context"
-				process="manage-hotel-context @this" />
-			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times" onclick="PF('manageHotelDialog').hide()"
-				class="ui-button-secondary" />
-		</f:facet>
-	</p:dialog>
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageHotelBean.saveHotel()}"
+        update="manage-hotel-context"
+        process="manage-hotel-context @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageHotelDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
 </ui:composition>

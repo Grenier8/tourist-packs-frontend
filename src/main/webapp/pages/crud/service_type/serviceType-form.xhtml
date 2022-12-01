@@ -1,40 +1,54 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_service_type_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageServiceTypeDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-serviceType-content" class="ui-fluid">
+      <p:outputPanel
+        rendered="#{not empty manageServiceTypeBean.selectedServiceType}"
+      >
+        <p:panelGrid layout="grid" columns="1">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_service_type_name}"
+              />
+              <p:inputText
+                id="name"
+                value="#{manageServiceTypeBean.selectedServiceType.serviceTypeName}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
 
-	<p:dialog header="#{msgs.label_service_type_form_header}" showEffect="fade" modal="true"
-		widgetVar="manageServiceTypeDialog" responsive="true">
-		<p:outputPanel id="manage-serviceType-content" class="ui-fluid">
-			<p:outputPanel rendered="#{not empty manageServiceTypeBean.selectedServiceType}">
-				<p:panelGrid layout="grid" columns="1">
-					<h:panelGroup>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="#{msgs.label_service_type_name}" />
-							<p:inputText id="name" value="#{manageServiceTypeBean.selectedServiceType.serviceTypeName}"
-								required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Maiyor" />
-							<p:selectOneMenu id="mainor" value="#{manageServiceTypeBean.selectedMaiyorName}"
-								required="true" style="min-width: 15rem" multiple="true" filter="true"
-								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
-								<f:selectItems value="#{manageMaiyorBean.mainors}" var="mainor"
-									itemLabel="#{mainor.mainorName}" itemValue="#{mainor.mainorName}" />
-							</p:selectOneMenu>
-							<p:message for="@previous" />
-						</div>
-					</h:panelGroup>
-				</p:panelGrid>
-			</p:outputPanel>
-		</p:outputPanel>
-
-		<f:facet name="footer">
-			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
-				actionListener="#{manageServiceTypeBean.saveServiceType()}" update="manage-serviceType-content"
-				process="manage-serviceType-content @this" />
-			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
-				onclick="PF('manageServiceTypeDialog').hide()" class="ui-button-secondary" />
-		</f:facet>
-	</p:dialog>
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageServiceTypeBean.saveServiceType()}"
+        update="manage-serviceType-content"
+        process="manage-serviceType-content @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageServiceTypeDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
 </ui:composition>

@@ -1,64 +1,76 @@
 package cu.edu.cujae.touristpacks.service.hotel_hotel_modality;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cu.edu.cujae.touristpacks.dto.HotelDto;
 import cu.edu.cujae.touristpacks.dto.HotelHotelModalityDto;
-import cu.edu.cujae.touristpacks.dto.HotelModalityDto;
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
-import cu.edu.cujae.touristpacks.service.hotel_modality.IHotelModalityService;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HotelHotelModalityServiceImpl implements IHotelHotelModalityService {
 
-    @Autowired
-    IHotelService hotelService;
+    private String endpoint = "/api/v1/hotel_hotel_modalities/";
 
     @Autowired
-    IHotelModalityService hotelModalityService;
+    private RestService restService;
 
     @Override
     public List<HotelHotelModalityDto> getHotelHotelModalities() {
         List<HotelHotelModalityDto> list = new ArrayList<>();
-
-        HotelDto hotel1 = hotelService.getHotels().get(0);
-        HotelDto hotel2 = hotelService.getHotels().get(1);
-
-        HotelModalityDto hotelModality1 = hotelModalityService.getHotelModalities().get(0);
-        HotelModalityDto hotelModality2 = hotelModalityService.getHotelModalities().get(1);
-
-        list.add(new HotelHotelModalityDto(1, hotel1, hotelModality1));
-        list.add(new HotelHotelModalityDto(2, hotel2, hotelModality2));
-
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelHotelModalityDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, HotelHotelModalityDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public HotelHotelModalityDto getHotelHotelModalityById(int hotelHotelModalityId) {
-        // TODO Auto-generated method stub
-        return null;
+    public HotelHotelModalityDto getHotelHotelModalityById(int idHotelHotelModality) {
+        HotelHotelModalityDto hotelHotelModality = null;
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelHotelModalityDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "{idHotelHotelModality}");
+            String uri = template.expand(idHotelHotelModality).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            hotelHotelModality = apiRestMapper.mapOne(response, HotelHotelModalityDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hotelHotelModality;
     }
 
     @Override
     public void createHotelHotelModality(HotelHotelModalityDto hotelHotelModality) {
-        // TODO Auto-generated method stub
-
+        restService.POST(endpoint + "", hotelHotelModality, String.class).getBody();
     }
 
     @Override
     public void updateHotelHotelModality(HotelHotelModalityDto hotelHotelModality) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, hotelHotelModality, String.class).getBody();
     }
 
     @Override
     public void deleteHotelHotelModality(int idHotelHotelModality) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idHotelHotelModality}");
+        String uri = template.expand(idHotelHotelModality).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

@@ -12,7 +12,9 @@ import org.springframework.web.util.UriTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RoomTypeServiceImpl implements IRoomTypeService {
@@ -28,7 +30,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint, params, String.class).getBody();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
             list = apiRestMapper.mapList(response, RoomTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +46,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
 
-            UriTemplate template = new UriTemplate(endpoint + "/{idRoomType}");
+            UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
             String uri = template.expand(idRoomType).toString();
             String response = (String) restService.GET(uri, params, String.class).getBody();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
@@ -59,12 +61,15 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         RoomTypeDto roomType = null;
 
         try {
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", roomTypeName);
 
-            UriTemplate template = new UriTemplate(endpoint + "/name/{roomTypeName}");
-            String uri = template.expand(roomTypeName).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,7 +91,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
     @Override
     public void deleteRoomType(int idRoomType) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        UriTemplate template = new UriTemplate(endpoint + "/{idRoomType}");
+        UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
         String uri = template.expand(idRoomType).toString();
         restService.DELETE(uri, params, String.class, null).getBody();
     }

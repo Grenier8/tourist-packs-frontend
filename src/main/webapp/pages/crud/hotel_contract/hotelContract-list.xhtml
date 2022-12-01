@@ -118,6 +118,15 @@
             >
               <h:outputText value="#{hotelContract.hotel.hotelName}" />
             </p:column>
+            <p:column
+              headerText="#{msgs.label_hotel_contract_room_plan_seasons}"
+              sortBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
+              filterBy="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
+            >
+              <h:outputText
+                value="#{manageHotelContractBean.getRoomPlanSeasonsNames(hotelContract)}"
+              />
+            </p:column>
 
             <p:column exportable="false">
               <p:commandButton
@@ -138,7 +147,8 @@
                 class="ui-button-warning rounded-button"
                 icon="pi pi-trash"
                 process="@this"
-                action="#{manageHotelContractBean.deleteHotelContract}"
+                actionListener="#{manageHotelContractBean.deleteHotelContract}"
+                action="#{manageContractBean.updateContracts()}"
               >
                 <f:setPropertyActionListener
                   value="#{hotelContract}"

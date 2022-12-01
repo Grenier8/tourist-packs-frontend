@@ -9,7 +9,7 @@ public interface IOtherServiceContractService {
 
     OtherServiceContractDto getOtherServiceContractById(int otherServiceContractId);
 
-    OtherServiceContractDto getOtherServiceContractByName(String otherServiceContractName);
+    OtherServiceContractDto getOtherServiceContractByTitle(String otherServiceContractName);
 
     void createOtherServiceContract(OtherServiceContractDto otherServiceContract);
 

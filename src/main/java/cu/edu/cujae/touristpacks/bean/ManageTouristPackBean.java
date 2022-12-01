@@ -1,21 +1,24 @@
 package cu.edu.cujae.touristpacks.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
 import cu.edu.cujae.touristpacks.dto.TouristPackDto;
+import cu.edu.cujae.touristpacks.dto.TransportServiceDto;
+import cu.edu.cujae.touristpacks.service.diary_activity.IDiaryActivityService;
 import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
 import cu.edu.cujae.touristpacks.service.room_plan_season.IRoomPlanSeasonService;
 import cu.edu.cujae.touristpacks.service.tourist_pack.ITouristPackService;
+import cu.edu.cujae.touristpacks.service.transport_service.ITransportServiceService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
@@ -28,6 +31,8 @@ public class ManageTouristPackBean {
 
     private String selectedHotelName;
     private String selectedRoomPlanSeasonName;
+    private List<String> selectedTransportServicesNames;
+    private List<String> selectedDiaryActivitiesNames;
 
     @Autowired
     private IHotelService hotelService;
@@ -37,6 +42,12 @@ public class ManageTouristPackBean {
 
     @Autowired
     private ITouristPackService service;
+
+    @Autowired
+    private ITransportServiceService transportServiceService;
+
+    @Autowired
+    private IDiaryActivityService diaryActivityService;
 
     public ManageTouristPackBean() {
 
@@ -57,7 +68,20 @@ public class ManageTouristPackBean {
 
     public void saveTouristPack() {
         selectedTouristPack.setHotel(hotelService.getHotelByName(selectedHotelName));
-        selectedTouristPack.setRoomPlanSeason(roomPlanSeasonService.getRoomPlanSeasonByName(selectedRoomPlanSeasonName));
+        selectedTouristPack
+                .setRoomPlanSeason(roomPlanSeasonService.getRoomPlanSeasonByName(selectedRoomPlanSeasonName));
+
+        List<TransportServiceDto> transportServices = new ArrayList<>();
+        for (String name : selectedTransportServicesNames) {
+            transportServices.add(transportServiceService.getTransportServiceByName(name));
+        }
+        selectedTouristPack.setTransportServices(transportServices);
+
+        List<DiaryActivityDto> diaryActivities = new ArrayList<>();
+        for (String name : selectedDiaryActivitiesNames) {
+            diaryActivities.add(diaryActivityService.getDiaryActivityByName(name));
+        }
+        selectedTouristPack.setDiaryActivities(diaryActivities);
 
         if (this.selectedTouristPack.getIdTouristPack() == 0) {
             service.createTouristPack(selectedTouristPack);
@@ -88,6 +112,22 @@ public class ManageTouristPackBean {
 
     }
 
+    public String getTransportServicesNames(TouristPackDto touristPack) {
+        String names = "";
+        for (TransportServiceDto transportService : touristPack.getTransportServices()) {
+            names += transportService.getTransportServiceName() + ",";
+        }
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
+    }
+
+    public String getDiaryActivitiesNames(TouristPackDto touristPack) {
+        String names = "";
+        for (DiaryActivityDto diaryActivity : touristPack.getDiaryActivities()) {
+            names += diaryActivity.getDiaryActivityName() + ",";
+        }
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
+    }
+
     public List<TouristPackDto> getTouristPacks() {
         return this.touristPacks;
     }
@@ -111,7 +151,6 @@ public class ManageTouristPackBean {
     public void setService(ITouristPackService service) {
         this.service = service;
     }
-
 
     public String getSelectedHotelName() {
         return this.selectedHotelName;
@@ -145,5 +184,36 @@ public class ManageTouristPackBean {
         this.roomPlanSeasonService = roomPlanSeasonService;
     }
 
+    public List<String> getSelectedTransportServicesNames() {
+        return this.selectedTransportServicesNames;
+    }
+
+    public void setSelectedTransportServicesNames(List<String> selectedTransportServicesNames) {
+        this.selectedTransportServicesNames = selectedTransportServicesNames;
+    }
+
+    public List<String> getSelectedDiaryActivitiesNames() {
+        return this.selectedDiaryActivitiesNames;
+    }
+
+    public void setSelectedDiaryActivitiesNames(List<String> selectedDiaryActivitiesNames) {
+        this.selectedDiaryActivitiesNames = selectedDiaryActivitiesNames;
+    }
+
+    public ITransportServiceService getTransportServiceService() {
+        return this.transportServiceService;
+    }
+
+    public void setTransportServiceService(ITransportServiceService transportServiceService) {
+        this.transportServiceService = transportServiceService;
+    }
+
+    public IDiaryActivityService getDiaryActivityService() {
+        return this.diaryActivityService;
+    }
+
+    public void setDiaryActivityService(IDiaryActivityService diaryActivityService) {
+        this.diaryActivityService = diaryActivityService;
+    }
 
 }

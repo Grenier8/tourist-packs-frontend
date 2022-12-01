@@ -21,6 +21,7 @@ public class ApiRestMapper<T> {
 
     public T mapOne(Object response, Class<? extends T> cls) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
 
         return mapper.readValue(String.valueOf(response), cls);
     }

@@ -3,10 +3,8 @@ package cu.edu.cujae.touristpacks.bean;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +56,7 @@ public class ManageHotelModalityBean {
         hotelModalities = service.getHotelModalities();
 
         PrimeFaces.current().executeScript("PF('manageHotelModalityDialog').hide()");
-        PrimeFaces.current().ajax().update("form:dt-hotelModalitys");
+        PrimeFaces.current().ajax().update("form:dt-hotelModalities");
 
     }
 
@@ -70,10 +68,9 @@ public class ManageHotelModalityBean {
         hotelModalities = service.getHotelModalities();
 
         JsfUtils.addInfoMessageFromBundle("message_deleted_hotel_modality");
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelModalitys");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelModalities");
 
     }
-
 
     public List<HotelModalityDto> getHotelModalities() {
         return this.hotelModalities;
@@ -98,6 +95,5 @@ public class ManageHotelModalityBean {
     public void setService(IHotelModalityService service) {
         this.service = service;
     }
-    
 
 }

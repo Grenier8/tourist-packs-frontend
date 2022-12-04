@@ -1,81 +1,99 @@
 package cu.edu.cujae.touristpacks.service.room_plan_season;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cu.edu.cujae.touristpacks.dto.AlimentaryPlanDto;
 import cu.edu.cujae.touristpacks.dto.RoomPlanSeasonDto;
-import cu.edu.cujae.touristpacks.dto.RoomTypeDto;
-import cu.edu.cujae.touristpacks.dto.SeasonDto;
-import cu.edu.cujae.touristpacks.service.alimentary_plan.AlimentaryPlanServiceImpl;
-import cu.edu.cujae.touristpacks.service.alimentary_plan.IAlimentaryPlanService;
-import cu.edu.cujae.touristpacks.service.room_type.IRoomTypeService;
-import cu.edu.cujae.touristpacks.service.room_type.RoomTypeServiceImpl;
-import cu.edu.cujae.touristpacks.service.season.ISeasonService;
-import cu.edu.cujae.touristpacks.service.season.SeasonServiceImpl;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
 
-    @Autowired
-    IRoomTypeService roomTypeService;
+    private String endpoint = "/api/v1/room_plan_seasons/";
 
     @Autowired
-    IAlimentaryPlanService alimentaryPlanService;
-
-    @Autowired
-    ISeasonService seasonService;
+    private RestService restService;
 
     @Override
     public List<RoomPlanSeasonDto> getRoomPlanSeasons() {
         List<RoomPlanSeasonDto> list = new ArrayList<>();
-
-        RoomTypeDto roomType1 = roomTypeService.getRoomTypes().get(0);
-        RoomTypeDto roomType2 = roomTypeService.getRoomTypes().get(1);
-
-        AlimentaryPlanDto alimentaryPlan1 = alimentaryPlanService.getAlimentaryPlans().get(0);
-        AlimentaryPlanDto alimentaryPlan2 = alimentaryPlanService.getAlimentaryPlans().get(1);
-
-        SeasonDto season1 = seasonService.getSeasons().get(0);
-        SeasonDto season2 = seasonService.getSeasons().get(1);
-
-        list.add(new RoomPlanSeasonDto(1, "RPS1", 12, roomType1, alimentaryPlan1, season1));
-        list.add(new RoomPlanSeasonDto(2, "RPS2", 15, roomType2, alimentaryPlan2, season2));
-
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, RoomPlanSeasonDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public RoomPlanSeasonDto getRoomPlanSeasonById(int roomPlanSeasonId) {
-        // TODO Auto-generated method stub
-        return null;
+    public RoomPlanSeasonDto getRoomPlanSeasonById(int idRoomPlanSeason) {
+        RoomPlanSeasonDto roomPlanSeason = null;
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
+            String uri = template.expand(idRoomPlanSeason).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return roomPlanSeason;
     }
 
     @Override
     public RoomPlanSeasonDto getRoomPlanSeasonByName(String roomPlanSeasonName) {
-        return getRoomPlanSeasons().stream().filter(r -> r.getRoomPlanSeasonName().equals(roomPlanSeasonName))
-                .findFirst().get();
+        RoomPlanSeasonDto roomPlanSeason = null;
+
+        try {
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", roomPlanSeasonName);
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
+            roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return roomPlanSeason;
     }
 
     @Override
     public void createRoomPlanSeason(RoomPlanSeasonDto roomPlanSeason) {
-        // TODO Auto-generated method stub
-
+        restService.POST(endpoint + "", roomPlanSeason, String.class).getBody();
     }
 
     @Override
     public void updateRoomPlanSeason(RoomPlanSeasonDto roomPlanSeason) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, roomPlanSeason, String.class).getBody();
     }
 
     @Override
     public void deleteRoomPlanSeason(int idRoomPlanSeason) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
+        String uri = template.expand(idRoomPlanSeason).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="#{msgs.label_alimentary_plan_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageAlimentaryPlanDialog" responsive="true">
+		<p:outputPanel id="manage-alimentaryPlan-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageAlimentaryPlanBean.selectedAlimentaryPlan}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_alimentary_plan_name}" />
+							<p:inputText id="name"
+								value="#{manageAlimentaryPlanBean.selectedAlimentaryPlan.alimentaryPlanName}"
+								required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check"
+				actionListener="#{manageAlimentaryPlanBean.saveAlimentaryPlan()}" update="manage-alimentaryPlan-content"
+				process="manage-alimentaryPlan-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times"
+				onclick="PF('manageAlimentaryPlanDialog').hide()" class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

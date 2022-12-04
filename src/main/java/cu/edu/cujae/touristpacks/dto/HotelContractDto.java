@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class HotelContractDto extends ContractDto {
 
@@ -8,43 +9,28 @@ public class HotelContractDto extends ContractDto {
 	private String contractDescription;
 	private boolean active;
 	private HotelDto hotel;
+	private List<RoomPlanSeasonDto> roomPlanSeasons;
 
 	public HotelContractDto() {
 
 	}
 
-	public HotelContractDto(String contractTitle, LocalDate startDate, LocalDate endDate, LocalDate conciliationDate,
-			String contractDescription, HotelDto hotel, int idContract) {
-		super(contractTitle, startDate, endDate, conciliationDate);
-		this.contractDescription = contractDescription;
-		this.hotel = hotel;
-		this.idContract = idContract;
-	}
-
-	public HotelContractDto(String contractTitle, LocalDate startDate, LocalDate endDate, LocalDate conciliationDate,
-			String contractDescription, HotelDto hotel) {
-		super(contractTitle, startDate, endDate, conciliationDate);
-		this.contractDescription = contractDescription;
-		this.hotel = hotel;
-	}
-
-	public HotelContractDto(int idHotelContract, String contractTitle, LocalDate startDate, LocalDate endDate,
+	public HotelContractDto(int idContract, String contractTitle, LocalDate startDate, LocalDate endDate,
 			LocalDate conciliationDate,
-			String contractDescription, HotelDto hotel) {
-		super(contractTitle, startDate, endDate, conciliationDate);
-		this.idHotelContract = idHotelContract;
+			String contractDescription, HotelDto hotel, List<RoomPlanSeasonDto> roomPlanSeasons) {
+		super(idContract, contractTitle, startDate, endDate, conciliationDate);
 		this.contractDescription = contractDescription;
 		this.hotel = hotel;
+		this.roomPlanSeasons = roomPlanSeasons;
 	}
 
-	public HotelContractDto(int idHotelContract, String contractTitle, LocalDate startDate, LocalDate endDate,
+	public HotelContractDto(int idHotelContract, int idContract, String contractTitle, LocalDate startDate,
+			LocalDate endDate,
 			LocalDate conciliationDate,
-			String contractDescription, HotelDto hotel, int idContract) {
-		super(contractTitle, startDate, endDate, conciliationDate);
+			String contractDescription, HotelDto hotel, List<RoomPlanSeasonDto> roomPlanSeasons) {
+		this(idContract, contractTitle, startDate, endDate, conciliationDate, contractDescription, hotel,
+				roomPlanSeasons);
 		this.idHotelContract = idHotelContract;
-		this.contractDescription = contractDescription;
-		this.hotel = hotel;
-		this.idContract = idContract;
 	}
 
 	public int getIdHotelContract() {
@@ -81,6 +67,14 @@ public class HotelContractDto extends ContractDto {
 
 	public void setHotel(HotelDto hotel) {
 		this.hotel = hotel;
+	}
+
+	public List<RoomPlanSeasonDto> getRoomPlanSeasons() {
+		return this.roomPlanSeasons;
+	}
+
+	public void setRoomPlanSeasons(List<RoomPlanSeasonDto> roomPlanSeasons) {
+		this.roomPlanSeasons = roomPlanSeasons;
 	}
 
 }

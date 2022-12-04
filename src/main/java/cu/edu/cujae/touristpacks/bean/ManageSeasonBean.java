@@ -5,15 +5,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
 
-import cu.edu.cujae.touristpacks.service.season.ISeasonService;
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.SeasonDto;
+import cu.edu.cujae.touristpacks.service.season.ISeasonService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +33,7 @@ public class ManageSeasonBean {
 
     @PostConstruct
     public void init() {
-        seasons = seasons == null ? service.getSeasons() : seasons;
+        seasons = service.getSeasons();
     }
 
     public void openNew() {
@@ -45,16 +46,16 @@ public class ManageSeasonBean {
 
     public void saveSeason() {
         if (this.selectedSeason.getIdSeason() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createSeason(selectedSeason);
 
-            this.selectedSeason.setIdSeason(r);
-            this.seasons.add(this.selectedSeason);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Temporada insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_season");
         } else {
+            service.updateSeason(selectedSeason);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Temporada modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_season");
         }
+
+        seasons = service.getSeasons();
 
         PrimeFaces.current().executeScript("PF('manageSeasonDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-seasons");
@@ -63,15 +64,18 @@ public class ManageSeasonBean {
 
     public void deleteSeason() {
 
-        this.seasons.remove(this.selectedSeason);
+        service.deleteSeason(selectedSeason.getIdSeason());
         this.selectedSeason = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Temporada eliminada"));
+
+        seasons = service.getSeasons();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_season");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-seasons");
 
     }
 
     public List<SeasonDto> getSeasons() {
-        return seasons;
+        return this.seasons;
     }
 
     public void setSeasons(List<SeasonDto> seasons) {
@@ -79,7 +83,7 @@ public class ManageSeasonBean {
     }
 
     public SeasonDto getSelectedSeason() {
-        return selectedSeason;
+        return this.selectedSeason;
     }
 
     public void setSelectedSeason(SeasonDto selectedSeason) {
@@ -87,10 +91,11 @@ public class ManageSeasonBean {
     }
 
     public ISeasonService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(ISeasonService service) {
         this.service = service;
     }
+
 }

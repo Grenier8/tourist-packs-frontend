@@ -5,21 +5,23 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de
+		<p:outputLabel value="#{msgs.label_dtbtable_list_header}" style="font-size: 38px;"></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageMayorBean.openNew}"
-							update=":form:manage-minor-content" oncomplete="PF('manageMayorDialog').show()"
-							styleClass="ui-button-success" style="margin-right: .5rem">
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus"
+							actionListener="#{manageMayorBean.openNew}" update=":form:manage-minor-content"
+							oncomplete="PF('manageMayorDialog').show()" styleClass="ui-button-success"
+							style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-minor-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help"
+							ajax="false">
 							<p:dataExporter type="pdf" target="dt-minors" fileName="minors" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,18 +32,22 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="minors-table-header">
-							<span style="font-weight: bold">Cadenas hoteleras</span>
+							<span style="font-weight: bold">
+								<p:outputLabel value="#{msgs.label_dtbtable_filter}" />
+							</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtMayors').filter()" placeholder="Buscar" />
+								<p:inputText id="globalFilter" onkeyup="PF('dtMayors').filter()"
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
 
-					<p:column headerText="" sortBy="#{minor.minorAtrib}" filterBy="#{minor.minorAtrib}">
+					<p:column headerText="#{msgs.label_dtbtable_atrib}" sortBy="#{minor.minorAtrib}"
+						filterBy="#{minor.minorAtrib}">
 						<h:outputText value="#{minor.minorAtrib}" />
 					</p:column>
 
@@ -56,7 +62,7 @@
 						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
 							action="#{manageMayorBean.deleteMayor}">
 							<f:setPropertyActionListener value="#{minor}" target="#{manageMayorBean.selectedMayor}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la cadena hotelera?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_dtbtable}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>
@@ -68,9 +74,10 @@
 
 
 				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-						icon="pi pi-times" />
+					<p:commandButton value="#{msgs.button_yes}" type="button" styleClass="ui-confirmdialog-yes"
+						icon="pi pi-check" />
+					<p:commandButton value="#{msgs.button_no}" type="button"
+						styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
 				</p:confirmDialog>
 			</div>
 		</h:form>

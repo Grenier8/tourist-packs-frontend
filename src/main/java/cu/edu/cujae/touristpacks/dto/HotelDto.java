@@ -1,5 +1,8 @@
 package cu.edu.cujae.touristpacks.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HotelDto {
 
 	private int idHotel;
@@ -16,6 +19,9 @@ public class HotelDto {
 	private String localization;
 	private HotelChainDto hotelChain;
 	private ProvinceDto province;
+	private List<HotelModalityDto> hotelModalities;
+
+	private List<String> hotelModalitiesNames;
 
 	public HotelDto() {
 	}
@@ -37,26 +43,22 @@ public class HotelDto {
 		this.hotelChain = hotelChain;
 		this.province = province;
 
+		hotelModalitiesToString();
+
+	}
+
+	private void hotelModalitiesToString() {
+		hotelModalitiesNames = new ArrayList<>();
+
 	}
 
 	public HotelDto(int idHotel, String hotelName, String address, int category, String telephoneNumber, String fax,
 			String email,
 			double distanceToNearestCity, double distanceToAirport, int roomsAmount, int levelsAmount,
 			String localization, HotelChainDto hotelChain, ProvinceDto province) {
+		this(hotelName, address, category, telephoneNumber, fax, email, distanceToNearestCity, distanceToAirport,
+				roomsAmount, levelsAmount, localization, hotelChain, province);
 		this.idHotel = idHotel;
-		this.hotelName = hotelName;
-		this.address = address;
-		this.category = category;
-		this.telephoneNumber = telephoneNumber;
-		this.fax = fax;
-		this.email = email;
-		this.distanceToNearestCity = distanceToNearestCity;
-		this.distanceToAirport = distanceToAirport;
-		this.roomsAmount = roomsAmount;
-		this.levelsAmount = levelsAmount;
-		this.localization = localization;
-		this.hotelChain = hotelChain;
-		this.province = province;
 
 	}
 
@@ -176,4 +178,13 @@ public class HotelDto {
 	public void setProvince(ProvinceDto province) {
 		this.province = province;
 	}
+
+	public List<HotelModalityDto> getHotelModalities() {
+		return this.hotelModalities;
+	}
+
+	public void setHotelModalities(List<HotelModalityDto> hotelModalities) {
+		this.hotelModalities = hotelModalities;
+	}
+
 }

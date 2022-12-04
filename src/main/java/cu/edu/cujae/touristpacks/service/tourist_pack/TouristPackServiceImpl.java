@@ -1,71 +1,99 @@
 package cu.edu.cujae.touristpacks.service.tourist_pack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.dto.RoomPlanSeasonDto;
 import cu.edu.cujae.touristpacks.dto.TouristPackDto;
-import cu.edu.cujae.touristpacks.service.hotel.HotelServiceImpl;
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
-import cu.edu.cujae.touristpacks.service.room_plan_season.IRoomPlanSeasonService;
-import cu.edu.cujae.touristpacks.service.room_plan_season.RoomPlanSeasonServiceImpl;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class TouristPackServiceImpl implements ITouristPackService {
 
-    @Autowired
-    IHotelService hotelService;
+    private String endpoint = "/api/v1/tourist_packs/";
 
     @Autowired
-    IRoomPlanSeasonService roomPlanSeasonService;
+    private RestService restService;
 
     @Override
     public List<TouristPackDto> getTouristPacks() {
         List<TouristPackDto> list = new ArrayList<>();
-
-        HotelDto hotel1 = hotelService.getHotels().get(0);
-        HotelDto hotel2 = hotelService.getHotels().get(1);
-
-        RoomPlanSeasonDto roomPlanSeason1 = roomPlanSeasonService.getRoomPlanSeasons().get(0);
-        RoomPlanSeasonDto roomPlanSeason2 = roomPlanSeasonService.getRoomPlanSeasons().get(1);
-
-        list.add(new TouristPackDto(1, "Pak1", 2, 1, 3, 12, hotel1, roomPlanSeason1));
-        list.add(new TouristPackDto(1, "Pak2", 2, 3, 3, 11, hotel2, roomPlanSeason2));
-
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, TouristPackDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public TouristPackDto getTouristPackById(int touristPackId) {
-        // TODO Auto-generated method stub
-        return null;
+    public TouristPackDto getTouristPackById(int idTouristPack) {
+        TouristPackDto touristPacks = null;
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "{idTouristPack}");
+            String uri = template.expand(idTouristPack).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            touristPacks = apiRestMapper.mapOne(response, TouristPackDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return touristPacks;
     }
 
     @Override
     public TouristPackDto getTouristPackByName(String touristPackName) {
-        return getTouristPacks().stream().filter(r -> r.getPromotionalName().equals(touristPackName)).findFirst().get();
+        TouristPackDto touristPack = null;
+
+        try {
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", touristPackName);
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+            touristPack = apiRestMapper.mapOne(response, TouristPackDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return touristPack;
     }
 
     @Override
-    public void createTouristPack(TouristPackDto touristPack) {
-        // TODO Auto-generated method stub
-
+    public void createTouristPack(TouristPackDto touristPacks) {
+        restService.POST(endpoint + "", touristPacks, String.class).getBody();
     }
 
     @Override
-    public void updateTouristPack(TouristPackDto touristPack) {
-        // TODO Auto-generated method stub
-
+    public void updateTouristPack(TouristPackDto touristPacks) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, touristPacks, String.class).getBody();
     }
 
     @Override
     public void deleteTouristPack(int idTouristPack) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idTouristPack}");
+        String uri = template.expand(idTouristPack).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

@@ -1,24 +1,23 @@
 package cu.edu.cujae.touristpacks.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
-import cu.edu.cujae.touristpacks.service.hotel_chain.IHotelChainService;
-import cu.edu.cujae.touristpacks.service.province.IProvinceService;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cu.edu.cujae.touristpacks.dto.HotelChainDto;
 import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.dto.ProvinceDto;
+import cu.edu.cujae.touristpacks.dto.HotelModalityDto;
+import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
+import cu.edu.cujae.touristpacks.service.hotel_chain.IHotelChainService;
+import cu.edu.cujae.touristpacks.service.hotel_modality.IHotelModalityService;
+import cu.edu.cujae.touristpacks.service.province.IProvinceService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -30,6 +29,7 @@ public class ManageHotelBean {
 
     private String selectedHotelChainName;
     private String selectedProvinceName;
+    private List<String> selectedHotelModalitiesNames;
 
     @Autowired
     private IHotelService service;
@@ -40,13 +40,16 @@ public class ManageHotelBean {
     @Autowired
     private IProvinceService provinceService;
 
+    @Autowired
+    private IHotelModalityService hotelModalityService;
+
     public ManageHotelBean() {
 
     }
 
     @PostConstruct
     public void init() {
-        hotels = hotels == null ? service.getHotels() : hotels;
+        hotels = service.getHotels();
     }
 
     public void openNew() {
@@ -58,23 +61,26 @@ public class ManageHotelBean {
     }
 
     public void saveHotel() {
-        if (this.selectedHotel.getIdHotel() == 0) {
-            int r = (int) (Math.random() * 10000);
-            this.selectedHotel.setIdHotel(r);
+        selectedHotel.setHotelChain(hotelChainService.getHotelChainByName(selectedHotelChainName));
+        selectedHotel.setProvince(provinceService.getProvinceByName(selectedProvinceName));
 
-            HotelChainDto hotelChain = hotelChainService.getHotelChainByName(selectedHotelChainName);
-            this.selectedHotel.setHotelChain(hotelChain);
-
-            ProvinceDto province = provinceService.getProvinceByName(selectedProvinceName);
-            this.selectedHotel.setProvince(province);
-
-            this.hotels.add(this.selectedHotel);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Hotel insertado"));
-        } else {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Hotel modificado"));
+        List<HotelModalityDto> hotelModalities = new ArrayList<>();
+        for (String name : selectedHotelModalitiesNames) {
+            hotelModalities.add(hotelModalityService.getHotelModalityByName(name));
         }
+        selectedHotel.setHotelModalities(hotelModalities);
+
+        if (this.selectedHotel.getIdHotel() == 0) {
+            service.createHotel(selectedHotel);
+
+            JsfUtils.addInfoMessageFromBundle("message_inserted_hotel");
+        } else {
+            service.updateHotel(selectedHotel);
+
+            JsfUtils.addInfoMessageFromBundle("message_updated_hotel");
+        }
+
+        hotels = service.getHotels();
 
         PrimeFaces.current().executeScript("PF('manageHotelDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotels");
@@ -83,11 +89,22 @@ public class ManageHotelBean {
 
     public void deleteHotel() {
 
-        this.hotels.remove(this.selectedHotel);
+        service.deleteHotel(selectedHotel.getIdHotel());
         this.selectedHotel = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Hotel eliminado"));
+
+        hotels = service.getHotels();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_hotel");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotels");
 
+    }
+
+    public String getHotelModalitiesNames(HotelDto hotel) {
+        String names = "";
+        for (HotelModalityDto hotelModality : hotel.getHotelModalities()) {
+            names += hotelModality.getHotelModalityName() + ",";
+        }
+        return names.length() > 0 ? names.substring(0, names.length() - 1) : names;
     }
 
     public List<HotelDto> getHotels() {
@@ -106,6 +123,14 @@ public class ManageHotelBean {
         this.selectedHotel = selectedHotel;
     }
 
+    public IHotelService getService() {
+        return this.service;
+    }
+
+    public void setService(IHotelService service) {
+        this.service = service;
+    }
+
     public String getSelectedHotelChainName() {
         return this.selectedHotelChainName;
     }
@@ -122,14 +147,6 @@ public class ManageHotelBean {
         this.selectedProvinceName = selectedProvinceName;
     }
 
-    public IHotelService getService() {
-        return this.service;
-    }
-
-    public void setService(IHotelService service) {
-        this.service = service;
-    }
-
     public IHotelChainService getHotelChainService() {
         return this.hotelChainService;
     }
@@ -144,6 +161,22 @@ public class ManageHotelBean {
 
     public void setProvinceService(IProvinceService provinceService) {
         this.provinceService = provinceService;
+    }
+
+    public List<String> getSelectedHotelModalitiesNames() {
+        return this.selectedHotelModalitiesNames;
+    }
+
+    public void setSelectedHotelModalitiesNames(List<String> selectedHotelModalitiesNames) {
+        this.selectedHotelModalitiesNames = selectedHotelModalitiesNames;
+    }
+
+    public IHotelModalityService getHotelModalityService() {
+        return this.hotelModalityService;
+    }
+
+    public void setHotelModalityService(IHotelModalityService hotelModalityService) {
+        this.hotelModalityService = hotelModalityService;
     }
 
 }

@@ -22,11 +22,8 @@ public class SeasonDto {
 
 	public SeasonDto(int idSeason, String seasonName, LocalDate startSeason, LocalDate endSeason,
 			String seasonDescription) {
+		this(seasonName, startSeason, endSeason, seasonDescription);
 		this.idSeason = idSeason;
-		this.seasonName = seasonName;
-		this.startSeason = startSeason;
-		this.endSeason = endSeason;
-		this.seasonDescription = seasonDescription;
 	}
 
 	public int getIdSeason() {

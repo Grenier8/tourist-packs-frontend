@@ -9,6 +9,14 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 public class JsfUtils {
+	private JsfUtils(){
+
+	}
+
+	public static void addInfoMessageFromBundle(String key){
+		addMessage(null, FacesMessage.SEVERITY_INFO, getStringValueFromBundle(key), null);
+	}
+
 	public static void addMessage(String componentId, Severity severity, String summary) {
 		addMessage(componentId, severity, summary, null);
 	}

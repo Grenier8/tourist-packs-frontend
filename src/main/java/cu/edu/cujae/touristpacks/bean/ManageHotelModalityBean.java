@@ -3,9 +3,7 @@ package cu.edu.cujae.touristpacks.bean;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
 import org.primefaces.PrimeFaces;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.HotelModalityDto;
 import cu.edu.cujae.touristpacks.service.hotel_modality.IHotelModalityService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +31,7 @@ public class ManageHotelModalityBean {
 
     @PostConstruct
     public void init() {
-        hotelModalities = hotelModalities == null ? service.getHotelModalities() : hotelModalities;
+        hotelModalities = service.getHotelModalities();
     }
 
     public void openNew() {
@@ -45,16 +44,16 @@ public class ManageHotelModalityBean {
 
     public void saveHotelModality() {
         if (this.selectedHotelModality.getIdHotelModality() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createHotelModality(selectedHotelModality);
 
-            this.selectedHotelModality.setIdHotelModality(r);
-            this.hotelModalities.add(this.selectedHotelModality);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_hotel_modality");
         } else {
+            service.updateHotelModality(selectedHotelModality);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_hotel_modality");
         }
+
+        hotelModalities = service.getHotelModalities();
 
         PrimeFaces.current().executeScript("PF('manageHotelModalityDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotelModalities");
@@ -63,15 +62,18 @@ public class ManageHotelModalityBean {
 
     public void deleteHotelModality() {
 
-        this.hotelModalities.remove(this.selectedHotelModality);
+        service.deleteHotelModality(selectedHotelModality.getIdHotelModality());
         this.selectedHotelModality = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
+
+        hotelModalities = service.getHotelModalities();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_hotel_modality");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelModalities");
 
     }
 
     public List<HotelModalityDto> getHotelModalities() {
-        return hotelModalities;
+        return this.hotelModalities;
     }
 
     public void setHotelModalities(List<HotelModalityDto> hotelModalities) {
@@ -79,7 +81,7 @@ public class ManageHotelModalityBean {
     }
 
     public HotelModalityDto getSelectedHotelModality() {
-        return selectedHotelModality;
+        return this.selectedHotelModality;
     }
 
     public void setSelectedHotelModality(HotelModalityDto selectedHotelModality) {
@@ -87,10 +89,11 @@ public class ManageHotelModalityBean {
     }
 
     public IHotelModalityService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IHotelModalityService service) {
         this.service = service;
     }
+
 }

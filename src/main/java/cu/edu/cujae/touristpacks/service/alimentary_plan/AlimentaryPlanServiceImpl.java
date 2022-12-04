@@ -1,51 +1,99 @@
 package cu.edu.cujae.touristpacks.service.alimentary_plan;
 
 import cu.edu.cujae.touristpacks.dto.AlimentaryPlanDto;
-import org.springframework.stereotype.Service;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
 
+    private String endpoint = "/api/v1/alimentary_plans/";
+
+    @Autowired
+    private RestService restService;
+
     @Override
     public List<AlimentaryPlanDto> getAlimentaryPlans() {
         List<AlimentaryPlanDto> list = new ArrayList<>();
-        list.add(new AlimentaryPlanDto(1, "Desayuno"));
-        list.add(new AlimentaryPlanDto(2, "Almuerzo"));
-
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, AlimentaryPlanDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public AlimentaryPlanDto getAlimentaryPlanById(int alimentaryPlanId) {
-        // TODO Auto-generated method stub
-        return null;
+    public AlimentaryPlanDto getAlimentaryPlanById(int idAlimentaryPlan) {
+        AlimentaryPlanDto alimentaryPlan = null;
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
+            String uri = template.expand(idAlimentaryPlan).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return alimentaryPlan;
     }
 
     @Override
     public AlimentaryPlanDto getAlimentaryPlanByName(String alimentaryPlanName) {
-        // TODO Auto-generated method stub
-        return null;
+        AlimentaryPlanDto alimentaryPlan = null;
+
+        try {
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", alimentaryPlanName);
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
+            alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return alimentaryPlan;
     }
 
     @Override
     public void createAlimentaryPlan(AlimentaryPlanDto alimentaryPlan) {
-        // TODO Auto-generated method stub
-
+        restService.POST(endpoint + "", alimentaryPlan, String.class).getBody();
     }
 
     @Override
     public void updateAlimentaryPlan(AlimentaryPlanDto alimentaryPlan) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, alimentaryPlan, String.class).getBody();
     }
 
     @Override
     public void deleteAlimentaryPlan(int idAlimentaryPlan) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
+        String uri = template.expand(idAlimentaryPlan).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

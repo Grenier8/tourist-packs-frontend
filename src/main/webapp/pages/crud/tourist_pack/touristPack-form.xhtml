@@ -1,76 +1,209 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_tourist_pack_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageTouristPackDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-touristPack-content" class="ui-fluid">
+      <p:outputPanel
+        rendered="#{not empty manageTouristPackBean.selectedTouristPack}"
+      >
+        <p:panelGrid layout="grid" columns="2">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_name}"
+              />
+              <p:inputText
+                id="name"
+                value="#{manageTouristPackBean.selectedTouristPack.promotionalName}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_nights_amount}"
+              />
+              <p:spinner
+                value="#{manageTouristPackBean.selectedTouristPack.nightsAmount}"
+                stepFactor="1"
+                min="1"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_pax_amount}"
+              />
+              <p:spinner
+                value="#{manageTouristPackBean.selectedTouristPack.paxAmount}"
+                stepFactor="1"
+                min="1"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_hotel_price}"
+              />
+              <p:spinner
+                value="#{manageTouristPackBean.selectedTouristPack.hotelPrice}"
+                stepFactor="0.5"
+                min="0"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_hotel_airport_price}"
+              />
+              <p:spinner
+                value="#{manageTouristPackBean.selectedTouristPack.hotelAirportPrice}"
+                stepFactor="0.5"
+                min="0"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+          </h:panelGroup>
 
-	<p:dialog header="Detalles de paquete turístico" showEffect="fade" modal="true" widgetVar="manageTouristPackDialog"
-		responsive="true">
-		<p:outputPanel id="manage-touristPack-content" class="ui-fluid">
-			<p:outputPanel rendered="#{not empty manageTouristPackBean.selectedTouristPack}">
-				<p:panelGrid layout="grid" columns="1">
-					<h:panelGroup>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Nombre" />
-							<p:inputText id="name" value="#{manageTouristPackBean.selectedTouristPack.promotionalName}"
-								required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Total de noches" />
-							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.nightsAmount}" stepFactor="1"
-								min="1" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Cantidad de personas" />
-							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.paxAmount}" stepFactor="1"
-								min="1" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Precio hotel" />
-							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.hotelPrice}" stepFactor="0.5"
-								min="0" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Precio viaje hotel-aeropuerto" />
-							<p:spinner value="#{manageTouristPackBean.selectedTouristPack.hotelAirportPrice}"
-								stepFactor="0.5" min="0" required="true" />
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="Hotel" />
-							<p:selectOneMenu id="hotel" value="#{manageTouristPackBean.selectedHotelName}"
-								required="true" style="min-width: 15rem" multiple="true" filter="true"
-								filterMatchMode="startsWith" panelStyle="width: 30rem" scrollHeight="250">
-								<f:selectItems value="#{manageHotelBean.hotels}" var="hotel"
-									itemLabel="#{hotel.hotelName}" itemValue="#{hotel.hotelName}" />
-							</p:selectOneMenu>
-							<p:message for="@previous" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="@next" value="RoomPlanSeason" />
-							<p:selectOneMenu id="roomPlanSeason"
-								value="#{manageTouristPackBean.selectedRoomPlanSeasonName}" required="true"
-								style="min-width: 15rem" multiple="true" filter="true" filterMatchMode="startsWith"
-								panelStyle="width: 30rem" scrollHeight="250">
-								<f:selectItems value="#{manageRoomPlanSeasonBean.roomPlanSeasons}" var="roomPlanSeason"
-									itemLabel="#{roomPlanSeason.roomPlanSeasonName}"
-									itemValue="#{roomPlanSeason.roomPlanSeasonName}" />
-							</p:selectOneMenu>
-							<p:message for="@previous" />
-						</div>
-					</h:panelGroup>
-				</p:panelGrid>
-			</p:outputPanel>
-		</p:outputPanel>
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_hotel}"
+              />
+              <p:selectOneMenu
+                id="hotel"
+                value="#{manageTouristPackBean.selectedHotelName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageHotelBean.hotels}"
+                  var="hotel"
+                  itemLabel="#{hotel.hotelName}"
+                  itemValue="#{hotel.hotelName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_room_plan_season}"
+              />
+              <p:selectOneMenu
+                id="roomPlanSeason"
+                value="#{manageTouristPackBean.selectedRoomPlanSeasonName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageRoomPlanSeasonBean.roomPlanSeasons}"
+                  var="roomPlanSeason"
+                  itemLabel="#{roomPlanSeason.roomPlanSeasonName}"
+                  itemValue="#{roomPlanSeason.roomPlanSeasonName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_transport_services}"
+              ></p:outputLabel>
+              <p:selectCheckboxMenu
+                id="multiple_transport_services"
+                required="true"
+                value="#{manageTouristPackBean.selectedTransportServicesNames}"
+                label="#{msgs.input_select}"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageTransportServiceBean.transportServices}"
+                  var="transportService"
+                  itemLabel="#{transportService.transportServiceName}"
+                  itemValue="#{transportService.transportServiceName}"
+                />
+              </p:selectCheckboxMenu>
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_tourist_pack_diary_activities}"
+              ></p:outputLabel>
+              <p:selectCheckboxMenu
+                id="multiple_diary_activities"
+                required="true"
+                value="#{manageTouristPackBean.selectedDiaryActivitiesNames}"
+                label="#{msgs.input_select}"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageDiaryActivityBean.diaryActivities}"
+                  var="diaryActivity"
+                  itemLabel="#{diaryActivity.diaryActivityName}"
+                  itemValue="#{diaryActivity.diaryActivityName}"
+                />
+              </p:selectCheckboxMenu>
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
 
-		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check"
-				actionListener="#{manageTouristPackBean.saveTouristPack()}" update="manage-touristPack-content"
-				process="manage-touristPack-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTouristPackDialog').hide()"
-				class="ui-button-secondary" />
-		</f:facet>
-	</p:dialog>
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageTouristPackBean.saveTouristPack()}"
+        update="manage-touristPack-content"
+        process="manage-touristPack-content @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageTouristPackDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
 </ui:composition>

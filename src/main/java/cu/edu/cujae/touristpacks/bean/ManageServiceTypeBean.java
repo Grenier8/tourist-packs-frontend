@@ -3,17 +3,16 @@ package cu.edu.cujae.touristpacks.bean;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
-import cu.edu.cujae.touristpacks.service.service_type.IServiceTypeService;
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.ServiceTypeDto;
+import cu.edu.cujae.touristpacks.service.service_type.IServiceTypeService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +31,7 @@ public class ManageServiceTypeBean {
 
     @PostConstruct
     public void init() {
-        serviceTypes = serviceTypes == null ? service.getServiceTypes() : serviceTypes;
+        serviceTypes = service.getServiceTypes();
     }
 
     public void openNew() {
@@ -45,16 +44,16 @@ public class ManageServiceTypeBean {
 
     public void saveServiceType() {
         if (this.selectedServiceType.getIdServiceType() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createServiceType(selectedServiceType);
 
-            this.selectedServiceType.setIdServiceType(r);
-            this.serviceTypes.add(this.selectedServiceType);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_service_type");
         } else {
+            service.updateServiceType(selectedServiceType);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_service_type");
         }
+
+        serviceTypes = service.getServiceTypes();
 
         PrimeFaces.current().executeScript("PF('manageServiceTypeDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-serviceTypes");
@@ -63,15 +62,18 @@ public class ManageServiceTypeBean {
 
     public void deleteServiceType() {
 
-        this.serviceTypes.remove(this.selectedServiceType);
+        service.deleteServiceType(selectedServiceType.getIdServiceType());
         this.selectedServiceType = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
+
+        serviceTypes = service.getServiceTypes();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_service_type");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-serviceTypes");
 
     }
 
     public List<ServiceTypeDto> getServiceTypes() {
-        return serviceTypes;
+        return this.serviceTypes;
     }
 
     public void setServiceTypes(List<ServiceTypeDto> serviceTypes) {
@@ -79,7 +81,7 @@ public class ManageServiceTypeBean {
     }
 
     public ServiceTypeDto getSelectedServiceType() {
-        return selectedServiceType;
+        return this.selectedServiceType;
     }
 
     public void setSelectedServiceType(ServiceTypeDto selectedServiceType) {
@@ -87,10 +89,11 @@ public class ManageServiceTypeBean {
     }
 
     public IServiceTypeService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IServiceTypeService service) {
         this.service = service;
     }
+
 }

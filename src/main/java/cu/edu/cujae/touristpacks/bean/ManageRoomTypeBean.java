@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.RoomTypeDto;
 import cu.edu.cujae.touristpacks.service.room_type.IRoomTypeService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +33,7 @@ public class ManageRoomTypeBean {
 
     @PostConstruct
     public void init() {
-        roomTypes = roomTypes == null ? service.getRoomTypes() : roomTypes;
+        roomTypes = service.getRoomTypes();
     }
 
     public void openNew() {
@@ -45,16 +46,16 @@ public class ManageRoomTypeBean {
 
     public void saveRoomType() {
         if (this.selectedRoomType.getIdRoomType() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createRoomType(selectedRoomType);
 
-            this.selectedRoomType.setIdRoomType(r);
-            this.roomTypes.add(this.selectedRoomType);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_room_type");
         } else {
+            service.updateRoomType(selectedRoomType);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_room_type");
         }
+
+        roomTypes = service.getRoomTypes();
 
         PrimeFaces.current().executeScript("PF('manageRoomTypeDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-roomTypes");
@@ -63,15 +64,18 @@ public class ManageRoomTypeBean {
 
     public void deleteRoomType() {
 
-        this.roomTypes.remove(this.selectedRoomType);
+        service.deleteRoomType(selectedRoomType.getIdRoomType());
         this.selectedRoomType = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
+
+        roomTypes = service.getRoomTypes();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_room_type");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-roomTypes");
 
     }
 
     public List<RoomTypeDto> getRoomTypes() {
-        return roomTypes;
+        return this.roomTypes;
     }
 
     public void setRoomTypes(List<RoomTypeDto> roomTypes) {
@@ -79,7 +83,7 @@ public class ManageRoomTypeBean {
     }
 
     public RoomTypeDto getSelectedRoomType() {
-        return selectedRoomType;
+        return this.selectedRoomType;
     }
 
     public void setSelectedRoomType(RoomTypeDto selectedRoomType) {
@@ -87,10 +91,11 @@ public class ManageRoomTypeBean {
     }
 
     public IRoomTypeService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IRoomTypeService service) {
         this.service = service;
     }
+
 }

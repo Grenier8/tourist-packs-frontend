@@ -1,65 +1,99 @@
 package cu.edu.cujae.touristpacks.service.hotel_contract;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import cu.edu.cujae.touristpacks.dto.HotelContractDto;
-import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.service.hotel.IHotelService;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class HotelContractServiceImpl implements IHotelContractService {
 
+    private String endpoint = "/api/v1/hotel_contracts/";
+
     @Autowired
-    IHotelService hotelService;
+    private RestService restService;
 
     @Override
     public List<HotelContractDto> getHotelContracts() {
         List<HotelContractDto> list = new ArrayList<>();
-
-        HotelDto hotel1 = hotelService.getHotels().get(0);
-        HotelDto hotel2 = hotelService.getHotels().get(1);
-
-        list.add(new HotelContractDto(1, "Contr1", LocalDate.of(2010, 2, 10), LocalDate.of(2010, 2, 10),
-                LocalDate.of(2010, 2, 10), "Desc1", hotel1));
-        list.add(new HotelContractDto(2, "Contr2", LocalDate.of(2020, 2, 10), LocalDate.of(2020, 2, 10),
-                LocalDate.of(2020, 2, 10), "Desc2", hotel2));
-
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, HotelContractDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public HotelContractDto getHotelContractById(int hotelContractId) {
-        // TODO Auto-generated method stub
-        return null;
+    public HotelContractDto getHotelContractById(int idHotelContract) {
+        HotelContractDto hotelContract = null;
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
+            String uri = template.expand(idHotelContract).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            hotelContract = apiRestMapper.mapOne(response, HotelContractDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hotelContract;
     }
 
     @Override
-    public HotelContractDto getHotelContractByName(String hotelContractName) {
-        return getHotelContracts().stream().filter(r -> r.getContractTitle().equals(hotelContractName)).findFirst()
-                .get();
+    public HotelContractDto getHotelContractByTitle(String hotelContractTitle) {
+        HotelContractDto hotelContract = null;
+
+        try {
+            String uri = endpoint + "title/{title}";
+            Map<String, String> map = new HashMap<>();
+            map.put("title", hotelContractTitle);
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
+            hotelContract = apiRestMapper.mapOne(response, HotelContractDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hotelContract;
     }
 
     @Override
     public void createHotelContract(HotelContractDto hotelContract) {
-        // TODO Auto-generated method stub
-
+        restService.POST(endpoint + "", hotelContract, String.class).getBody();
     }
 
     @Override
     public void updateHotelContract(HotelContractDto hotelContract) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, hotelContract, String.class).getBody();
     }
 
     @Override
     public void deleteHotelContract(int idHotelContract) {
-        // TODO Auto-generated method stub
-
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
+        String uri = template.expand(idHotelContract).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

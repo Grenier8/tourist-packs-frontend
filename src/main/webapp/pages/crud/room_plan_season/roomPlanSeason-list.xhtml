@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_room_plan_season_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageRoomPlanSeasonBean.openNew}"
+                update=":form:manage-roomPlanSeason-content"
+                oncomplete="PF('manageRoomPlanSeasonDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput target=":form:manage-roomPlanSeason-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-roomPlanSeasons"
+                  fileName="roomPlanSeasons"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+
+          <p:dataTable
+            id="dt-roomPlanSeasons"
+            widgetVar="dtRoomPlanSeasons"
+            var="roomPlanSeason"
+            value="#{manageRoomPlanSeasonBean.roomPlanSeasons}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="roomPlanSeasons-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel
+                    value="#{msgs.label_room_plan_season_filter}"
+                  />
+                </span>
+
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtRoomPlanSeasons').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
+
+            <p:column
+              headerText="#{msgs.label_room_plan_season_name}"
+              sortBy="#{roomPlanSeason.roomPlanSeasonName}"
+              filterBy="#{roomPlanSeason.roomPlanSeasonName}"
+            >
+              <h:outputText value="#{roomPlanSeason.roomPlanSeasonName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_room_plan_season_room_type}"
+              sortBy="#{roomPlanSeason.roomType.roomTypeName}"
+              filterBy="#{roomPlanSeason.roomType.roomTypeName}"
+            >
+              <h:outputText value="#{roomPlanSeason.roomType.roomTypeName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_room_plan_season_alimentary_plan}"
+              sortBy="#{roomPlanSeason.alimentaryPlan.alimentaryPlanName}"
+              filterBy="#{roomPlanSeason.alimentaryPlan.alimentaryPlanName}"
+            >
+              <h:outputText
+                value="#{roomPlanSeason.alimentaryPlan.alimentaryPlanName}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_room_plan_season_season}"
+              sortBy="#{roomPlanSeason.season.seasonName}"
+              filterBy="#{roomPlanSeason.season.seasonName}"
+            >
+              <h:outputText value="#{roomPlanSeason.season.seasonName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_room_plan_season_price}"
+              sortBy="#{roomPlanSeason.roomReservedPrice}"
+              filterBy="#{roomPlanSeason.roomReservedPrice}"
+            >
+              <h:outputText value="#{roomPlanSeason.roomReservedPrice}" />
+            </p:column>
+
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-roomPlanSeason-content"
+                action="#{manageRoomPlanSeasonBean.openForEdit}"
+                oncomplete="PF('manageRoomPlanSeasonDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{roomPlanSeason}"
+                  target="#{manageRoomPlanSeasonBean.selectedRoomPlanSeason}"
+                />
+                <p:resetInput target=":form:manage-roomPlanSeason-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageRoomPlanSeasonBean.deleteRoomPlanSeason}"
+              >
+                <f:setPropertyActionListener
+                  value="#{roomPlanSeason}"
+                  target="#{manageRoomPlanSeasonBean.selectedRoomPlanSeason}"
+                />
+                <p:confirm
+                  header="#{msgs.message_confirm}"
+                  message="#{msgs.message_delete_room_plan_season}"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
+
+          <ui:include src="roomPlanSeason-form.xhtml"></ui:include>
+
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="#{msgs.button_yes}"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="#{msgs.button_no}"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

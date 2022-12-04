@@ -1,73 +1,99 @@
 package cu.edu.cujae.touristpacks.service.hotel;
 
-import cu.edu.cujae.touristpacks.dto.HotelChainDto;
 import cu.edu.cujae.touristpacks.dto.HotelDto;
-import cu.edu.cujae.touristpacks.dto.ProvinceDto;
-import cu.edu.cujae.touristpacks.service.hotel_chain.HotelChainServiceImpl;
-import cu.edu.cujae.touristpacks.service.hotel_chain.IHotelChainService;
-import cu.edu.cujae.touristpacks.service.province.IProvinceService;
-import cu.edu.cujae.touristpacks.service.province.ProvinceServiceImpl;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HotelServiceImpl implements IHotelService {
 
-    @Autowired
-    IHotelChainService hotelChainService;
+    private String endpoint = "/api/v1/hotels/";
 
     @Autowired
-    IProvinceService provinceService;
+    private RestService restService;
 
     @Override
     public List<HotelDto> getHotels() {
-        List<HotelDto> hotels = new ArrayList<>();
-
-        HotelChainDto hotelChain1 = hotelChainService.getHotelChains().get(0);
-        HotelChainDto hotelChain2 = hotelChainService.getHotelChains().get(1);
-
-        ProvinceDto province1 = provinceService.getProvinces().get(0);
-        ProvinceDto province2 = provinceService.getProvinces().get(1);
-
-        hotels.add(new HotelDto(1, "Royalton Cayo Santa Maria", "Caibarien Villa Clara, 52600", 5, "042350900",
-                "040350950", "cayosantamaria@royalton.com", 5.4, 2, 122, 1, "cayo",
-                hotelChain1, province1));
-        hotels.add(new HotelDto(2, "Hotel Nacional de Cuba", "Calle 21 y O, 10400", 5, "78363564", "78652558",
-                "hotelnacional@grancaribe.com", 16, 0, 426, 2, "ciudad",
-                hotelChain2, province2));
-        return hotels;
+        List<HotelDto> list = new ArrayList<>();
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, HotelDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
-    public HotelDto getHotelById(int hotelId) {
-        return getHotels().stream().filter(r -> r.getIdHotel() == hotelId).findFirst().get();
-    }
+    public HotelDto getHotelById(int idHotel) {
+        HotelDto hotel = null;
 
-    @Override
-    public void createHotel(HotelDto hotel) {
-        // TODO Auto-generated method stub
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
 
-    }
-
-    @Override
-    public void updateHotel(HotelDto hotel) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deleteHotel(int id) {
-        // TODO Auto-generated method stub
-
+            UriTemplate template = new UriTemplate(endpoint + "{idHotel}");
+            String uri = template.expand(idHotel).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            hotel = apiRestMapper.mapOne(response, HotelDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hotel;
     }
 
     @Override
     public HotelDto getHotelByName(String hotelName) {
-        return getHotels().stream().filter(r -> r.getHotelName().equals(hotelName)).findFirst().get();
+        HotelDto hotel = null;
+
+        try {
+            String uri = endpoint + "name/{name}";
+            Map<String, String> map = new HashMap<>();
+            map.put("name", hotelName);
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class).getBody();
+
+            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            hotel = apiRestMapper.mapOne(response, HotelDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hotel;
+    }
+
+    @Override
+    public void createHotel(HotelDto hotel) {
+        restService.POST(endpoint + "", hotel, String.class).getBody();
+    }
+
+    @Override
+    public void updateHotel(HotelDto hotel) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, hotel, String.class).getBody();
+    }
+
+    @Override
+    public void deleteHotel(int idHotel) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idHotel}");
+        String uri = template.expand(idHotel).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
     }
 
 }

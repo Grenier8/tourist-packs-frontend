@@ -5,8 +5,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.ProvinceDto;
 import cu.edu.cujae.touristpacks.service.province.IProvinceService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +33,7 @@ public class ManageProvinceBean {
 
     @PostConstruct
     public void init() {
-        provinces = provinces == null ? service.getProvinces() : provinces;
+        provinces = service.getProvinces();
     }
 
     public void openNew() {
@@ -45,16 +46,16 @@ public class ManageProvinceBean {
 
     public void saveProvince() {
         if (this.selectedProvince.getIdProvince() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createProvince(selectedProvince);
 
-            this.selectedProvince.setIdProvince(r);
-            this.provinces.add(this.selectedProvince);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_province");
         } else {
+            service.updateProvince(selectedProvince);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_province");
         }
+
+        provinces = service.getProvinces();
 
         PrimeFaces.current().executeScript("PF('manageProvinceDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-provinces");
@@ -63,9 +64,12 @@ public class ManageProvinceBean {
 
     public void deleteProvince() {
 
-        this.provinces.remove(this.selectedProvince);
+        service.deleteProvince(selectedProvince.getIdProvince());
         this.selectedProvince = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Provincia eliminada"));
+
+        provinces = service.getProvinces();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_province");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-provinces");
 
     }

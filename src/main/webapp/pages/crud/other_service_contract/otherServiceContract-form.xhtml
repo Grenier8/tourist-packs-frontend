@@ -1,0 +1,189 @@
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_other_service_contract_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageOtherServiceContractDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-otherServiceContract-content" class="ui-fluid">
+      <p:outputPanel
+        rendered="#{not empty manageOtherServiceContractBean.selectedOtherServiceContract}"
+      >
+        <p:panelGrid layout="grid" columns="2">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_contract_title}" />
+              <p:inputText
+                id="name"
+                value="#{manageOtherServiceContractBean.selectedOtherServiceContract.contractTitle}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_other_service_contract_description}"
+              />
+              <p:inputText
+                id="description"
+                value="#{manageOtherServiceContractBean.selectedOtherServiceContract.contractDescription}"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_start_date}"
+              />
+              <p:datePicker
+                id="startDate"
+                value="#{manageOtherServiceContractBean.selectedOtherServiceContract.startDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_end_date}"
+              />
+              <p:datePicker
+                id="endDate"
+                value="#{manageOtherServiceContractBean.selectedOtherServiceContract.endDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_conciliation_date}"
+              />
+              <p:datePicker
+                id="conciliationDate"
+                value="#{manageOtherServiceContractBean.selectedOtherServiceContract.conciliationDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+          </h:panelGroup>
+
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_other_service_contract_service_type}"
+              />
+              <p:selectOneMenu
+                id="serviceType"
+                value="#{manageOtherServiceContractBean.selectedServiceTypeName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageServiceTypeBean.serviceTypes}"
+                  var="serviceType"
+                  itemLabel="#{serviceType.serviceTypeName}"
+                  itemValue="#{serviceType.serviceTypeName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_other_service_contract_province}"
+              />
+              <p:selectOneMenu
+                id="province"
+                value="#{manageOtherServiceContractBean.selectedProvinceName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageProvinceBean.provinces}"
+                  var="province"
+                  itemLabel="#{province.provinceName}"
+                  itemValue="#{province.provinceName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_other_service_contract_cost_per_pax}"
+              />
+              <p:spinner
+                value="#{manageHotelBean.selectedHotel.distanceToAirport}"
+                stepFactor="0.05"
+                min="0"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_other_service_contract_diary_activities}"
+              ></p:outputLabel>
+              <p:selectCheckboxMenu
+                id="multiple"
+                required="true"
+                value="#{manageOtherServiceContractBean.selectedDiaryActivitiesNames}"
+                label="#{msgs.input_select}"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageDiaryActivityBean.diaryActivities}"
+                  var="diaryActivity"
+                  itemLabel="#{diaryActivity.diaryActivityName}"
+                  itemValue="#{diaryActivity.diaryActivityName}"
+                />
+              </p:selectCheckboxMenu>
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageOtherServiceContractBean.saveOtherServiceContract()}"
+        action="#{manageContractBean.updateContracts()}"
+        update="manage-otherServiceContract-content"
+        process="manage-otherServiceContract-content @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageOtherServiceContractDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
+</ui:composition>

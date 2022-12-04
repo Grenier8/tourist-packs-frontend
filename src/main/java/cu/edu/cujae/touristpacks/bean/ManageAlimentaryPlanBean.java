@@ -5,14 +5,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.faces.context.FacesContext;
 
-import cu.edu.cujae.touristpacks.dto.AlimentaryPlanDto;
-import cu.edu.cujae.touristpacks.service.alimentary_plan.IAlimentaryPlanService;
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import cu.edu.cujae.touristpacks.dto.AlimentaryPlanDto;
+import cu.edu.cujae.touristpacks.service.alimentary_plan.IAlimentaryPlanService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -31,7 +33,7 @@ public class ManageAlimentaryPlanBean {
 
     @PostConstruct
     public void init() {
-        alimentaryPlans = alimentaryPlans == null ? service.getAlimentaryPlans() : alimentaryPlans;
+        alimentaryPlans = service.getAlimentaryPlans();
     }
 
     public void openNew() {
@@ -44,16 +46,16 @@ public class ManageAlimentaryPlanBean {
 
     public void saveAlimentaryPlan() {
         if (this.selectedAlimentaryPlan.getIdAlimentaryPlan() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createAlimentaryPlan(selectedAlimentaryPlan);
 
-            this.selectedAlimentaryPlan.setIdAlimentaryPlan(r);
-            this.alimentaryPlans.add(this.selectedAlimentaryPlan);
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar insertada"));
+            JsfUtils.addInfoMessageFromBundle("message_inserted_alimentary_plan");
         } else {
+            service.updateAlimentaryPlan(selectedAlimentaryPlan);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_alimentary_plan");
         }
+
+        alimentaryPlans = service.getAlimentaryPlans();
 
         PrimeFaces.current().executeScript("PF('manageAlimentaryPlanDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-alimentaryPlans");
@@ -62,23 +64,26 @@ public class ManageAlimentaryPlanBean {
 
     public void deleteAlimentaryPlan() {
 
-        this.alimentaryPlans.remove(this.selectedAlimentaryPlan);
+        service.deleteAlimentaryPlan(selectedAlimentaryPlan.getIdAlimentaryPlan());
         this.selectedAlimentaryPlan = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cambiar eliminada"));
+
+        alimentaryPlans = service.getAlimentaryPlans();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_alimentary_plan");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-alimentaryPlans");
 
     }
 
     public List<AlimentaryPlanDto> getAlimentaryPlans() {
-        return alimentaryPlans;
+        return this.alimentaryPlans;
     }
 
-    public void setAlimentaryPlans(List<AlimentaryPlanDto> alimentaryPlans) {
-        this.alimentaryPlans = alimentaryPlans;
+    public void setAlimentaryPlans(List<AlimentaryPlanDto> alimentaryPlan) {
+        this.alimentaryPlans = alimentaryPlan;
     }
 
     public AlimentaryPlanDto getSelectedAlimentaryPlan() {
-        return selectedAlimentaryPlan;
+        return this.selectedAlimentaryPlan;
     }
 
     public void setSelectedAlimentaryPlan(AlimentaryPlanDto selectedAlimentaryPlan) {
@@ -86,10 +91,11 @@ public class ManageAlimentaryPlanBean {
     }
 
     public IAlimentaryPlanService getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(IAlimentaryPlanService service) {
         this.service = service;
     }
+
 }

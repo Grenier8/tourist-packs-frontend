@@ -1,92 +1,161 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_season_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup>
+              <p:commandButton
+                value="#{msgs.button_new}"
+                icon="pi pi-plus"
+                actionListener="#{manageSeasonBean.openNew}"
+                update=":form:manage-season-content"
+                oncomplete="PF('manageSeasonDialog').show()"
+                styleClass="ui-button-success"
+                style="margin-right: 0.5rem"
+              >
+                <p:resetInput target=":form:manage-season-content" />
+              </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-seasons"
+                  fileName="seasons"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
 
-<ui:composition template="/pages/template/layout.xhtml">
-	<ui:define name="title">
-		Listado de temporadas
-	</ui:define>
-	<ui:define name="layout">
-		<h:form id="form">
-			<div class="card crud-demo">
-				<p:toolbar>
-					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageSeasonBean.openNew}"
-							update=":form:manage-season-content" oncomplete="PF('manageSeasonDialog').show()"
-							styleClass="ui-button-success" style="margin-right: .5rem">
-							<p:resetInput target=":form:manage-season-content" />
-						</p:commandButton>
-					</p:toolbarGroup>
-					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
-							<p:dataExporter type="pdf" target="dt-seasons" fileName="seasons" />
-						</p:commandButton>
-					</p:toolbarGroup>
-				</p:toolbar>
+          <p:dataTable
+            id="dt-seasons"
+            widgetVar="dtSeasons"
+            var="season"
+            value="#{manageSeasonBean.seasons}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="seasons-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel
+                    value="#{msgs.label_season_filter}"
+                  ></p:outputLabel>
+                </span>
+                º
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtSeasons').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
 
+            <p:column
+              headerText="#{msgs.label_season_name}"
+              sortBy="#{season.seasonName}"
+              filterBy="#{season.seasonName}"
+            >
+              <h:outputText value="#{season.seasonName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.start_season}"
+              sortBy="#{season.startSeason}"
+              filterBy="#{season.startSeason}"
+            >
+              <h:outputText value="#{season.startSeason}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.end_season}"
+              sortBy="#{season.endSeason}"
+              filterBy="#{season.endSeason}"
+            >
+              <h:outputText value="#{season.endSeason}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.description}"
+              sortBy="#{season.seasonDescription}"
+            >
+              <h:outputText value="#{season.seasonDescription}" />
+            </p:column>
 
-				<p:dataTable id="dt-seasons" widgetVar="dtSeasons" var="season" value="#{manageSeasonBean.seasons}"
-					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
-					<f:facet name="header">
-						<div class="seasons-table-header">
-							<span style="font-weight: bold">Temporadas</span>
+            <p:column exportable="false">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update=":form:manage-season-content"
+                action="#{manageSeasonBean.openForEdit}"
+                oncomplete="PF('manageSeasonDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{season}"
+                  target="#{manageSeasonBean.selectedSeason}"
+                />
+                <p:resetInput target=":form:manage-season-content" />
+              </p:commandButton>
+              <p:commandButton
+                class="ui-button-warning rounded-button"
+                icon="pi pi-trash"
+                process="@this"
+                action="#{manageSeasonBean.deleteSeason}"
+              >
+                <f:setPropertyActionListener
+                  value="#{season}"
+                  target="#{manageSeasonBean.selectedSeason}"
+                />
+                <p:confirm
+                  header="Confirmar"
+                  message="#{msgs.message_delete_season}"
+                  icon="pi pi-exclamation-triangle"
+                />
+              </p:commandButton>
+            </p:column>
+          </p:dataTable>
 
-							<span class="filter-container ui-input-icon-left">
-								<i class="pi pi-search"></i>
-								<p:inputText id="globalFilter" onkeyup="PF('dtSeasons').filter()"
-									placeholder="Buscar" />
-							</span>
+          <ui:include src="season-form.xhtml"></ui:include>
 
-						</div>
-					</f:facet>
-
-
-					<p:column headerText="Nombre" sortBy="#{season.seasonName}" filterBy="#{season.seasonName}">
-						<h:outputText value="#{season.seasonName}" />
-					</p:column>
-					<p:column headerText="Inicio de temporada" sortBy="#{season.startSeason}"
-						filterBy="#{season.startSeason}">
-						<h:outputText value="#{season.startSeason}" />
-					</p:column>
-					<p:column headerText="Fin de temporada" sortBy="#{season.endSeason}" filterBy="#{season.endSeason}">
-						<h:outputText value="#{season.endSeason}" />
-					</p:column>
-					<p:column headerText="Descripción" sortBy="#{season.seasonDescription}">
-						<h:outputText value="#{season.seasonDescription}" />
-					</p:column>
-
-					<p:column exportable="false">
-						<p:commandButton icon="pi pi-pencil" update=":form:manage-season-content"
-							action="#{manageSeasonBean.openForEdit}" oncomplete="PF('manageSeasonDialog').show()"
-							styleClass="edit-button rounded-button ui-button-success" process="@this">
-							<f:setPropertyActionListener value="#{season}"
-								target="#{manageSeasonBean.selectedSeason}" />
-							<p:resetInput target=":form:manage-season-content" />
-						</p:commandButton>
-						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-							action="#{manageSeasonBean.deleteSeason}">
-							<f:setPropertyActionListener value="#{season}"
-								target="#{manageSeasonBean.selectedSeason}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-					</p:column>
-
-				</p:dataTable>
-
-
-				<ui:include src="season-form.xhtml"></ui:include>
-
-
-				<p:confirmDialog global="true" showEffect="fade" width="300">
-					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-						icon="pi pi-times" />
-				</p:confirmDialog>
-			</div>
-		</h:form>
-	</ui:define>
-</ui:composition>
-
+          <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton
+              value="Si"
+              type="button"
+              styleClass="ui-confirmdialog-yes"
+              icon="pi pi-check"
+            />
+            <p:commandButton
+              value="No"
+              type="button"
+              styleClass="ui-confirmdialog-no ui-button-secondary"
+              icon="pi pi-times"
+            />
+          </p:confirmDialog>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
 </html>

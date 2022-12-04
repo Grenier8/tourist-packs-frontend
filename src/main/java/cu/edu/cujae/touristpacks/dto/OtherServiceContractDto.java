@@ -1,5 +1,8 @@
 package cu.edu.cujae.touristpacks.dto;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class OtherServiceContractDto extends ContractDto {
 
 	private int idOtherServiceContract;
@@ -7,17 +10,36 @@ public class OtherServiceContractDto extends ContractDto {
 	private double costPerPax;
 	private ServiceTypeDto serviceType;
 	private ProvinceDto province;
+	private List<DiaryActivityDto> diaryActivities;
 
 	public OtherServiceContractDto() {
 	}
 
-	public OtherServiceContractDto(int idOtherServiceContract, String contractDescription, double costPerPax,
-			ServiceTypeDto serviceType, ProvinceDto province) {
+	public OtherServiceContractDto(int idOtherServiceContract, int idContract, String contractTitle,
+			LocalDate startDate, LocalDate endDate, LocalDate conciliationDate, String contractDescription,
+			double costPerPax,
+			ServiceTypeDto serviceType, ProvinceDto province, List<DiaryActivityDto> diaryActivities) {
+		super(idContract, contractTitle, startDate, endDate, conciliationDate);
+
 		this.idOtherServiceContract = idOtherServiceContract;
 		this.contractDescription = contractDescription;
 		this.costPerPax = costPerPax;
 		this.serviceType = serviceType;
 		this.province = province;
+		this.diaryActivities = diaryActivities;
+	}
+
+	public OtherServiceContractDto(int idContract, String contractTitle,
+			LocalDate startDate, LocalDate endDate, LocalDate conciliationDate, String contractDescription,
+			double costPerPax,
+			ServiceTypeDto serviceType, ProvinceDto province, List<DiaryActivityDto> diaryActivities) {
+		super(idContract, contractTitle, startDate, endDate, conciliationDate);
+
+		this.contractDescription = contractDescription;
+		this.costPerPax = costPerPax;
+		this.serviceType = serviceType;
+		this.province = province;
+		this.diaryActivities = diaryActivities;
 	}
 
 	public int getIdOtherServiceContract() {
@@ -58,6 +80,14 @@ public class OtherServiceContractDto extends ContractDto {
 
 	public void setProvince(ProvinceDto province) {
 		this.province = province;
+	}
+
+	public List<DiaryActivityDto> getDiaryActivities() {
+		return this.diaryActivities;
+	}
+
+	public void setDiaryActivities(List<DiaryActivityDto> diaryActivities) {
+		this.diaryActivities = diaryActivities;
 	}
 
 }

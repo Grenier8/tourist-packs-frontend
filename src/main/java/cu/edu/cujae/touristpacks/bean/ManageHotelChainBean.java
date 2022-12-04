@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import cu.edu.cujae.touristpacks.dto.HotelChainDto;
 import cu.edu.cujae.touristpacks.service.hotel_chain.IHotelChainService;
+import cu.edu.cujae.touristpacks.utils.JsfUtils;
 
 @Component
 @ManagedBean
@@ -32,7 +33,7 @@ public class ManageHotelChainBean {
 
     @PostConstruct
     public void init() {
-        hotelChains = hotelChains == null ? service.getHotelChains() : hotelChains;
+        hotelChains = service.getHotelChains();
     }
 
     public void openNew() {
@@ -45,16 +46,17 @@ public class ManageHotelChainBean {
 
     public void saveHotelChain() {
         if (this.selectedHotelChain.getIdHotelChain() == 0) {
-            int r = (int) (Math.random() * 10000);
+            service.createHotelChain(selectedHotelChain);
 
-            this.selectedHotelChain.setIdHotelChain(r);
-            this.hotelChains.add(this.selectedHotelChain);
+            JsfUtils.addInfoMessageFromBundle("message_inserted_hotel_chain");
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera insertada"));
         } else {
+            service.updateHotelChain(selectedHotelChain);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera modificada"));
+            JsfUtils.addInfoMessageFromBundle("message_updated_hotel_chain");
         }
+
+        hotelChains = service.getHotelChains();
 
         PrimeFaces.current().executeScript("PF('manageHotelChainDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-hotelChains");
@@ -63,9 +65,12 @@ public class ManageHotelChainBean {
 
     public void deleteHotelChain() {
 
-        this.hotelChains.remove(this.selectedHotelChain);
+        service.deleteHotelChain(selectedHotelChain.getIdHotelChain());
         this.selectedHotelChain = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cadena hotelera eliminada"));
+
+        hotelChains = service.getHotelChains();
+
+        JsfUtils.addInfoMessageFromBundle("message_deleted_hotel_chain");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-hotelChains");
 
     }

@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.security;
 
-import cu.edu.cujae.touristpacks.dto.UserDto;
+import cu.edu.cujae.touristpacks.dto.security.UserDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -28,7 +29,8 @@ public class UserServiceImpl implements IUserService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<UserDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, UserDto.class);
         } catch (IOException e) {
             e.printStackTrace();

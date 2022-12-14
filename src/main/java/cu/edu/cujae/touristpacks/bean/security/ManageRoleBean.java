@@ -12,7 +12,7 @@ import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cu.edu.cujae.touristpacks.dto.RoleDto;
+import cu.edu.cujae.touristpacks.dto.security.RoleDto;
 import cu.edu.cujae.touristpacks.service.security.IRoleService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
 

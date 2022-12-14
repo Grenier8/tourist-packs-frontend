@@ -1,4 +1,4 @@
-package cu.edu.cujae.touristpacks.dto;
+package cu.edu.cujae.touristpacks.dto.security;
 
 public class UserDto {
 	private int idUser;

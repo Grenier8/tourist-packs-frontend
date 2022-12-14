@@ -3,16 +3,14 @@ package cu.edu.cujae.touristpacks.bean.security;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cu.edu.cujae.touristpacks.dto.UserDto;
+import cu.edu.cujae.touristpacks.dto.security.UserDto;
 import cu.edu.cujae.touristpacks.service.security.IRoleService;
 import cu.edu.cujae.touristpacks.service.security.IUserService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
@@ -35,11 +33,6 @@ public class ManageUserBean {
 
     public ManageUserBean() {
 
-    }
-
-    @PostConstruct
-    public void init() {
-        users = service.getUsers();
     }
 
     public void openNew() {

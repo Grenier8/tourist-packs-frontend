@@ -1,6 +1,6 @@
 package cu.edu.cujae.touristpacks.service.security;
 
-import cu.edu.cujae.touristpacks.dto.RoleDto;
+import cu.edu.cujae.touristpacks.dto.security.RoleDto;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 

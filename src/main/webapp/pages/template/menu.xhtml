@@ -16,12 +16,17 @@
         </div> -->
 
     <div class="layout-menu">
-      <!-- <div class="menu-category">Administración</div>
-            <div class="menu-items">
-                <h:link outcome="/pages/security/users/user-list.xhtml">
-                    Gestionar Hoteles
-                </h:link>
-            </div> -->
+      <div class="menu-category">Administración</div>
+      <div class="menu-items">
+        <p:outputPanel>
+          <a tabindex="0" class="submenu-link">
+            <h:link outcome="/pages/security/user/user-list.xhtml">
+              Usuarios
+            </h:link>
+          </a>
+        </p:outputPanel>
+      </div>
+
       <div class="menu-category">Gestionar</div>
       <div class="menu-items">
         <p:outputPanel>

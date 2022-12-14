@@ -1,0 +1,119 @@
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_user_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageUserDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-user-content" class="ui-fluid">
+      <p:outputPanel rendered="#{not empty manageUserBean.selectedUser}">
+        <p:panelGrid layout="grid" columns="1">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_user_username}" />
+              <p:inputText
+                id="username"
+                value="#{manageUserBean.selectedUser.username}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_user_name}" />
+              <p:inputText
+                id="name"
+                value="#{manageUserBean.selectedUser.name}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_user_email}" />
+              <p:inputText
+                id="email"
+                required="true"
+                value="#{manageUserBean.selectedUser.email}"
+                validatorMessage="#{msgs.message_user_wrong_email}"
+              >
+                <f:validateRegex
+                  pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"
+                />
+              </p:inputText>
+              <p:message for="@previous"></p:message>
+            </div>
+
+            <div class="p-field">
+              <p:outputLabel for="@next" value="Role" />
+              <p:selectOneMenu
+                id="role"
+                value="#{manageUserBean.selectedRoleName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageRoleBean.roles}"
+                  var="role"
+                  itemLabel="#{role.roleName}"
+                  itemValue="#{role.roleName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_user_password}" />
+              <p:password
+                id="password1"
+                required="true"
+                value="#{manageUserBean.selectedUser.password}"
+                match="password2"
+              >
+              </p:password>
+              <p:message for="@previous"></p:message>
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_user_confirm_password}"
+              />
+              <p:password
+                id="password2"
+                required="true"
+                value="#{manageUserBean.selectedUser.password}"
+              >
+              </p:password>
+              <p:message for="@previous"></p:message>
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageUserBean.saveUser()}"
+        update="manage-user-content"
+        process="manage-user-content @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageUserDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
+</ui:composition>

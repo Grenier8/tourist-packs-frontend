@@ -1,8 +1,8 @@
 package cu.edu.cujae.touristpacks.service.security;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import cu.edu.cujae.touristpacks.dto.UserDto;
+import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
+import cu.edu.cujae.touristpacks.utils.RestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,65 +10,67 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriTemplate;
 
-import cu.edu.cujae.touristpacks.dto.UserDto;
-import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
-import cu.edu.cujae.touristpacks.utils.RestService;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
-	@Autowired
-	private RestService restService;
+    private String endpoint = "/api/v1/users/";
 
-	@Override
-	public List<UserDto> getUsers() {
-		List<UserDto> userList = new ArrayList<UserDto>();
-		try {
-			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-			ApiRestMapper<UserDto> apiRestMapper = new ApiRestMapper<>();
-			String response = (String) restService.GET("/api/v1/users", params, String.class).getBody();
-			userList = apiRestMapper.mapList(response, UserDto.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return userList;
-	}
+    @Autowired
+    private RestService restService;
 
-	@Override
-	public UserDto getUserById(String userId) {
-		UserDto user = null;
+    @Override
+    public List<UserDto> getUsers() {
+        List<UserDto> list = new ArrayList<>();
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<UserDto> apiRestMapper = new ApiRestMapper<>();
+            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            list = apiRestMapper.mapList(response, UserDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
-		try {
-			MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-			ApiRestMapper<UserDto> apiRestMapper = new ApiRestMapper<>();
+    @Override
+    public UserDto getUserById(int idUser) {
+        UserDto user = null;
 
-			UriTemplate template = new UriTemplate("/api/v1/users/{userId}");
-			String uri = template.expand(userId).toString();
-			String response = (String) restService.GET(uri, params, String.class).getBody();
-			user = apiRestMapper.mapOne(response, UserDto.class);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return user;
-	}
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<UserDto> apiRestMapper = new ApiRestMapper<>();
 
-	@Override
-	public void createUser(UserDto user) {
-		restService.POST("/api/v1/users", user, String.class).getBody();
-	}
+            UriTemplate template = new UriTemplate(endpoint + "{idUser}");
+            String uri = template.expand(idUser).toString();
+            String response = (String) restService.GET(uri, params, String.class).getBody();
+            user = apiRestMapper.mapOne(response, UserDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 
-	@Override
-	public void updateUser(UserDto user) {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		restService.PUT("/api/v1/users", params, user, String.class).getBody();
-	}
+    @Override
+    public void createUser(UserDto user) {
+        restService.POST(endpoint + "", user, String.class).getBody();
+    }
 
-	@Override
-	public void deleteUser(String userId) {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		UriTemplate template = new UriTemplate("/api/v1/users/{userId}");
-		String uri = template.expand(userId).toString();
-		restService.DELETE(uri, params, String.class, null).getBody();
-	}
+    @Override
+    public void updateUser(UserDto user) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        restService.PUT(endpoint + "", params, user, String.class).getBody();
+    }
+
+    @Override
+    public void deleteUser(int idUser) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        UriTemplate template = new UriTemplate(endpoint + "{idUser}");
+        String uri = template.expand(idUser).toString();
+        restService.DELETE(uri, params, String.class, null).getBody();
+    }
 
 }

@@ -76,6 +76,7 @@ public class ManageUserBean {
     }
 
     public List<UserDto> getUsers() {
+        users = service.getUsers();
         return this.users;
     }
 

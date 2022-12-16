@@ -70,6 +70,7 @@ public class ManageRoleBean {
     }
 
     public List<RoleDto> getRoles() {
+        roles = service.getRoles();
         return this.roles;
     }
 

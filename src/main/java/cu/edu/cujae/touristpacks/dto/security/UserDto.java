@@ -9,7 +9,6 @@ public class UserDto {
 	private String email;
 
 	public UserDto() {
-		super();
 	}
 
 	public UserDto(String username, String password, String name, RoleDto role, String email) {

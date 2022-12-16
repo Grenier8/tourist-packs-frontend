@@ -71,6 +71,7 @@ public class ManageHotelChainBean {
     }
 
     public List<HotelChainDto> getHotelChains() {
+        hotelChains = service.getHotelChains();
         return this.hotelChains;
     }
 

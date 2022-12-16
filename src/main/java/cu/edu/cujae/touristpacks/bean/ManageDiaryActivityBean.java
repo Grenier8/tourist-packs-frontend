@@ -70,6 +70,7 @@ public class ManageDiaryActivityBean {
     }
 
     public List<DiaryActivityDto> getDiaryActivities() {
+        diaryActivities = service.getDiaryActivities();
         return this.diaryActivities;
     }
 

@@ -51,7 +51,7 @@ public class RoleServiceImpl implements IRoleService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<RoleDto> apiRestMapper = new ApiRestMapper<>();
             role = apiRestMapper.mapOne(response, RoleDto.class);

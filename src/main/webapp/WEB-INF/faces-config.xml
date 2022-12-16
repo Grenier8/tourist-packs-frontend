@@ -5,7 +5,7 @@
 	version="2.3">
 
 	<navigation-rule>
-		<from-view-id>/pages/security/login.xhtml</from-view-id>
+		<from-view-id>/pages/security/login/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>login</from-outcome>
 			<to-view-id>/pages/welcome/welcome.xhtml

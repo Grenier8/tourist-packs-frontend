@@ -50,7 +50,8 @@ public class HotelContractServiceImpl implements IHotelContractService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
             String uri = template.expand(idHotelContract).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             hotelContract = apiRestMapper.mapOne(response, HotelContractDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class HotelContractServiceImpl implements IHotelContractService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<HotelContractDto> apiRestMapper = new ApiRestMapper<>();
             hotelContract = apiRestMapper.mapOne(response, HotelContractDto.class);
@@ -81,13 +82,14 @@ public class HotelContractServiceImpl implements IHotelContractService {
 
     @Override
     public void createHotelContract(HotelContractDto hotelContract) {
-        restService.POST(endpoint + "", hotelContract, String.class).getBody();
+        restService.POST(endpoint + "", hotelContract, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateHotelContract(HotelContractDto hotelContract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, hotelContract, String.class).getBody();
+        restService.PUT(endpoint + "", params, hotelContract, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class HotelContractServiceImpl implements IHotelContractService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idHotelContract}");
         String uri = template.expand(idHotelContract).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

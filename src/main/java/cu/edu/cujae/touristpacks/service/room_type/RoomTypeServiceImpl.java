@@ -50,7 +50,8 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
             String uri = template.expand(idRoomType).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
@@ -81,13 +82,13 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
     @Override
     public void createRoomType(RoomTypeDto roomType) {
-        restService.POST(endpoint + "", roomType, String.class).getBody();
+        restService.POST(endpoint + "", roomType, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateRoomType(RoomTypeDto roomType) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, roomType, String.class).getBody();
+        restService.PUT(endpoint + "", params, roomType, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
         String uri = template.expand(idRoomType).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

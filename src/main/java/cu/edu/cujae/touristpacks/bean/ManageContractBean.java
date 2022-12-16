@@ -34,6 +34,7 @@ public class ManageContractBean {
     }
 
     public List<ContractDto> getContracts() {
+        updateContracts();
         return this.contracts;
     }
 

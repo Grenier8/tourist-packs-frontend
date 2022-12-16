@@ -124,6 +124,7 @@ public class ManageTouristPackBean {
     }
 
     public List<TouristPackDto> getTouristPacks() {
+        touristPacks = service.getTouristPacks();
         return this.touristPacks;
     }
 

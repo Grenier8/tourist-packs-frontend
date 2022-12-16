@@ -103,6 +103,7 @@ public class ManageHotelBean {
     }
 
     public List<HotelDto> getHotels() {
+        hotels = service.getHotels();
         return this.hotels;
     }
 

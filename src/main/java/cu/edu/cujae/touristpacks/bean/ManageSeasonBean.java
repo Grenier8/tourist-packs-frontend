@@ -70,6 +70,7 @@ public class ManageSeasonBean {
     }
 
     public List<SeasonDto> getSeasons() {
+        seasons = service.getSeasons();
         return this.seasons;
     }
 

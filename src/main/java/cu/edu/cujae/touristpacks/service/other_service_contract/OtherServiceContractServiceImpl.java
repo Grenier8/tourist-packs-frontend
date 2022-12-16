@@ -50,7 +50,8 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
             UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
             String uri = template.expand(idOtherServiceContract).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             otherServiceContract = apiRestMapper.mapOne(response, OtherServiceContractDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
             otherServiceContract = apiRestMapper.mapOne(response, OtherServiceContractDto.class);
@@ -81,13 +82,15 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
     @Override
     public void createOtherServiceContract(OtherServiceContractDto otherServiceContract) {
-        restService.POST(endpoint + "", otherServiceContract, String.class).getBody();
+        restService.POST(endpoint + "", otherServiceContract, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
     public void updateOtherServiceContract(OtherServiceContractDto otherServiceContract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, otherServiceContract, String.class).getBody();
+        restService.PUT(endpoint + "", params, otherServiceContract, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -95,7 +98,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
         String uri = template.expand(idOtherServiceContract).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

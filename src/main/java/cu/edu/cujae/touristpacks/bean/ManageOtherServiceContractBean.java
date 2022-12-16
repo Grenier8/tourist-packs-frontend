@@ -103,6 +103,7 @@ public class ManageOtherServiceContractBean {
     }
 
     public List<OtherServiceContractDto> getOtherServiceContracts() {
+        otherServiceContracts = service.getOtherServiceContracts();
         return this.otherServiceContracts;
     }
 

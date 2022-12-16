@@ -50,7 +50,8 @@ public class MayorServiceImpl implements IMayorService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idMayor}");
             String uri = template.expand(idMayor).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             minor = apiRestMapper.mapOne(response, MayorDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class MayorServiceImpl implements IMayorService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<MayorDto> apiRestMapper = new ApiRestMapper<>();
             minor = apiRestMapper.mapOne(response, MayorDto.class);
@@ -81,13 +82,13 @@ public class MayorServiceImpl implements IMayorService {
 
     @Override
     public void createMayor(MayorDto minor) {
-        restService.POST(endpoint + "", minor, String.class).getBody();
+        restService.POST(endpoint + "", minor, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateMayor(MayorDto minor) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, minor, String.class).getBody();
+        restService.PUT(endpoint + "", params, minor, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class MayorServiceImpl implements IMayorService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idMayor}");
         String uri = template.expand(idMayor).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

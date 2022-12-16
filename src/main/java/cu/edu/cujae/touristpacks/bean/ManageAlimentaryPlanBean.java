@@ -70,6 +70,7 @@ public class ManageAlimentaryPlanBean {
     }
 
     public List<AlimentaryPlanDto> getAlimentaryPlans() {
+        this.alimentaryPlans = service.getAlimentaryPlans();
         return this.alimentaryPlans;
     }
 

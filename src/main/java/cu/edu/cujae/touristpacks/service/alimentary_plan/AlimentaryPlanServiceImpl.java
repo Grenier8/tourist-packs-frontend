@@ -50,7 +50,8 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
             String uri = template.expand(idAlimentaryPlan).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<AlimentaryPlanDto> apiRestMapper = new ApiRestMapper<>();
             alimentaryPlan = apiRestMapper.mapOne(response, AlimentaryPlanDto.class);
@@ -81,13 +82,14 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
 
     @Override
     public void createAlimentaryPlan(AlimentaryPlanDto alimentaryPlan) {
-        restService.POST(endpoint + "", alimentaryPlan, String.class).getBody();
+        restService.POST(endpoint + "", alimentaryPlan, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateAlimentaryPlan(AlimentaryPlanDto alimentaryPlan) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, alimentaryPlan, String.class).getBody();
+        restService.PUT(endpoint + "", params, alimentaryPlan, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class AlimentaryPlanServiceImpl implements IAlimentaryPlanService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idAlimentaryPlan}");
         String uri = template.expand(idAlimentaryPlan).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

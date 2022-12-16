@@ -65,6 +65,7 @@ public class ManageVehicleBean {
     }
 
     public List<VehicleDto> getVehicles() {
+        vehicles = service.getVehicles();
         return this.vehicles;
     }
 

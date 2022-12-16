@@ -68,6 +68,7 @@ public class ManageServiceTypeBean {
     }
 
     public List<ServiceTypeDto> getServiceTypes() {
+        serviceTypes = service.getServiceTypes();
         return this.serviceTypes;
     }
 

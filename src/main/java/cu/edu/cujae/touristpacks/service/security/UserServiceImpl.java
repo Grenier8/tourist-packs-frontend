@@ -59,7 +59,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void createUser(UserDto user) {
-        restService.POST(endpoint + "", user, String.class).getBody();
+        restService.POST(endpoint + "", user, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override

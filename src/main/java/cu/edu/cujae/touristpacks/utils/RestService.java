@@ -30,10 +30,10 @@ public class RestService {
         return this.GET(endpoint, queryParams, clss, null);
     }
 
-    public ResponseEntity GETEntity(String endpoint, Map<String, String> queryParams, Class clss) {
+    public ResponseEntity GETEntity(String endpoint, Map<String, String> queryParams, Class clss, String jwt) {
         try {
-            return buildRestTemplate().getForEntity(
-                    getUrlBackend() + endpoint, clss, queryParams);
+            return buildRestTemplate().exchange(getUrlBackend() + endpoint, HttpMethod.GET, HttpEntity(jwt), clss,
+                    queryParams);
         } catch (HttpServerErrorException e) {
             return handleRequestException(e);
         }

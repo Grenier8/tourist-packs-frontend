@@ -70,6 +70,7 @@ public class ManageMayorBean {
     }
 
     public List<MayorDto> getMayors() {
+        minors = service.getMayors();
         return this.minors;
     }
 

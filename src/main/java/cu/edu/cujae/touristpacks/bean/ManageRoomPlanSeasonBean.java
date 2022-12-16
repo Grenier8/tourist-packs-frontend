@@ -91,6 +91,7 @@ public class ManageRoomPlanSeasonBean {
     }
 
     public List<RoomPlanSeasonDto> getRoomPlanSeasons() {
+        roomPlanSeasons = service.getRoomPlanSeasons();
         return this.roomPlanSeasons;
     }
 

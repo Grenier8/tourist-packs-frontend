@@ -68,6 +68,7 @@ public class ManageHotelModalityBean {
     }
 
     public List<HotelModalityDto> getHotelModalities() {
+        hotelModalities = service.getHotelModalities();
         return this.hotelModalities;
     }
 

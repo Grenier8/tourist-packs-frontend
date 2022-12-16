@@ -97,6 +97,7 @@ public class ManageHotelContractBean {
     }
 
     public List<HotelContractDto> getHotelContracts() {
+        hotelContracts = service.getHotelContracts();
         return this.hotelContracts;
     }
 

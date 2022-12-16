@@ -70,6 +70,7 @@ public class ManageRoomTypeBean {
     }
 
     public List<RoomTypeDto> getRoomTypes() {
+        roomTypes = service.getRoomTypes();
         return this.roomTypes;
     }
 

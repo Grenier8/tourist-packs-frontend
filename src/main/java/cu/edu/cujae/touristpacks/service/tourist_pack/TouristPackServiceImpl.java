@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.tourist_pack;
 
 import cu.edu.cujae.touristpacks.dto.TouristPackDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class TouristPackServiceImpl implements ITouristPackService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, TouristPackDto.class);
         } catch (IOException e) {
             e.printStackTrace();

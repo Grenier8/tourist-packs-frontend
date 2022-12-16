@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.service_type;
 
 import cu.edu.cujae.touristpacks.dto.ServiceTypeDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class ServiceTypeServiceImpl implements IServiceTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ServiceTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, ServiceTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();

@@ -48,7 +48,8 @@ public class UserServiceImpl implements IUserService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idUser}");
             String uri = template.expand(idUser).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             user = apiRestMapper.mapOne(response, UserDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +65,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void updateUser(UserDto user) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, user, String.class).getBody();
+        restService.PUT(endpoint + "", params, user, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UserServiceImpl implements IUserService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idUser}");
         String uri = template.expand(idUser).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

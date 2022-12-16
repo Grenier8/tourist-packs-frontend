@@ -42,11 +42,6 @@ public class ManageHotelContractBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        hotelContracts = service.getHotelContracts();
-    }
-
     public void openNew() {
         this.selectedHotelContract = new HotelContractDto();
     }

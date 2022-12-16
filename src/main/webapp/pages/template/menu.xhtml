@@ -3,6 +3,7 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:sec="http://www.springframework.org/security/tags"
   xmlns:p="http://primefaces.org/ui"
 >
   <div class="layout-sidebar">
@@ -20,9 +21,11 @@
       <div class="menu-items">
         <p:outputPanel>
           <a tabindex="0" class="submenu-link">
-            <h:link outcome="/pages/security/user/user-list.xhtml">
-              Usuarios
-            </h:link>
+            <sec:authorize access="hasAnyAuthority('admin')">
+              <h:link outcome="/pages/security/user/user-list.xhtml">
+                Usuarios
+              </h:link>
+            </sec:authorize>
           </a>
         </p:outputPanel>
       </div>

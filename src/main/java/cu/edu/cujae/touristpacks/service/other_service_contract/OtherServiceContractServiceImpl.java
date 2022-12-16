@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.other_service_contract;
 
 import cu.edu.cujae.touristpacks.dto.OtherServiceContractDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, OtherServiceContractDto.class);
         } catch (IOException e) {
             e.printStackTrace();

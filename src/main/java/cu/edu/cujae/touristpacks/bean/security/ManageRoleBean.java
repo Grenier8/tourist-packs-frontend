@@ -31,11 +31,6 @@ public class ManageRoleBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        roles = service.getRoles();
-    }
-
     public void openNew() {
         this.selectedRole = new RoleDto();
     }

@@ -29,11 +29,6 @@ public class ManageHotelModalityBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        hotelModalities = service.getHotelModalities();
-    }
-
     public void openNew() {
         this.selectedHotelModality = new HotelModalityDto();
     }

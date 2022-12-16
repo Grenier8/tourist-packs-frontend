@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.province;
 
 import cu.edu.cujae.touristpacks.dto.ProvinceDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -33,7 +34,8 @@ public class ProvinceServiceImpl implements IProvinceService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, ProvinceDto.class);
         } catch (IOException e) {
             e.printStackTrace();

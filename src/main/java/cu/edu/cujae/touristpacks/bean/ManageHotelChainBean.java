@@ -31,11 +31,6 @@ public class ManageHotelChainBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        hotelChains = service.getHotelChains();
-    }
-
     public void openNew() {
         this.selectedHotelChain = new HotelChainDto();
     }

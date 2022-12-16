@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.room_plan_season;
 
 import cu.edu.cujae.touristpacks.dto.RoomPlanSeasonDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, RoomPlanSeasonDto.class);
         } catch (IOException e) {
             e.printStackTrace();

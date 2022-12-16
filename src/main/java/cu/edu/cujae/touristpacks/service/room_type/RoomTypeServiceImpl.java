@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.room_type;
 
 import cu.edu.cujae.touristpacks.dto.RoomTypeDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, RoomTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();

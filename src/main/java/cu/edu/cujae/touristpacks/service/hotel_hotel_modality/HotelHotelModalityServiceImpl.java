@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.hotel_hotel_modality;
 
 import cu.edu.cujae.touristpacks.dto.HotelHotelModalityDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -28,7 +29,8 @@ public class HotelHotelModalityServiceImpl implements IHotelHotelModalityService
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelHotelModalityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, HotelHotelModalityDto.class);
         } catch (IOException e) {
             e.printStackTrace();

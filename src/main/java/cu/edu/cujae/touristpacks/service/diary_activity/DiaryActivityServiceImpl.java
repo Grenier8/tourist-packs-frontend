@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.diary_activity;
 
 import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, DiaryActivityDto.class);
         } catch (IOException e) {
             e.printStackTrace();

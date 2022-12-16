@@ -29,11 +29,6 @@ public class ManageContractBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        updateContracts();
-    }
-
     public void updateContracts() {
         contracts = service.getContracts();
     }

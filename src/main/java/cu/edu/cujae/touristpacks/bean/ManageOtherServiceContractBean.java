@@ -47,11 +47,6 @@ public class ManageOtherServiceContractBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        otherServiceContracts = service.getOtherServiceContracts();
-    }
-
     public void openNew() {
         this.selectedOtherServiceContract = new OtherServiceContractDto();
     }

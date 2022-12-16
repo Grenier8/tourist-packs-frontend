@@ -47,11 +47,6 @@ public class ManageRoomPlanSeasonBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        roomPlanSeasons = service.getRoomPlanSeasons();
-    }
-
     public void openNew() {
         this.selectedRoomPlanSeason = new RoomPlanSeasonDto();
     }
@@ -62,7 +57,8 @@ public class ManageRoomPlanSeasonBean {
 
     public void saveRoomPlanSeason() {
         selectedRoomPlanSeason.setRoomType(roomTypeService.getRoomTypeByName(selectedRoomTypeName));
-        selectedRoomPlanSeason.setAlimentaryPlan(alimentaryPlanService.getAlimentaryPlanByName(selectedAlimentaryPlanName));
+        selectedRoomPlanSeason
+                .setAlimentaryPlan(alimentaryPlanService.getAlimentaryPlanByName(selectedAlimentaryPlanName));
         selectedRoomPlanSeason.setSeason(seasonService.getSeasonByName(selectedSeasonName));
 
         if (this.selectedRoomPlanSeason.getIdRoomPlanSeason() == 0) {
@@ -118,7 +114,6 @@ public class ManageRoomPlanSeasonBean {
         this.service = service;
     }
 
-
     public String getSelectedRoomTypeName() {
         return this.selectedRoomTypeName;
     }
@@ -166,6 +161,5 @@ public class ManageRoomPlanSeasonBean {
     public void setSeasonService(ISeasonService seasonService) {
         this.seasonService = seasonService;
     }
-    
 
 }

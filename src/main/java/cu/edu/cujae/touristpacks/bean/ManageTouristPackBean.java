@@ -53,11 +53,6 @@ public class ManageTouristPackBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        touristPacks = service.getTouristPacks();
-    }
-
     public void openNew() {
         this.selectedTouristPack = new TouristPackDto();
     }

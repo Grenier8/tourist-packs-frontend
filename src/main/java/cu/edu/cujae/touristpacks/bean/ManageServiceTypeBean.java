@@ -29,11 +29,6 @@ public class ManageServiceTypeBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        serviceTypes = service.getServiceTypes();
-    }
-
     public void openNew() {
         this.selectedServiceType = new ServiceTypeDto();
     }

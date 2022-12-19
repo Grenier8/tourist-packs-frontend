@@ -17,159 +17,176 @@
         </div> -->
 
     <div class="layout-menu">
-      <div class="menu-category">Administración</div>
-      <div class="menu-items">
-        <p:outputPanel>
-          <a tabindex="0" class="submenu-link">
-            <sec:authorize access="hasAnyAuthority('admin')">
+      <sec:authorize access="hasAnyAuthority('admin')">
+        <div class="menu-category">#{msgs.label_menu_administration}</div>
+        <div class="menu-items">
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link">
               <h:link outcome="/pages/security/user/user-list.xhtml">
-                Usuarios
+                #{msgs.label_menu_users}
               </h:link>
-            </sec:authorize>
-          </a>
-        </p:outputPanel>
-      </div>
+            </a>
+          </p:outputPanel>
+        </div>
+      </sec:authorize>
 
-      <div class="menu-category">Gestionar</div>
+      <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
+        <div class="menu-category">#{msgs.label_menu_manage}</div>
+        <div class="menu-items">
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link">
+              <h:link outcome="/pages/crud/contract/contract-list.xhtml">
+                #{msgs.label_menu_contracts}
+              </h:link>
+            </a>
+          </p:outputPanel>
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link"> #{msgs.label_menu_hotels} </a>
+            <div class="submenu">
+              <ul>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/hotel_contract/hotelContract-list.xhtml"
+                  >
+                    #{msgs.label_menu_hotel_contracts}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link outcome="/pages/crud/hotel/hotel-list.xhtml">
+                    #{msgs.label_menu_hotels}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/hotel_chain/hotelChain-list.xhtml"
+                  >
+                    #{msgs.label_menu_hotel_chains}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link outcome="/pages/crud/province/province-list.xhtml">
+                    #{msgs.label_menu_provinces}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/hotel_modality/hotelModality-list.xhtml"
+                  >
+                    #{msgs.label_menu_hotel_modalities}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link outcome="/pages/crud/room_type/roomType-list.xhtml">
+                    #{msgs.label_menu_room_types}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link outcome="/pages/crud/season/season-list.xhtml">
+                    #{msgs.label_menu_seasons}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/alimentary_plan/alimentaryPlan-list.xhtml"
+                  >
+                    #{msgs.label_menu_alimentary_plans}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/room_plan_season/roomPlanSeason-list.xhtml"
+                  >
+                    #{msgs.label_menu_room_plan_seasons}
+                  </h:link>
+                </li>
+              </ul>
+            </div>
+          </p:outputPanel>
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link"> Transporte </a>
+            <div class="submenu">
+              <ul>
+                <li>
+                  <h:link> Contratos de transporte </h:link>
+                </li>
+                <li>
+                  <h:link> Modalidades de transporte </h:link>
+                </li>
+                <li>
+                  <h:link> Modalidades Hora-Km </h:link>
+                </li>
+                <li>
+                  <h:link> Modalidades Km </h:link>
+                </li>
+                <li>
+                  <h:link> Modalidades Recorrido </h:link>
+                </li>
+                <li>
+                  <h:link> Recorridos </h:link>
+                </li>
+                <li>
+                  <h:link> Servicios de transporte </h:link>
+                </li>
+                <li>
+                  <h:link> Servicios de transporte de contrato </h:link>
+                </li>
+                <li>
+                  <h:link outcome="/pages/crud/vehicle/vehicle-list.xhtml">
+                    Vehiculos
+                  </h:link>
+                </li>
+                <li>
+                  <h:link> Proveedores </h:link>
+                </li>
+              </ul>
+            </div>
+          </p:outputPanel>
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link">
+              #{msgs.label_menu_other_services}
+            </a>
+            <div class="submenu">
+              <ul>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/other_service_contract/otherServiceContract-list.xhtml"
+                  >
+                    #{msgs.label_menu_other_service_contracts}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/diary_activity/diaryActivity-list.xhtml"
+                  >
+                    #{msgs.label_menu_diary_activities}
+                  </h:link>
+                </li>
+                <li>
+                  <h:link
+                    outcome="/pages/crud/service_type/serviceType-list.xhtml"
+                  >
+                    #{msgs.label_menu_service_types}
+                  </h:link>
+                </li>
+              </ul>
+            </div>
+          </p:outputPanel>
+          <p:outputPanel>
+            <a tabindex="0" class="submenu-link">
+              <h:link outcome="/pages/crud/tourist_pack/touristPack-list.xhtml">
+                #{msgs.label_menu_tourist_packs}
+              </h:link>
+            </a>
+          </p:outputPanel>
+        </div>
+      </sec:authorize>
+
+      <div class="menu-category">#{msgs.label_menu_views}</div>
       <div class="menu-items">
-        <p:outputPanel>
-          <a tabindex="0" class="submenu-link">
-            <h:link outcome="/pages/crud/contract/contract-list.xhtml">
-              Contratos
-            </h:link>
-          </a>
-        </p:outputPanel>
-        <p:outputPanel>
-          <a tabindex="0" class="submenu-link"> Hoteles </a>
-          <div class="submenu">
-            <ul>
-              <li>
-                <h:link
-                  outcome="/pages/crud/hotel_contract/hotelContract-list.xhtml"
-                >
-                  Contratos de hoteles
-                </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/hotel/hotel-list.xhtml">
-                  Hoteles
-                </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/hotel_chain/hotelChain-list.xhtml">
-                  Cadenas Hoteleras
-                </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/province/province-list.xhtml">
-                  Provincias
-                </h:link>
-              </li>
-              <li>
-                <h:link
-                  outcome="/pages/crud/hotel_modality/hotelModality-list.xhtml"
-                >
-                  Modalidades de hotel
-                </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/room_type/roomType-list.xhtml">
-                  Tipos de habitación
-                </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/season/season-list.xhtml">
-                  Temporadas
-                </h:link>
-              </li>
-              <li>
-                <h:link
-                  outcome="/pages/crud/alimentary_plan/alimentaryPlan-list.xhtml"
-                >
-                  Planes alimenticios
-                </h:link>
-              </li>
-              <li>
-                <h:link
-                  outcome="/pages/crud/room_plan_season/roomPlanSeason-list.xhtml"
-                >
-                  Planes de habitación por temporada
-                </h:link>
-              </li>
-            </ul>
-          </div>
-        </p:outputPanel>
-        <p:outputPanel>
-          <a tabindex="0" class="submenu-link"> Transporte </a>
-          <div class="submenu">
-            <ul>
-              <li>
-                <h:link> Contratos de transporte </h:link>
-              </li>
-              <li>
-                <h:link> Modalidades de transporte </h:link>
-              </li>
-              <li>
-                <h:link> Modalidades Hora-Km </h:link>
-              </li>
-              <li>
-                <h:link> Modalidades Km </h:link>
-              </li>
-              <li>
-                <h:link> Modalidades Recorrido </h:link>
-              </li>
-              <li>
-                <h:link> Recorridos </h:link>
-              </li>
-              <li>
-                <h:link> Servicios de transporte </h:link>
-              </li>
-              <li>
-                <h:link> Servicios de transporte de contrato </h:link>
-              </li>
-              <li>
-                <h:link outcome="/pages/crud/vehicle/vehicle-list.xhtml">
-                  Vehiculos
-                </h:link>
-              </li>
-              <li>
-                <h:link> Proveedores </h:link>
-              </li>
-            </ul>
-          </div>
-        </p:outputPanel>
-        <p:outputPanel>
-          <a tabindex="0" class="submenu-link"> Otros servicios </a>
-          <div class="submenu">
-            <ul>
-              <li>
-                <h:link
-                  outcome="/pages/crud/other_service_contract/otherServiceContract-list.xhtml"
-                >
-                  Contratos de otros servicios
-                </h:link>
-              </li>
-              <li>
-                <h:link
-                  outcome="/pages/crud/diary_activity/diaryActivity-list.xhtml"
-                >
-                  Actividades diarias
-                </h:link>
-              </li>
-              <li>
-                <h:link
-                  outcome="/pages/crud/service_type/serviceType-list.xhtml"
-                >
-                  Tipos de servicio
-                </h:link>
-              </li>
-            </ul>
-          </div>
-        </p:outputPanel>
         <p:outputPanel>
           <a tabindex="0" class="submenu-link">
             <h:link outcome="/pages/crud/tourist_pack/touristPack-list.xhtml">
-              Paquetes turísticos
+              #{msgs.label_menu_tourist_packs}
             </h:link>
           </a>
         </p:outputPanel>

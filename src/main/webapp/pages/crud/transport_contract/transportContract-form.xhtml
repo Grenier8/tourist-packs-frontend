@@ -127,6 +127,7 @@
         value="#{msgs.button_save}"
         icon="pi pi-check"
         actionListener="#{manageTransportContractBean.saveTransportContract()}"
+        action="#{manageContractBean.updateContracts()}"
         update="manage-transportContract-content"
         process="manage-transportContract-content @this"
       />

@@ -99,4 +99,25 @@ public class HotelServiceImpl implements IHotelService {
         restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
+    @Override
+    public List<HotelDto> getAllIncludedHotels() {
+        List<HotelDto> list = new ArrayList<>();
+
+        try {
+            String uri = endpoint + "modality/{modality}";
+            Map<String, String> map = new HashMap<>();
+            map.put("modality", "Todo Incluido");
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
+
+            ApiRestMapper<HotelDto> apiRestMapper = new ApiRestMapper<>();
+            list = apiRestMapper.mapList(response, HotelDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

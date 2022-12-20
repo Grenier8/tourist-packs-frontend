@@ -7,15 +7,6 @@
   xmlns:p="http://primefaces.org/ui"
 >
   <div class="layout-sidebar">
-    <!-- <div class="layout-sidebar-filter ui-fluid ui-input-filled">
-            <h:form>
-                    <p:autoComplete placeholder="Search by name..." minQueryLength="3" effect="fade" 
-                                panelStyleClass="layout-sidebar-filter-panel" scrollHeight="300" emptyMessage="No results found!">
-                    
-                </p:autoComplete>
-            </h:form>
-        </div> -->
-
     <div class="layout-menu">
       <sec:authorize access="hasAnyAuthority('admin')">
         <div class="menu-category">#{msgs.label_menu_administration}</div>
@@ -150,9 +141,6 @@
                   </h:link>
                 </li>
                 <li>
-                  <h:link> Servicios de transporte de contrato </h:link>
-                </li>
-                <li>
                   <h:link outcome="/pages/crud/vehicle/vehicle-list.xhtml">
                     #{msgs.label_menu_vehicles}
                   </h:link>
@@ -205,12 +193,12 @@
         </div>
       </sec:authorize>
 
-      <div class="menu-category">#{msgs.label_menu_views}</div>
+      <div class="menu-category">#{msgs.label_menu_reports}</div>
       <div class="menu-items">
         <p:outputPanel>
           <a tabindex="0" class="submenu-link">
-            <h:link outcome="/pages/crud/tourist_pack/touristPack-list.xhtml">
-              #{msgs.label_menu_tourist_packs}
+            <h:link outcome="/pages/reports/reportAllIncludedHotels-list.xhtml">
+              #{msgs.label_menu_reports_all_included_hotels}
             </h:link>
           </a>
         </p:outputPanel>

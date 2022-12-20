@@ -81,7 +81,7 @@ public class ManageTransportContractBean {
 
     public void deleteTransportContract() {
 
-        service.deleteTransportContract(selectedTransportContract.getIdContract());
+        service.deleteTransportContract(selectedTransportContract.getIdTransportContract());
         this.selectedTransportContract = null;
 
         transportContracts = service.getTransportContracts();

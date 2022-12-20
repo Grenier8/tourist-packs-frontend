@@ -152,7 +152,8 @@
                 class="ui-button-warning rounded-button"
                 icon="pi pi-trash"
                 process="@this"
-                action="#{manageTransportContractBean.deleteTransportContract}"
+                actionListener="#{manageTransportContractBean.deleteTransportContract}"
+                action="#{manageContractBean.updateContracts()}"
               >
                 <f:setPropertyActionListener
                   value="#{transportContract}"

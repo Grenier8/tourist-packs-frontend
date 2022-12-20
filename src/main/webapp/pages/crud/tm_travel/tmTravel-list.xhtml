@@ -5,21 +5,25 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de tmTravel
+	<p:outputLabel
+        value="#{msgs.label_tmTravel_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+		
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTmTravelBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTmTravelBean.openNew}"
 							update=":form:manage-tmTravel-content" oncomplete="PF('manageTmTravelDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-tmTravel-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-tmTravels" fileName="tmTravels" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,27 +34,31 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="tmTravels-table-header">
-							<span style="font-weight: bold">Temporadas</span>
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_tmTravel_filter}"
+                  				></p:outputLabel>
+                  			</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTmTravels').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
-					<p:column headerText="Modalidad de Transporte" sortBy="#{tmTravel.transportModalityName}" filterBy="#{tmTravel.transportModalityName}">
+					<p:column headerText="#{msgs.label_tmTravel_transportModalityName}" sortBy="#{tmTravel.transportModalityName}" filterBy="#{tmTravel.transportModalityName}">
 						<h:outputText value="#{tmTravel.transportModalityName}" />
 					</p:column>
-					<p:column headerText="Descripción del Viaje" sortBy="#{tmTravel.travelDescription}" filterBy="#{tmTravel.travelDescription}">
+					<p:column headerText="#{msgs.label_tmTravel_travelDescription}" sortBy="#{tmTravel.travelDescription}" filterBy="#{tmTravel.travelDescription}">
 						<h:outputText value="#{tmTravel.travelDescription}" />
 					</p:column>
-					<p:column headerText="Costo del Viaje" sortBy="#{tmTravel.costTravel}" filterBy="#{tmTravel.costTravel}">
+					<p:column headerText="#{msgs.label_tmTravel_costTravel}" sortBy="#{tmTravel.costTravel}" filterBy="#{tmTravel.costTravel}">
 						<h:outputText value="#{tmTravel.costTravel}" />
 					</p:column>
-					<p:column headerText="Costo del Viaje ida y Vuelta" sortBy="#{tmTravel.costTravelGoAndBack}" filterBy="#{tmTravel.costTravelGoAndBack}">
+					<p:column headerText="#{msgs.label_tmTravel_costTravelGoAndBack}" sortBy="#{tmTravel.costTravelGoAndBack}" filterBy="#{tmTravel.costTravelGoAndBack}">
 						<h:outputText value="#{tmTravel.costTravelGoAndBack}" />
 					</p:column>
 
@@ -66,7 +74,7 @@
 							action="#{manageTmTravelBean.deleteTmTravel}">
 							<f:setPropertyActionListener value="#{tmTravel}"
 								target="#{manageTmTravelBean.selectedTmTravel}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_tmTravel}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

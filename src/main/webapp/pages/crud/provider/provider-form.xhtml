@@ -4,14 +4,14 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dialog header="Detalles del proveedor" showEffect="fade" modal="true"
+	<p:dialog header="#{msgs.label_provider_form_header}" showEffect="fade" modal="true"
 		widgetVar="manageProviderDialog" responsive="true">
 		<p:outputPanel id="manage-provider-content" class="ui-fluid">
 			<p:outputPanel rendered="#{not empty manageProviderBean.selectedProvider}">
 				<p:panelGrid layout="grid" columns="1">
 					<h:panelGroup>
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Nombre del Proveedor" />
+							<p:outputLabel for="@next" value="#{msgs.label_provider_name}" />
 							<p:inputText id="provider" value="#{manageProviderBean.selectedProvider.providerName}"
 										 required="true" />
 							<p:message for="@previous" />
@@ -22,9 +22,9 @@
 		</p:outputPanel>
 
 		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageProviderBean.saveProvider()}"
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check" actionListener="#{manageProviderBean.saveProvider()}"
 							 update="manage-provider-content" process="manage-provider-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageProviderDialog').hide()"
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times" onclick="PF('manageProviderDialog').hide()"
 							 class="ui-button-secondary" />
 		</f:facet>
 	</p:dialog>

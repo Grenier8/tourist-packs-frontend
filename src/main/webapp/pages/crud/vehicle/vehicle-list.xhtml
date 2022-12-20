@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de Vehiculos
+		<p:outputLabel
+        value="#{msgs.label_vehicle_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageVehicleBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageVehicleBean.openNew}"
 							update=":form:manage-vehicle-content" oncomplete="PF('manageVehicleDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-vehicle-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-vehicles" fileName="vehicles" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,37 +33,41 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="vehicles-table-header">
-							<span style="font-weight: bold">Vehiculos</span>
-
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_vehicle_filter}"
+                  				></p:outputLabel>
+                  				</span>
+                  				
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtVehicles').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
 
-					<p:column headerText="Placa" sortBy="#{vehicle.plate}" filterBy="#{vehicle.plate}">
+					<p:column headerText="#{msgs.label_vehiclePlate}" sortBy="#{vehicle.plate}" filterBy="#{vehicle.plate}">
 						<h:outputText value="#{vehicle.plate}" />
 					</p:column>
-					<p:column headerText="Marca" sortBy="#{vehicle.brand}" filterBy="#{vehicle.brand}">
+					<p:column headerText="#{msgs.label_vehicleBrand}" sortBy="#{vehicle.brand}" filterBy="#{vehicle.brand}">
 						<h:outputText value="#{vehicle.brand}" />
 					</p:column>
-					<p:column headerText="noCapacidad de Equipaje" sortBy="#{vehicle.noBaggageCapacity}"
+					<p:column headerText="#{msgs.label_vehicle_nogarbageCapacity}" sortBy="#{vehicle.noBaggageCapacity}"
 						filterBy="#{vehicle.noBaggageCapacity}">
 						<h:outputText value="#{vehicle.noBaggageCapacity}" />
 					</p:column>
-					<p:column headerText="Capacidad de Equipaje" sortBy="#{vehicle.baggageCapacity}"
+					<p:column headerText="#{msgs.label_vehicle_garbageCapacity}" sortBy="#{vehicle.baggageCapacity}"
 						filterBy="#{vehicle.baggageCapacity}">
 						<h:outputText value="#{vehicle.baggageCapacity}" />
 					</p:column>
-					<p:column headerText="Capacidad Total" sortBy="#{vehicle.totalCapacity}"
+					<p:column headerText="#{msgs.label_vehicle_totalCapacity}" sortBy="#{vehicle.totalCapacity}"
 						filterBy="#{vehicle.totalCapacity}">
 						<h:outputText value="#{vehicle.totalCapacity}" />
 					</p:column>
-					<p:column headerText="Año de Fabricación" sortBy="#{vehicle.fabricationYear}"
+					<p:column headerText="#{msgs.label_vehicle_fabricationYear}" sortBy="#{vehicle.fabricationYear}"
 						filterBy="#{vehicle.fabricationYear}">
 						<h:outputText value="#{vehicle.fabricationYear}" />
 					</p:column>
@@ -77,7 +84,7 @@
 							action="#{manageVehicleBean.deleteVehicle}">
 							<f:setPropertyActionListener value="#{vehicle}"
 								target="#{manageVehicleBean.selectedVehicle}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar el Vehículo?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_vehicle}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

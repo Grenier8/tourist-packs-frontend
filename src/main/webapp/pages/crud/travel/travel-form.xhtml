@@ -4,14 +4,43 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:dialog header="Detalles del viaje" showEffect="fade" modal="true"
+	<p:dialog header="#{msgs.label_travel_form_header}" 
+			  showEffect="fade" modal="true"
 		widgetVar="manageTravelDialog" responsive="true">
+		
 		<p:outputPanel id="manage-travel-content" class="ui-fluid">
 			<p:outputPanel rendered="#{not empty manageTravelBean.selectedTravel}">
 				<p:panelGrid layout="grid" columns="1">
 					<h:panelGroup>
+					
 						<div class="p-field">
-							<p:outputLabel for="@next" value="Nombre de la travesía" />
+              				<p:outputLabel
+               				for="@next"
+                			value="#{msgs.label_tmTravel_transportModalityName}"
+              				/>
+              				<p:selectOneMenu
+               					id="transportModalityName"
+                				value="#{manageTravelBean.selectedTravelName}"
+                				required="true"
+                				style="min-width: 15rem"
+                				multiple="true"
+                				filter="true"
+                				filterMatchMode="startsWith"
+                				panelStyle="width: 30rem"
+                				scrollHeight="250"
+              					>
+                				<f:selectItems
+                  					value="#{manageTmTravelBean.tmTravels}"
+                 					var="tMTravelNameName"
+                 					itemLabel="#{tMTravelNameName.transportModalityName}"
+                  					itemValue="#{tMTravelNameName.transportModalityName}"
+                				/>
+              				</p:selectOneMenu>
+              				<p:message for="@previous" />
+           				</div>
+					
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_travel_name}" />
 							<p:inputText id="travelName" value="#{manageTravelBean.selectedTravel.travelName}"
 										 required="true" />
 							<p:message for="@previous" />
@@ -23,9 +52,9 @@
 		</p:outputPanel>
 
 		<f:facet name="footer">
-			<p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{manageTravelBean.saveTravel()}"
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check" actionListener="#{manageTravelBean.saveTravel()}"
 							 update="manage-travel-content" process="manage-travel-content @this" />
-			<p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageTravelDialog').hide()"
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times" onclick="PF('manageTravelDialog').hide()"
 							 class="ui-button-secondary" />
 		</f:facet>
 	</p:dialog>

@@ -103,40 +103,64 @@
             </div>
           </p:outputPanel>
           <p:outputPanel>
-            <a tabindex="0" class="submenu-link"> Transporte </a>
+            <a tabindex="0" class="submenu-link">
+              #{msgs.label_menu_transport}
+            </a>
             <div class="submenu">
               <ul>
                 <li>
-                  <h:link> Contratos de transporte </h:link>
+                  <h:link
+                    outcome="/pages/crud/transport_contract/transportContract-list.xhtml"
+                  >
+                    #{msgs.label_menu_transport_contracts}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Modalidades de transporte </h:link>
+                  <h:link
+                    outcome="/pages/crud/transport_modality/transportModality-list.xhtml"
+                  >
+                    #{msgs.label_menu_transport_modalities}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Modalidades Hora-Km </h:link>
+                  <h:link outcome="/pages/crud/tm_km/tmKm-list.xhtml">
+                    #{msgs.label_menu_tm_kms}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Modalidades Km </h:link>
+                  <h:link outcome="/pages/crud/tm_hour_km/tmHourKm-list.xhtml"
+                    >#{msgs.label_menu_tm_hour_kms}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Modalidades Recorrido </h:link>
+                  <h:link outcome="/pages/crud/tm_travel/tmTravel-list.xhtml">
+                    #{msgs.label_menu_tm_travels}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Recorridos </h:link>
+                  <h:link outcome="/pages/crud/travel/travel-list.xhtml">
+                    #{msgs.label_menu_travels}
+                  </h:link>
                 </li>
                 <li>
-                  <h:link> Servicios de transporte </h:link>
+                  <h:link
+                    outcome="/pages/crud/transport_service/transportService-list.xhtml"
+                  >
+                    #{msgs.label_menu_transport_services}
+                  </h:link>
                 </li>
                 <li>
                   <h:link> Servicios de transporte de contrato </h:link>
                 </li>
                 <li>
                   <h:link outcome="/pages/crud/vehicle/vehicle-list.xhtml">
-                    Vehiculos
+                    #{msgs.label_menu_vehicles}
                   </h:link>
                 </li>
                 <li>
-                  <h:link> Proveedores </h:link>
+                  <h:link outcome="/pages/crud/provider/provider-list.xhtml">
+                    #{msgs.label_menu_providers}
+                  </h:link>
                 </li>
               </ul>
             </div>

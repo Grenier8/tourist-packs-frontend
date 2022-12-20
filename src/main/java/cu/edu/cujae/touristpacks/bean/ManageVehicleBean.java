@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import cu.edu.cujae.touristpacks.dto.VehicleDto;
 import cu.edu.cujae.touristpacks.service.vehicle.IVehicleService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
 
 @Component
 @ManagedBean

@@ -91,6 +91,7 @@ public class VehicleDto {
 	}
 
 	public void setFabricationYear(int fabricationYear) {
+
 		if (fabricationYear >= 0)
 			this.fabricationYear = fabricationYear;
 	}

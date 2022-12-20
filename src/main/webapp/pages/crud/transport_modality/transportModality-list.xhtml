@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de Modalidades de Transporte
+	<p:outputLabel
+        value="#{msgs.label_transportModality_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTransportModalityBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTransportModalityBean.openNew}"
 							update=":form:manage-transportModality-content" oncomplete="PF('manageTransportModalityDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-transportModality-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-transportModalitys" fileName="transportModalitys" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,23 +33,24 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="transportModalitys-table-header">
-							<span style="font-weight: bold">Modalidades de Trasnporte</span>
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_transportModality_filter}"
+                  				></p:outputLabel>
+                  			</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTransportModalitys').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
-					<p:column headerText="Modalidad de Transporte" sortBy="#{transportModality.transportModalityName}" filterBy="#{transportModality.transportModalityName}">
+					<p:column headerText="#{msgs.label_transportModality_transportModalityName}" sortBy="#{transportModality.transportModalityName}" filterBy="#{transportModality.transportModalityName}">
 						<h:outputText value="#{transportModality.transportModalityName}" />
-					</p:column>
-					<p:column headerText="Tipo de Modalidad de Transporte" sortBy="#{transportModality.transportModalityType}" filterBy="#{transportModality.transportModalityType}">
-						<h:outputText value="#{transportModality.transportModalityType}" />
-					</p:column>									
+					</p:column>								
 
 					<p:column exportable="false">
 						<p:commandButton icon="pi pi-pencil" update=":form:manage-transportModality-content"
@@ -61,7 +65,7 @@
 							action="#{manageTransportModalityBean.deleteTransportModality()}">
 							<f:setPropertyActionListener value="#{transportModality}"
 								target="#{manageTransportModalityBean.selectedTransportModality}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_transportModality}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

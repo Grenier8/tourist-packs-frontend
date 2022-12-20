@@ -21,8 +21,6 @@ public class HotelDto {
 	private ProvinceDto province;
 	private List<HotelModalityDto> hotelModalities;
 
-	private List<String> hotelModalitiesNames;
-
 	public HotelDto() {
 	}
 
@@ -42,13 +40,6 @@ public class HotelDto {
 		this.localization = localization;
 		this.hotelChain = hotelChain;
 		this.province = province;
-
-		hotelModalitiesToString();
-
-	}
-
-	private void hotelModalitiesToString() {
-		hotelModalitiesNames = new ArrayList<>();
 
 	}
 

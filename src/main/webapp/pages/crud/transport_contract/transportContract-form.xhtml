@@ -1,0 +1,141 @@
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <p:dialog
+    header="#{msgs.label_transportContract_form_header}"
+    showEffect="fade"
+    modal="true"
+    widgetVar="manageTransportContractDialog"
+    responsive="true"
+  >
+    <p:outputPanel id="manage-transportContract-content" class="ui-fluid">
+      <p:outputPanel
+        rendered="#{not empty manageTransportContractBean.selectedTransportContract}"
+      >
+        <p:panelGrid layout="grid" columns="1">
+          <h:panelGroup>
+            <div class="p-field">
+              <p:outputLabel for="@next" value="#{msgs.label_contract_title}" />
+              <p:inputText
+                id="title"
+                value="#{manageTransportContractBean.selectedTransportContract.contractTitle}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_start_date}"
+              />
+              <p:datePicker
+                id="startDate"
+                value="#{manageTransportContractBean.selectedTransportContract.startDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_end_date}"
+              />
+              <p:datePicker
+                id="endDate"
+                value="#{manageTransportContractBean.selectedTransportContract.endDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_contract_conciliation_date}"
+              />
+              <p:datePicker
+                id="conciliationDate"
+                value="#{manageTransportContractBean.selectedTransportContract.conciliationDate}"
+                required="true"
+              />
+              <p:message for="@previous" />
+            </div>
+
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_transportContract_provider}"
+              />
+              <p:selectOneMenu
+                id="provider"
+                value="#{manageTransportContractBean.selectedProviderName}"
+                required="true"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageProviderBean.providers}"
+                  var="provider"
+                  itemLabel="#{provider.providerName}"
+                  itemValue="#{provider.providerName}"
+                />
+              </p:selectOneMenu>
+              <p:message for="@previous" />
+            </div>
+
+            <div class="p-field">
+              <p:outputLabel
+                for="@next"
+                value="#{msgs.label_transport_contract_transport_services}"
+              ></p:outputLabel>
+              <p:selectCheckboxMenu
+                id="multiple"
+                required="true"
+                value="#{manageTransportContractBean.selectedTransportServicesNames}"
+                label="#{msgs.input_select}"
+                style="min-width: 15rem"
+                multiple="true"
+                filter="true"
+                filterMatchMode="startsWith"
+                panelStyle="width: 30rem"
+                scrollHeight="250"
+              >
+                <f:selectItems
+                  value="#{manageTransportServiceBean.transportServices}"
+                  var="transportService"
+                  itemLabel="#{transportService.transportServiceName}"
+                  itemValue="#{transportService.transportServiceName}"
+                />
+              </p:selectCheckboxMenu>
+            </div>
+          </h:panelGroup>
+        </p:panelGrid>
+      </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+      <p:commandButton
+        value="#{msgs.button_save}"
+        icon="pi pi-check"
+        actionListener="#{manageTransportContractBean.saveTransportContract()}"
+        update="manage-transportContract-content"
+        process="manage-transportContract-content @this"
+      />
+      <p:commandButton
+        value="#{msgs.button_cancel}"
+        icon="pi pi-times"
+        onclick="PF('manageTransportContractDialog').hide()"
+        class="ui-button-secondary"
+      />
+    </f:facet>
+  </p:dialog>
+</ui:composition>

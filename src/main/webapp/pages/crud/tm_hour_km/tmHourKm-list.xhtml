@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de tmHourKm
+	<p:outputLabel
+        value="#{msgs.label_tmHourKm_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTmHourKmBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTmHourKmBean.openNew}"
 							update=":form:manage-tmHourKm-content" oncomplete="PF('manageTmHourKmDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-tmHourKm-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-tmHourKms" fileName="tmHourKms" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,30 +33,33 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="tmHourKms-table-header">
-							<span style="font-weight: bold">TmHourKm</span>
-
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_tmHourKm_filter}"
+                  				></p:outputLabel>
+                  			</span>
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTmHourKms').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 					
-					<p:column headerText="Nombre de la Modalidad del Transporte" sortBy="#{tmHourKm.transportModalityName}" filterBy="#{tmHourKm.transportModalityName}">
+					<p:column headerText="#{msgs.label_tmHourKm_name}" sortBy="#{tmHourKm.transportModalityName}" filterBy="#{tmHourKm.transportModalityName}">
 						<h:outputText value="#{tmHourKm.transportModalityName}" />
 					</p:column>
-					<p:column headerText="Costo por Kilometro Recorrido" sortBy="#{tmHourKm.costPerTravelledKm}" filterBy="#{tmHourKm.costPerTravelledKm}">
+					<p:column headerText="#{msgs.label_tmHourKm_costPerKmTraveled}" sortBy="#{tmHourKm.costPerTravelledKm}" filterBy="#{tmHourKm.costPerTravelledKm}">
 						<h:outputText value="#{tmHourKm.costPerTravelledKm}" />
 					</p:column>
-					<p:column headerText="Costo por Hora" sortBy="#{tmHourKm.costPerHour}" filterBy="#{tmHourKm.costPerHour}">
+					<p:column headerText="#{msgs.label_tmHourKm_costPerHour}" sortBy="#{tmHourKm.costPerHour}" filterBy="#{tmHourKm.costPerHour}">
 						<h:outputText value="#{tmHourKm.costPerHour}" />
 					</p:column>
-					<p:column headerText="Costo por Kilometros Extra Recorridos" sortBy="#{tmHourKm.costPerExtraKm}" filterBy="#{tmHourKm.costPerExtraKm}">
+					<p:column headerText="#{msgs.label_tmHourKm_costPerExtraKm}" sortBy="#{tmHourKm.costPerExtraKm}" filterBy="#{tmHourKm.costPerExtraKm}">
 						<h:outputText value="#{tmHourKm.costPerExtraKm}" />
 					</p:column>
-					<p:column headerText="Costo por Horas Extras" sortBy="#{tmHourKm.costPerExtraHour}" filterBy="#{tmHourKm.costPerExtraHour}">
+					<p:column headerText="#{msgs.label_tmHourKm_costPerExtraHour}" sortBy="#{tmHourKm.costPerExtraHour}" filterBy="#{tmHourKm.costPerExtraHour}">
 						<h:outputText value="#{tmHourKm.costPerExtraHour}" />
 					</p:column>
 
@@ -69,7 +75,7 @@
 							action="#{manageTmHourKmBean.deleteTmHourKm}">
 							<f:setPropertyActionListener value="#{tmHourKm}"
 								target="#{manageTmHourKmBean.selectedTmHourKm}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar el tmHourKm?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_tmHourKm}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

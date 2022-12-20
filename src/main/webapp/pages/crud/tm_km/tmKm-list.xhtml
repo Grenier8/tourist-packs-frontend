@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de tmKm
+	<p:outputLabel
+        value="#{msgs.label_tmKm_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTmKmBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTmKmBean.openNew}"
 							update=":form:manage-tmKm-content" oncomplete="PF('manageTmKmDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-tmKm-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-tmKms" fileName="tmKms" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,25 +33,30 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="tmKms-table-header">
-							<span style="font-weight: bold">TmKms</span>
-
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_tmKm_filter}"
+                  				></p:outputLabel>
+                  			</span>
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTmKms').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
-
-					<p:column headerText="Costo por Kilometro" sortBy="#{tmKm.costPerKm}" filterBy="#{tmKm.costPerKm}">
+					<p:column headerText="#{msgs.label_tmKm_name}" sortBy="#{tmKm.transportModalityName}" filterBy="#{tmKm.transportModalityName}">
+						<h:outputText value="#{tmKm.transportModalityName}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_tmKm_costPerKm}" sortBy="#{tmKm.costPerKm}" filterBy="#{tmKm.costPerKm}">
 						<h:outputText value="#{tmKm.costPerKm}" />
 					</p:column>
-					<p:column headerText="Costo por Kilometro Ida y Vuelta" sortBy="#{tmKm.costPerKmGoAndBack}" filterBy="#{tmKm.costPerKmGoAndBack}">
+					<p:column headerText="#{msgs.label_tmKm_costPerKmGoAndBack}" sortBy="#{tmKm.costPerKmGoAndBack}" filterBy="#{tmKm.costPerKmGoAndBack}">
 						<h:outputText value="#{tmKm.costPerKmGoAndBack}" />
 					</p:column>
-					<p:column headerText="Costo por Horas de Espera" sortBy="#{tmKm.costPerWaitingHour}" filterBy="#{tmKm.costPerWaitingHour}">
+					<p:column headerText="#{msgs.label_tmKm_costPerWaitingHour}" sortBy="#{tmKm.costPerWaitingHour}" filterBy="#{tmKm.costPerWaitingHour}">
 						<h:outputText value="#{tmKm.costPerWaitingHour}" />
 					</p:column>
 
@@ -64,7 +72,7 @@
 							action="#{manageTmKmBean.deleteTmKm}">
 							<f:setPropertyActionListener value="#{tmKm}"
 								target="#{manageTmKmBean.selectedTmKm}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_tmKm}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

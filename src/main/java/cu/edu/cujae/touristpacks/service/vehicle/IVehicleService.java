@@ -14,4 +14,6 @@ public interface IVehicleService {
     void updateVehicle(VehicleDto vehicle);
     
     void deleteVehicle(int id);
+    
+    VehicleDto getVehicleByPlate(String vehiclePlate);
 }

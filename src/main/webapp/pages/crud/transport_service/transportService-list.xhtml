@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de Servicios de transporte
+	<p:outputLabel
+        value="#{msgs.label_transportService_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTransportServiceBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTransportServiceBean.openNew}"
 							update=":form:manage-transportService-content" oncomplete="PF('manageTransportServiceDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-transportService-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-transportServices" fileName="transportServices" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,21 +33,29 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="transportServices-table-header">
-							<span style="font-weight: bold">Temporadas</span>
+							<span style="font-weight: bold"><p:outputLabel
+                  			  		value="#{msgs.label_transportService_filter}"
+                  				></p:outputLabel></span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTransportServices').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
-					<p:column headerText="Servicio de Transporte" sortBy="#{transportService.transportServiceName}" filterBy="#{transportService.transportServiceName}">
+					<p:column headerText="#{msgs.label_transportService_transportServiceName}" sortBy="#{transportService.transportServiceName}" filterBy="#{transportService.transportServiceName}">
 						<h:outputText value="#{transportService.transportServiceName}" />
 					</p:column>
-					<p:column headerText="Precio del Servicio de Transporte" sortBy="#{transportService.transpServicePrice}" filterBy="#{transportService.transpServicePrice}">
+					<p:column headerText="#{msgs.label_transportService_transportModalityName}" sortBy="#{transportService.tmodality.transportModalityName}" filterBy="#{transportService.tmodality.transportModalityName}">
+						<h:outputText value="#{transportService.tmodality.transportModalityName}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_transportService_vehicle}" sortBy="#{transportService.vehicle.plate}" filterBy="#{transportService.vehicle.plate}">
+						<h:outputText value="#{transportService.vehicle.plate}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_transportService_transpServicePrice}" sortBy="#{transportService.transpServicePrice}" filterBy="#{transportService.transpServicePrice}">
 						<h:outputText value="#{transportService.transpServicePrice}" />
 					</p:column>									
 
@@ -60,7 +71,7 @@
 							action="#{manageTransportServiceBean.deleteTransportService}">
 							<f:setPropertyActionListener value="#{transportService}"
 								target="#{manageTransportServiceBean.selectedTransportService}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_transportService}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

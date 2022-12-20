@@ -30,7 +30,20 @@ public class UrlRewriteConfigurationProvider extends HttpConfigurationProvider {
                 .addRule(Join.path("/service-types").to("/pages/crud/service_type/serviceType-list.jsf"))
                 .addRule(Join.path("/room-types").to("/pages/crud/room_type/roomType-list.jsf"))
                 .addRule(Join.path("/tourist-packs").to("/pages/crud/tourist_pack/touristPack-list.jsf"))
-                .addRule(Join.path("/security-users").to("/pages/security/users/user-list.jsf"))
+                .addRule(Join.path("/providers").to("/pages/crud/provider/provider-list.jsf"))
+                .addRule(Join.path("/transport-modalities")
+                        .to("/pages/crud/transport_modality/transportModality-list.jsf"))
+                .addRule(Join.path("/tm-kms").to("/pages/crud/tm_km/tmKm-list.jsf"))
+                .addRule(Join.path("/tm-hour-kms").to("/pages/crud/tm_hour_km/tmHourKm-list.jsf"))
+                .addRule(Join.path("/tm-travels").to("/pages/crud/tm_travel/tmTravel-list.jsf"))
+                .addRule(Join.path("/travels").to("/pages/crud/travel/travel-list.jsf"))
+                .addRule(Join.path("/transport-contracts")
+                        .to("/pages/crud/transport_contract/transportContract-list.jsf"))
+                .addRule(Join.path("/transport-services").to("/pages/crud/transport_service/transportService-list.jsf"))
+                .addRule(Join.path("/vehicles").to("/pages/crud/vehicle/vehicle-list.jsf"))
+                .addRule(Join.path("/login").to("/pages/security/login/login.jsf"))
+                .addRule(Join.path("/security-users").to("/pages/security/user/user-list.jsf"))
+                .addRule(Join.path("/security-roles").to("/pages/security/role/role-list.jsf"))
                 .addRule(Join.path("/welcome").to("/pages/welcome/welcome.jsf"));
 
         // ej using params

@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="#{msgs.label_transportService_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageTransportServiceDialog" responsive="true">
+		<p:outputPanel id="manage-transportService-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageTransportServiceBean.selectedTransportService}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+					
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_transportService_transportServiceName}" />
+							<p:inputText id="transportServiceName" value="#{manageTransportServiceBean.selectedTransportService.transportServiceName}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+										
+           			<div class="p-field">
+              				<p:outputLabel
+               				for="@next"
+                			value="#{msgs.label_transportService_transportModalityName}"
+              				/>
+              				<p:selectOneMenu
+               					id="transportModalityName"
+                				value="#{manageTransportServiceBean.selectedTModalityName}"
+                				required="true"
+                				style="min-width: 15rem"
+                				multiple="true"
+                				filter="true"
+                				filterMatchMode="startsWith"
+                				panelStyle="width: 30rem"
+                				scrollHeight="250"
+              					>
+                				<f:selectItems
+                  					value="#{manageTransportModalityBean.transportModalitys}"
+                 					var="transportModalityName"
+                 					itemLabel="#{transportModalityName.transportModalityName}"
+                  					itemValue="#{transportModalityName.transportModalityName}"
+                				/>
+              				</p:selectOneMenu>
+              				<p:message for="@previous" />
+           				</div>
+           				
+						<div class="p-field">
+              				<p:outputLabel
+               				for="@next"
+                			value="#{msgs.label_transportService_vehicle}"
+              				/>
+              				<p:selectOneMenu
+               					id="vehiclePlate"
+                				value="#{manageTransportServiceBean.selectedVehiclePlate}"
+                				required="true"
+                				style="min-width: 15rem"
+                				multiple="true"
+                				filter="true"
+                				filterMatchMode="startsWith"
+                				panelStyle="width: 30rem"
+                				scrollHeight="250"
+              					>
+                				<f:selectItems
+                  					value="#{manageVehicleBean.vehicles}"
+                 					var="vehicles"
+                 					itemLabel="#{vehicles.plate}"
+                  					itemValue="#{vehicles.plate}"
+                				/>
+              				</p:selectOneMenu>
+              				<p:message for="@previous" />
+           				</div>
+           				
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_transportService_transpServicePrice}" />
+							<p:inputNumber id="transpServicePrice" value="#{manageTransportServiceBean.selectedTransportService.transpServicePrice}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check" actionListener="#{manageTransportServiceBean.saveTransportService()}"
+							 update="manage-transportService-content" process="manage-transportService-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times" onclick="PF('manageTransportServiceDialog').hide()"
+							 class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

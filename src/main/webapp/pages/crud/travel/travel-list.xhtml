@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de Viajes
+		<p:outputLabel
+        value="#{msgs.label_travel_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageTravelBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTravelBean.openNew}"
 							update=":form:manage-travel-content" oncomplete="PF('manageTravelDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-travel-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-travels" fileName="travels" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,19 +33,25 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="travels-table-header">
-							<span style="font-weight: bold">Viajes</span>
+							<span style="font-weight: bold">
+							<p:outputLabel
+                   			 value="#{msgs.label_travel_filter}"
+                  			></p:outputLabel>
+                  			</span>
 
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtTravels').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
-
-					<p:column headerText="Nombre del viaje" sortBy="#{travel.travelName}" filterBy="#{travel.travelName}">
+					<p:column headerText="#{msgs.label_travel_transportModalityName}" sortBy="#{travel.tmodalityTravel.transportModalityName}" filterBy="#{travel.tmodalityTravel.transportModalityName}">
+						<h:outputText value="#{travel.tmodalityTravel.transportModalityName}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_travel_name}" sortBy="#{travel.travelName}" filterBy="#{travel.travelName}">
 						<h:outputText value="#{travel.travelName}" />
 					</p:column>
 					
@@ -59,7 +68,7 @@
 							action="#{manageTravelBean.deleteTravel}">
 							<f:setPropertyActionListener value="#{travel}"
 								target="#{manageTravelBean.selectedTravel}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_travel}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

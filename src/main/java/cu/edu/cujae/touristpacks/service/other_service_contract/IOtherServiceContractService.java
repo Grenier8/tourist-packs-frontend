@@ -16,4 +16,6 @@ public interface IOtherServiceContractService {
     void updateOtherServiceContract(OtherServiceContractDto otherServiceContract);
 
     void deleteOtherServiceContract(int idOtherServiceContract);
+
+    List<OtherServiceContractDto> get1121OtherServiceContracts();
 }

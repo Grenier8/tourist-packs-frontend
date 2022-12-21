@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.security;
 
-import cu.edu.cujae.touristpacks.dto.RoleDto;
+import cu.edu.cujae.touristpacks.dto.security.RoleDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class RoleServiceImpl implements IRoleService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoleDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, RoleDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +51,7 @@ public class RoleServiceImpl implements IRoleService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<RoleDto> apiRestMapper = new ApiRestMapper<>();
             role = apiRestMapper.mapOne(response, RoleDto.class);
@@ -61,13 +63,13 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public void createRole(RoleDto role) {
-        restService.POST(endpoint + "", role, String.class).getBody();
+        restService.POST(endpoint + "", role, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateRole(RoleDto role) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, role, String.class).getBody();
+        restService.PUT(endpoint + "", params, role, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -75,7 +77,7 @@ public class RoleServiceImpl implements IRoleService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idRole}");
         String uri = template.expand(idRole).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override

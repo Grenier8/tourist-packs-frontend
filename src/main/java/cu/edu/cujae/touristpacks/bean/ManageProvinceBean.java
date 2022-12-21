@@ -31,11 +31,6 @@ public class ManageProvinceBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        provinces = service.getProvinces();
-    }
-
     public void openNew() {
         this.selectedProvince = new ProvinceDto();
     }
@@ -75,6 +70,7 @@ public class ManageProvinceBean {
     }
 
     public List<ProvinceDto> getProvinces() {
+        provinces = service.getProvinces();
         return this.provinces;
     }
 

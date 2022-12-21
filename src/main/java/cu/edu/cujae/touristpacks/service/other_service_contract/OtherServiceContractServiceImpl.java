@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.other_service_contract;
 
 import cu.edu.cujae.touristpacks.dto.OtherServiceContractDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, OtherServiceContractDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
             UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
             String uri = template.expand(idOtherServiceContract).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             otherServiceContract = apiRestMapper.mapOne(response, OtherServiceContractDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
             otherServiceContract = apiRestMapper.mapOne(response, OtherServiceContractDto.class);
@@ -79,13 +82,15 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
 
     @Override
     public void createOtherServiceContract(OtherServiceContractDto otherServiceContract) {
-        restService.POST(endpoint + "", otherServiceContract, String.class).getBody();
+        restService.POST(endpoint + "", otherServiceContract, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
     public void updateOtherServiceContract(OtherServiceContractDto otherServiceContract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, otherServiceContract, String.class).getBody();
+        restService.PUT(endpoint + "", params, otherServiceContract, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -93,7 +98,26 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idOtherServiceContract}");
         String uri = template.expand(idOtherServiceContract).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
+    }
+
+    @Override
+    public List<OtherServiceContractDto> get1121OtherServiceContracts() {
+        List<OtherServiceContractDto> list = new ArrayList<>();
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "/month/{month}/year/{year}");
+            String uri = template.expand(11, 2021).toString();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
+            list = apiRestMapper.mapList(response, OtherServiceContractDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

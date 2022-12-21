@@ -31,11 +31,6 @@ public class ManageAlimentaryPlanBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        alimentaryPlans = service.getAlimentaryPlans();
-    }
-
     public void openNew() {
         this.selectedAlimentaryPlan = new AlimentaryPlanDto();
     }
@@ -75,6 +70,7 @@ public class ManageAlimentaryPlanBean {
     }
 
     public List<AlimentaryPlanDto> getAlimentaryPlans() {
+        this.alimentaryPlans = service.getAlimentaryPlans();
         return this.alimentaryPlans;
     }
 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/template/layout.xhtml">
+	<ui:define name="title">
+	<p:outputLabel
+        value="#{msgs.label_transportService_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+	</ui:define>
+	<ui:define name="layout">
+		<h:form id="form">
+			<div class="card crud-demo">
+				<p:toolbar>
+					<p:toolbarGroup>
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageTransportServiceBean.openNew}"
+							update=":form:manage-transportService-content" oncomplete="PF('manageTransportServiceDialog').show()"
+							styleClass="ui-button-success" style="margin-right: .5rem">
+							<p:resetInput target=":form:manage-transportService-content" />
+						</p:commandButton>
+					</p:toolbarGroup>
+					<p:toolbarGroup align="right">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+							<p:dataExporter type="pdf" target="dt-transportServices" fileName="transportServices" />
+						</p:commandButton>
+					</p:toolbarGroup>
+				</p:toolbar>
+
+
+				<p:dataTable id="dt-transportServices" widgetVar="dtTransportServices" var="transportService" value="#{manageTransportServiceBean.transportServices}"
+					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
+					<f:facet name="header">
+						<div class="transportServices-table-header">
+							<span style="font-weight: bold"><p:outputLabel
+                  			  		value="#{msgs.label_transportService_filter}"
+                  				></p:outputLabel></span>
+
+							<span class="filter-container ui-input-icon-left">
+								<i class="pi pi-search"></i>
+								<p:inputText id="globalFilter" onkeyup="PF('dtTransportServices').filter()"
+									placeholder="#{msgs.input_search}" />
+							</span>
+
+						</div>
+					</f:facet>
+
+					<p:column headerText="#{msgs.label_transportService_transportServiceName}" sortBy="#{transportService.transportServiceName}" filterBy="#{transportService.transportServiceName}">
+						<h:outputText value="#{transportService.transportServiceName}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_transportService_transportModalityName}" sortBy="#{transportService.tmodality.transportModalityName}" filterBy="#{transportService.tmodality.transportModalityName}">
+						<h:outputText value="#{transportService.tmodality.transportModalityName}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_transportService_vehicle}" sortBy="#{transportService.vehicle.plate}" filterBy="#{transportService.vehicle.plate}">
+						<h:outputText value="#{transportService.vehicle.plate}" />
+					</p:column>
+					<p:column headerText="#{msgs.label_transportService_transpServicePrice}" sortBy="#{transportService.transpServicePrice}" filterBy="#{transportService.transpServicePrice}">
+						<h:outputText value="#{transportService.transpServicePrice}" />
+					</p:column>									
+
+					<p:column exportable="false">
+						<p:commandButton icon="pi pi-pencil" update=":form:manage-transportService-content"
+							action="#{manageTransportServiceBean.openForEdit}" oncomplete="PF('manageTransportServiceDialog').show()"
+							styleClass="edit-button rounded-button ui-button-success" process="@this">
+							<f:setPropertyActionListener value="#{transportService}"
+								target="#{manageTransportServiceBean.selectedTransportService}" />
+							<p:resetInput target=":form:manage-transportService-content" />
+						</p:commandButton>
+						<p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+							action="#{manageTransportServiceBean.deleteTransportService}">
+							<f:setPropertyActionListener value="#{transportService}"
+								target="#{manageTransportServiceBean.selectedTransportService}" />
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_transportService}"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<ui:include src="transportService-form.xhtml"></ui:include>
+
+
+				<p:confirmDialog global="true" showEffect="fade" width="300">
+					<p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+						icon="pi pi-times" />
+				</p:confirmDialog>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

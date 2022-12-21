@@ -29,11 +29,6 @@ public class ManageServiceTypeBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        serviceTypes = service.getServiceTypes();
-    }
-
     public void openNew() {
         this.selectedServiceType = new ServiceTypeDto();
     }
@@ -73,6 +68,7 @@ public class ManageServiceTypeBean {
     }
 
     public List<ServiceTypeDto> getServiceTypes() {
+        serviceTypes = service.getServiceTypes();
         return this.serviceTypes;
     }
 

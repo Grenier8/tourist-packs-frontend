@@ -47,11 +47,6 @@ public class ManageHotelBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        hotels = service.getHotels();
-    }
-
     public void openNew() {
         this.selectedHotel = new HotelDto();
     }
@@ -108,6 +103,7 @@ public class ManageHotelBean {
     }
 
     public List<HotelDto> getHotels() {
+        hotels = service.getHotels();
         return this.hotels;
     }
 

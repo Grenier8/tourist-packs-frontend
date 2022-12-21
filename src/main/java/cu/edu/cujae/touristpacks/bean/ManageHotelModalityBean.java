@@ -29,11 +29,6 @@ public class ManageHotelModalityBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        hotelModalities = service.getHotelModalities();
-    }
-
     public void openNew() {
         this.selectedHotelModality = new HotelModalityDto();
     }
@@ -73,6 +68,7 @@ public class ManageHotelModalityBean {
     }
 
     public List<HotelModalityDto> getHotelModalities() {
+        hotelModalities = service.getHotelModalities();
         return this.hotelModalities;
     }
 

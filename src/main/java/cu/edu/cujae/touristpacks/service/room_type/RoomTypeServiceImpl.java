@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.room_type;
 
 import cu.edu.cujae.touristpacks.dto.RoomTypeDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, RoomTypeDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
             String uri = template.expand(idRoomType).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<RoomTypeDto> apiRestMapper = new ApiRestMapper<>();
             roomType = apiRestMapper.mapOne(response, RoomTypeDto.class);
@@ -79,13 +82,13 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
 
     @Override
     public void createRoomType(RoomTypeDto roomType) {
-        restService.POST(endpoint + "", roomType, String.class).getBody();
+        restService.POST(endpoint + "", roomType, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateRoomType(RoomTypeDto roomType) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, roomType, String.class).getBody();
+        restService.PUT(endpoint + "", params, roomType, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class RoomTypeServiceImpl implements IRoomTypeService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idRoomType}");
         String uri = template.expand(idRoomType).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

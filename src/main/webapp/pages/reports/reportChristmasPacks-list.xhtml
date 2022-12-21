@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html
+  lang="es"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:sec="http://www.springframework.org/security/tags"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <ui:composition template="/pages/template/layout.xhtml">
+    <ui:define name="title">
+      <p:outputLabel
+        value="#{msgs.label_report_christmas_pack_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
+    </ui:define>
+    <ui:define name="layout">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <p:toolbar>
+            <p:toolbarGroup align="right">
+              <p:commandButton
+                value="#{msgs.button_export}"
+                icon="pi pi-upload"
+                styleClass="ui-button-help"
+                ajax="false"
+              >
+                <p:dataExporter
+                  type="pdf"
+                  target="dt-touristPacks"
+                  fileName="touristPacks"
+                />
+              </p:commandButton>
+            </p:toolbarGroup>
+          </p:toolbar>
+
+          <p:dataTable
+            id="dt-touristPacks"
+            widgetVar="dtTouristPacks"
+            var="touristPack"
+            value="#{manageReportChristmasPackBean.touristPacks}"
+            reflow="true"
+            paginator="true"
+            rows="10"
+            paginatorPosition="bottom"
+          >
+            <f:facet name="header">
+              <div class="touristPacks-table-header">
+                <span style="font-weight: bold">
+                  <p:outputLabel value="#{msgs.label_tourist_pack_filter}" />
+                </span>
+
+                <span class="filter-container ui-input-icon-left">
+                  <i class="pi pi-search"></i>
+                  <p:inputText
+                    id="globalFilter"
+                    onkeyup="PF('dtTouristPacks').filter()"
+                    placeholder="#{msgs.input_search}"
+                  />
+                </span>
+              </div>
+            </f:facet>
+
+            <p:column
+              headerText="#{msgs.label_tourist_pack_name}"
+              sortBy="#{touristPack.promotionalName}"
+              filterBy="#{touristPack.promotionalName}"
+            >
+              <h:outputText value="#{touristPack.promotionalName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_days_amount}"
+              sortBy="#{touristPack.daysAmount}"
+              filterBy="#{touristPack.daysAmount}"
+            >
+              <h:outputText value="#{touristPack.daysAmount}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_nights_amount}"
+              sortBy="#{touristPack.nightsAmount}"
+              filterBy="#{touristPack.nightsAmount}"
+            >
+              <h:outputText value="#{touristPack.nightsAmount}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_pax_amount}"
+              sortBy="#{touristPack.paxAmount}"
+              filterBy="#{touristPack.paxAmount}"
+            >
+              <h:outputText value="#{touristPack.paxAmount}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_hotel_price}"
+              sortBy="#{touristPack.hotelPrice}"
+              filterBy="#{touristPack.hotelPrice}"
+            >
+              <h:outputText value="#{touristPack.hotelPrice}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_hotel_airport_price}"
+              sortBy="#{touristPack.hotelAirportPrice}"
+              filterBy="#{touristPack.hotelAirportPrice}"
+            >
+              <h:outputText value="#{touristPack.hotelAirportPrice}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_total_price}"
+              sortBy="#{touristPack.totalPrice}"
+              filterBy="#{touristPack.totalPrice}"
+            >
+              <h:outputText value="#{touristPack.totalPrice}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_hotel}"
+              sortBy="#{touristPack.hotel.hotelName}"
+              filterBy="#{touristPack.hotel.hotelName}"
+            >
+              <h:outputText value="#{touristPack.hotel.hotelName}" />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_room_plan_season}"
+              sortBy="#{touristPack.roomPlanSeason.roomPlanSeasonName}"
+              filterBy="#{touristPack.roomPlanSeason.roomPlanSeasonName}"
+            >
+              <h:outputText
+                value="#{touristPack.roomPlanSeason.roomPlanSeasonName}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_transport_services}"
+              sortBy="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
+              filterBy="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
+            >
+              <h:outputText
+                value="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
+              />
+            </p:column>
+            <p:column
+              headerText="#{msgs.label_tourist_pack_diary_activities}"
+              sortBy="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
+              filterBy="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
+            >
+              <h:outputText
+                value="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
+              />
+            </p:column>
+          </p:dataTable>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

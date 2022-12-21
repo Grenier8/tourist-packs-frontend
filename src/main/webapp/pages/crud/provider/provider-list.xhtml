@@ -5,21 +5,24 @@
 
 <ui:composition template="/pages/template/layout.xhtml">
 	<ui:define name="title">
-		Listado de Proveedores
+	<p:outputLabel
+        value="#{msgs.label_provider_list_header}"
+        style="font-size: 38px"
+      ></p:outputLabel>
 	</ui:define>
 	<ui:define name="layout">
 		<h:form id="form">
 			<div class="card crud-demo">
 				<p:toolbar>
 					<p:toolbarGroup>
-						<p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{manageProviderBean.openNew}"
+						<p:commandButton value="#{msgs.button_new}" icon="pi pi-plus" actionListener="#{manageProviderBean.openNew}"
 							update=":form:manage-provider-content" oncomplete="PF('manageProviderDialog').show()"
 							styleClass="ui-button-success" style="margin-right: .5rem">
 							<p:resetInput target=":form:manage-provider-content" />
 						</p:commandButton>
 					</p:toolbarGroup>
 					<p:toolbarGroup align="right">
-						<p:commandButton value="Exportar" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+						<p:commandButton value="#{msgs.button_export}" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
 							<p:dataExporter type="pdf" target="dt-providers" fileName="providers" />
 						</p:commandButton>
 					</p:toolbarGroup>
@@ -30,19 +33,21 @@
 					reflow="true" paginator="true" rows="10" paginatorPosition="bottom">
 					<f:facet name="header">
 						<div class="providers-table-header">
-							<span style="font-weight: bold">Proveedores</span>
-
+							<span style="font-weight: bold">
+								<p:outputLabel
+                  			  		value="#{msgs.label_provider_filter}"
+                  				></p:outputLabel></span>
 							<span class="filter-container ui-input-icon-left">
 								<i class="pi pi-search"></i>
 								<p:inputText id="globalFilter" onkeyup="PF('dtProviders').filter()"
-									placeholder="Buscar" />
+									placeholder="#{msgs.input_search}" />
 							</span>
 
 						</div>
 					</f:facet>
 
 
-					<p:column headerText="Nombre del Proveedor" sortBy="#{provider.providerName}" filterBy="#{provider.providerName}">
+					<p:column headerText="#{msgs.label_provider_name}" sortBy="#{provider.providerName}" filterBy="#{provider.providerName}">
 						<h:outputText value="#{provider.providerName}" />
 					</p:column>
 					
@@ -58,7 +63,7 @@
 							action="#{manageProviderBean.deleteProvider}">
 							<f:setPropertyActionListener value="#{provider}"
 								target="#{manageProviderBean.selectedProvider}" />
-							<p:confirm header="Confirmar" message="Está seguro de eliminar la temporada?"
+							<p:confirm header="#{msgs.message_confirm}" message="#{msgs.message_delete_provider}"
 								icon="pi pi-exclamation-triangle" />
 						</p:commandButton>
 					</p:column>

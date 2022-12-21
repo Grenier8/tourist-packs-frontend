@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.room_plan_season;
 
 import cu.edu.cujae.touristpacks.dto.RoomPlanSeasonDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, RoomPlanSeasonDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
             String uri = template.expand(idRoomPlanSeason).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<RoomPlanSeasonDto> apiRestMapper = new ApiRestMapper<>();
             roomPlanSeason = apiRestMapper.mapOne(response, RoomPlanSeasonDto.class);
@@ -79,13 +82,14 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
 
     @Override
     public void createRoomPlanSeason(RoomPlanSeasonDto roomPlanSeason) {
-        restService.POST(endpoint + "", roomPlanSeason, String.class).getBody();
+        restService.POST(endpoint + "", roomPlanSeason, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateRoomPlanSeason(RoomPlanSeasonDto roomPlanSeason) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, roomPlanSeason, String.class).getBody();
+        restService.PUT(endpoint + "", params, roomPlanSeason, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -93,7 +97,7 @@ public class RoomPlanSeasonServiceImpl implements IRoomPlanSeasonService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idRoomPlanSeason}");
         String uri = template.expand(idRoomPlanSeason).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

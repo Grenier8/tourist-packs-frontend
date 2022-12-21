@@ -31,11 +31,6 @@ public class ManageDiaryActivityBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        diaryActivities = service.getDiaryActivities();
-    }
-
     public void openNew() {
         this.selectedDiaryActivity = new DiaryActivityDto();
     }
@@ -75,6 +70,7 @@ public class ManageDiaryActivityBean {
     }
 
     public List<DiaryActivityDto> getDiaryActivities() {
+        diaryActivities = service.getDiaryActivities();
         return this.diaryActivities;
     }
 

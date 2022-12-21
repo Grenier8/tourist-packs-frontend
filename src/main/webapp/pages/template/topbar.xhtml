@@ -1,30 +1,53 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui">
+<ui:composition
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <div class="layout-topbar">
+    <a class="menu-button" tabindex="0">
+      <i class="pi pi-bars"></i>
+    </a>
+    <h:link styleClass="logo" outcome="/pages/welcome/welcome.xhtml">
+      <p:graphicImage name="primefaces-logo.svg" library="images" />
+    </h:link>
 
-    <div class="layout-topbar">
-        <a class="menu-button" tabindex="0">
-            <i class="pi pi-bars"></i>
-        </a>
-        <h:link styleClass="logo" outcome="/pages/welcome/welcome.xhtml">
-            <p:graphicImage name="primefaces-logo.svg" library="images" />
-        </h:link>
+    <h:form styleClass="topbar-form">
+      <ul class="topbar-menu">
+        <li class="topbar-menu">
+          <p:commandLink
+            action="#{languageBean.setLanguage('es')}"
+            ajax="false"
+          >
+            <span>Spanish</span>
+          </p:commandLink>
+        </li>
 
-        <h:form styleClass="topbar-form">
-            <ul class="topbar-menu">
-                <li class="topbar-menu">
-                    <p:commandLink action="#{languageBean.setLanguage('es')}" ajax="false"> <span>Español</span>
-                    </p:commandLink>
-                </li>
+        <li class="topbar-menu">
+          <p:commandLink
+            action="#{languageBean.setLanguage('en')}"
+            ajax="false"
+          >
+            <span>English</span>
+          </p:commandLink>
+        </li>
+      </ul>
+    </h:form>
+    <h:form styleClass="topbar-form">
+      <ul class="topbar-menu">
+        <li class="topbar-menu">
+          <p:outputLabel style="padding-left: 5px"
+            >#{manageLoginBean.userLogued}</p:outputLabel
+          >
+        </li>
 
-                <li class="topbar-menu">
-                    <p:commandLink action="#{languageBean.setLanguage('en')}" ajax="false"> <span>English</span>
-                    </p:commandLink>
-                </li>
-
-
-
-            </ul>
-        </h:form>
-    </div>
+        <li class="topbar-menu">
+          <p:commandLink action="#{manageLoginBean.logout()}" ajax="false"
+            ><i class="pi pi-sign-out"></i>#{msgs.input_log_out}</p:commandLink
+          >
+        </li>
+      </ul>
+    </h:form>
+  </div>
 </ui:composition>

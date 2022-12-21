@@ -31,11 +31,6 @@ public class ManageRoomTypeBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        roomTypes = service.getRoomTypes();
-    }
-
     public void openNew() {
         this.selectedRoomType = new RoomTypeDto();
     }
@@ -75,6 +70,7 @@ public class ManageRoomTypeBean {
     }
 
     public List<RoomTypeDto> getRoomTypes() {
+        roomTypes = service.getRoomTypes();
         return this.roomTypes;
     }
 

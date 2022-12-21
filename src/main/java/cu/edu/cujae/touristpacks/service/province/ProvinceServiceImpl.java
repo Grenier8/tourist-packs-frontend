@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.province;
 
 import cu.edu.cujae.touristpacks.dto.ProvinceDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -33,7 +34,8 @@ public class ProvinceServiceImpl implements IProvinceService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, ProvinceDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,7 +53,8 @@ public class ProvinceServiceImpl implements IProvinceService {
 
             UriTemplate template = new UriTemplate(endpoint + "{id}");
             String uri = template.expand(idProvince).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             province = apiRestMapper.mapOne(response, ProvinceDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +73,7 @@ public class ProvinceServiceImpl implements IProvinceService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<ProvinceDto> apiRestMapper = new ApiRestMapper<>();
             province = apiRestMapper.mapOne(response, ProvinceDto.class);
@@ -82,13 +85,13 @@ public class ProvinceServiceImpl implements IProvinceService {
 
     @Override
     public void createProvince(ProvinceDto province) {
-        restService.POST(endpoint + "", province, String.class).getBody();
+        restService.POST(endpoint + "", province, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateProvince(ProvinceDto province) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, province, String.class).getBody();
+        restService.PUT(endpoint + "", params, province, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -96,7 +99,7 @@ public class ProvinceServiceImpl implements IProvinceService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{id}");
         String uri = template.expand(idProvince).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog header="#{msgs.label_transportModality_form_header}" showEffect="fade" modal="true"
+		widgetVar="manageTransportModalityDialog" responsive="true">
+		<p:outputPanel id="manage-transportModality-content" class="ui-fluid">
+			<p:outputPanel rendered="#{not empty manageTransportModalityBean.selectedTransportModality}">
+				<p:panelGrid layout="grid" columns="1">
+					<h:panelGroup>
+						<div class="p-field">
+							<p:outputLabel for="@next" value="#{msgs.label_transportModality_transportModalityName}" />
+							<p:inputText id="transportModalityName" value="#{manageTransportModalityBean.selectedTransportModality.transportModalityName}"
+										 required="true" />
+							<p:message for="@previous" />
+						</div>
+						
+					</h:panelGroup>
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:outputPanel>
+
+		<f:facet name="footer">
+			<p:commandButton value="#{msgs.button_save}" icon="pi pi-check" actionListener="#{manageTransportModalityBean.saveTransportModality()}"
+							 update="manage-transportModality-content" process="manage-transportModality-content @this" />
+			<p:commandButton value="#{msgs.button_cancel}" icon="pi pi-times" onclick="PF('manageTransportModalityDialog').hide()"
+							 class="ui-button-secondary" />
+		</f:facet>
+	</p:dialog>
+</ui:composition>

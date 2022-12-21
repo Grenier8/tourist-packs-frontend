@@ -5,6 +5,7 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:sec="http://www.springframework.org/security/tags"
   xmlns:p="http://primefaces.org/ui"
 >
   <ui:composition template="/pages/template/layout.xhtml">
@@ -18,19 +19,21 @@
       <h:form id="form">
         <div class="card crud-demo">
           <p:toolbar>
-            <p:toolbarGroup>
-              <p:commandButton
-                value="#{msgs.button_new}"
-                icon="pi pi-plus"
-                actionListener="#{manageTouristPackBean.openNew}"
-                update=":form:manage-touristPack-content"
-                oncomplete="PF('manageTouristPackDialog').show()"
-                styleClass="ui-button-success"
-                style="margin-right: 0.5rem"
-              >
-                <p:resetInput target=":form:manage-touristPack-content" />
-              </p:commandButton>
-            </p:toolbarGroup>
+            <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
+              <p:toolbarGroup>
+                <p:commandButton
+                  value="#{msgs.button_new}"
+                  icon="pi pi-plus"
+                  actionListener="#{manageTouristPackBean.openNew}"
+                  update=":form:manage-touristPack-content"
+                  oncomplete="PF('manageTouristPackDialog').show()"
+                  styleClass="ui-button-success"
+                  style="margin-right: 0.5rem"
+                >
+                  <p:resetInput target=":form:manage-touristPack-content" />
+                </p:commandButton>
+              </p:toolbarGroup>
+            </sec:authorize>
             <p:toolbarGroup align="right">
               <p:commandButton
                 value="#{msgs.button_export}"
@@ -111,10 +114,10 @@
             </p:column>
             <p:column
               headerText="#{msgs.label_tourist_pack_hotel_airport_price}"
-              sortBy="#{touristpack.hotelAirportPrice}"
-              filterBy="#{touristpack.hotelAirportPrice}"
+              sortBy="#{touristPack.hotelAirportPrice}"
+              filterBy="#{touristPack.hotelAirportPrice}"
             >
-              <h:outputText value="#{touristpack.hotelAirportPrice}" />
+              <h:outputText value="#{touristPack.hotelAirportPrice}" />
             </p:column>
             <p:column
               headerText="#{msgs.label_tourist_pack_total_price}"
@@ -158,38 +161,40 @@
               />
             </p:column>
 
-            <p:column exportable="false">
-              <p:commandButton
-                icon="pi pi-pencil"
-                update=":form:manage-touristPack-content"
-                action="#{manageTouristPackBean.openForEdit}"
-                oncomplete="PF('manageTouristPackDialog').show()"
-                styleClass="edit-button rounded-button ui-button-success"
-                process="@this"
-              >
-                <f:setPropertyActionListener
-                  value="#{touristPack}"
-                  target="#{manageTouristPackBean.selectedTouristPack}"
-                />
-                <p:resetInput target=":form:manage-touristPack-content" />
-              </p:commandButton>
-              <p:commandButton
-                class="ui-button-warning rounded-button"
-                icon="pi pi-trash"
-                process="@this"
-                action="#{manageTouristPackBean.deleteTouristPack}"
-              >
-                <f:setPropertyActionListener
-                  value="#{touristPack}"
-                  target="#{manageTouristPackBean.selectedTouristPack}"
-                />
-                <p:confirm
-                  header="Confirmar"
-                  message="Está seguro de eliminar el paquete turístico?"
-                  icon="pi pi-exclamation-triangle"
-                />
-              </p:commandButton>
-            </p:column>
+            <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
+              <p:column exportable="false">
+                <p:commandButton
+                  icon="pi pi-pencil"
+                  update=":form:manage-touristPack-content"
+                  action="#{manageTouristPackBean.openForEdit}"
+                  oncomplete="PF('manageTouristPackDialog').show()"
+                  styleClass="edit-button rounded-button ui-button-success"
+                  process="@this"
+                >
+                  <f:setPropertyActionListener
+                    value="#{touristPack}"
+                    target="#{manageTouristPackBean.selectedTouristPack}"
+                  />
+                  <p:resetInput target=":form:manage-touristPack-content" />
+                </p:commandButton>
+                <p:commandButton
+                  class="ui-button-warning rounded-button"
+                  icon="pi pi-trash"
+                  process="@this"
+                  action="#{manageTouristPackBean.deleteTouristPack}"
+                >
+                  <f:setPropertyActionListener
+                    value="#{touristPack}"
+                    target="#{manageTouristPackBean.selectedTouristPack}"
+                  />
+                  <p:confirm
+                    header="Confirmar"
+                    message="Está seguro de eliminar el paquete turístico?"
+                    icon="pi pi-exclamation-triangle"
+                  />
+                </p:commandButton>
+              </p:column>
+            </sec:authorize>
           </p:dataTable>
 
           <ui:include src="touristPack-form.xhtml"></ui:include>

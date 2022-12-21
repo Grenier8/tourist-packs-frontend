@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.contract;
 
 import cu.edu.cujae.touristpacks.dto.ContractDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class ContractServiceImpl implements IContractService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<ContractDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, ContractDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class ContractServiceImpl implements IContractService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idContract}");
             String uri = template.expand(idContract).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             contract = apiRestMapper.mapOne(response, ContractDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class ContractServiceImpl implements IContractService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<ContractDto> apiRestMapper = new ApiRestMapper<>();
             contract = apiRestMapper.mapOne(response, ContractDto.class);
@@ -79,13 +82,13 @@ public class ContractServiceImpl implements IContractService {
 
     @Override
     public void createContract(ContractDto contract) {
-        restService.POST(endpoint + "", contract, String.class).getBody();
+        restService.POST(endpoint + "", contract, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateContract(ContractDto contract) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, contract, String.class).getBody();
+        restService.PUT(endpoint + "", params, contract, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class ContractServiceImpl implements IContractService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idContract}");
         String uri = template.expand(idContract).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

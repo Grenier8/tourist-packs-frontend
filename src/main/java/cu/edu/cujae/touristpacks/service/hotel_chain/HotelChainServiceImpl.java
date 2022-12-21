@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.hotel_chain;
 
 import cu.edu.cujae.touristpacks.dto.HotelChainDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class HotelChainServiceImpl implements IHotelChainService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<HotelChainDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, HotelChainDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class HotelChainServiceImpl implements IHotelChainService {
 
             UriTemplate template = new UriTemplate(endpoint + "{id}");
             String uri = template.expand(idHotelChain).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             hotelChain = apiRestMapper.mapOne(response, HotelChainDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<HotelChainDto> apiRestMapper = new ApiRestMapper<>();
             hotelChain = apiRestMapper.mapOne(response, HotelChainDto.class);
@@ -79,13 +82,13 @@ public class HotelChainServiceImpl implements IHotelChainService {
 
     @Override
     public void createHotelChain(HotelChainDto hotelChain) {
-        restService.POST(endpoint + "", hotelChain, String.class).getBody();
+        restService.POST(endpoint + "", hotelChain, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateHotelChain(HotelChainDto hotelChain) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, hotelChain, String.class).getBody();
+        restService.PUT(endpoint + "", params, hotelChain, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class HotelChainServiceImpl implements IHotelChainService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{id}");
         String uri = template.expand(idHotelChain).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

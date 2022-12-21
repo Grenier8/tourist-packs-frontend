@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.diary_activity;
 
 import cu.edu.cujae.touristpacks.dto.DiaryActivityDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<DiaryActivityDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, DiaryActivityDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivity}");
             String uri = template.expand(idDiaryActivity).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             diaryActivity = apiRestMapper.mapOne(response, DiaryActivityDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<DiaryActivityDto> apiRestMapper = new ApiRestMapper<>();
             diaryActivity = apiRestMapper.mapOne(response, DiaryActivityDto.class);
@@ -79,13 +82,14 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
 
     @Override
     public void createDiaryActivity(DiaryActivityDto diaryActivity) {
-        restService.POST(endpoint + "", diaryActivity, String.class).getBody();
+        restService.POST(endpoint + "", diaryActivity, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateDiaryActivity(DiaryActivityDto diaryActivity) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, diaryActivity, String.class).getBody();
+        restService.PUT(endpoint + "", params, diaryActivity, String.class, CurrentUserUtils.getTokenBearer())
+                .getBody();
     }
 
     @Override
@@ -93,7 +97,7 @@ public class DiaryActivityServiceImpl implements IDiaryActivityService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idDiaryActivity}");
         String uri = template.expand(idDiaryActivity).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

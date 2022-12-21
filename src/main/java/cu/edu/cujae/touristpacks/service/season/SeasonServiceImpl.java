@@ -1,6 +1,7 @@
 package cu.edu.cujae.touristpacks.service.season;
 
 import cu.edu.cujae.touristpacks.dto.SeasonDto;
+import cu.edu.cujae.touristpacks.security.CurrentUserUtils;
 import cu.edu.cujae.touristpacks.utils.ApiRestMapper;
 import cu.edu.cujae.touristpacks.utils.RestService;
 
@@ -30,7 +31,8 @@ public class SeasonServiceImpl implements ISeasonService {
         try {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             ApiRestMapper<SeasonDto> apiRestMapper = new ApiRestMapper<>();
-            String response = (String) restService.GET(endpoint + "", params, String.class).getBody();
+            String response = (String) restService
+                    .GET(endpoint + "", params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
             list = apiRestMapper.mapList(response, SeasonDto.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +50,8 @@ public class SeasonServiceImpl implements ISeasonService {
 
             UriTemplate template = new UriTemplate(endpoint + "{idSeason}");
             String uri = template.expand(idSeason).toString();
-            String response = (String) restService.GET(uri, params, String.class).getBody();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
             season = apiRestMapper.mapOne(response, SeasonDto.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +70,7 @@ public class SeasonServiceImpl implements ISeasonService {
 
             String response = (String) restService.GETEntity(
                     uri, map,
-                    String.class).getBody();
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
 
             ApiRestMapper<SeasonDto> apiRestMapper = new ApiRestMapper<>();
             season = apiRestMapper.mapOne(response, SeasonDto.class);
@@ -79,13 +82,13 @@ public class SeasonServiceImpl implements ISeasonService {
 
     @Override
     public void createSeason(SeasonDto season) {
-        restService.POST(endpoint + "", season, String.class).getBody();
+        restService.POST(endpoint + "", season, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
     public void updateSeason(SeasonDto season) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        restService.PUT(endpoint + "", params, season, String.class).getBody();
+        restService.PUT(endpoint + "", params, season, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
     @Override
@@ -93,7 +96,7 @@ public class SeasonServiceImpl implements ISeasonService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         UriTemplate template = new UriTemplate(endpoint + "{idSeason}");
         String uri = template.expand(idSeason).toString();
-        restService.DELETE(uri, params, String.class, null).getBody();
+        restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
 }

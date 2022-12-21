@@ -31,11 +31,6 @@ public class ManageMayorBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        minors = service.getMayors();
-    }
-
     public void openNew() {
         this.selectedMayor = new MayorDto();
     }
@@ -75,6 +70,7 @@ public class ManageMayorBean {
     }
 
     public List<MayorDto> getMayors() {
+        minors = service.getMayors();
         return this.minors;
     }
 

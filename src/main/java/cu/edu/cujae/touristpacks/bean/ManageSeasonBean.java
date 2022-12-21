@@ -31,11 +31,6 @@ public class ManageSeasonBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        seasons = service.getSeasons();
-    }
-
     public void openNew() {
         this.selectedSeason = new SeasonDto();
     }
@@ -75,6 +70,7 @@ public class ManageSeasonBean {
     }
 
     public List<SeasonDto> getSeasons() {
+        seasons = service.getSeasons();
         return this.seasons;
     }
 

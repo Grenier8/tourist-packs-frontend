@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import cu.edu.cujae.touristpacks.dto.VehicleDto;
 import cu.edu.cujae.touristpacks.service.vehicle.IVehicleService;
 import cu.edu.cujae.touristpacks.utils.JsfUtils;
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
 
 @Component
 @ManagedBean
@@ -27,11 +29,6 @@ public class ManageVehicleBean {
 
     }
 
-    @PostConstruct
-    public void init() {
-        vehicles = service.getVehicles();
-    }
-
     public void openNew() {
         this.selectedVehicle = new VehicleDto();
     }
@@ -46,13 +43,13 @@ public class ManageVehicleBean {
 
             JsfUtils.addInfoMessageFromBundle("message_inserted_vehicle");
         } else {
-        	service.updateVehicle(selectedVehicle);
-        	
-        	JsfUtils.addInfoMessageFromBundle("message_updated_vehicle");
+            service.updateVehicle(selectedVehicle);
+
+            JsfUtils.addInfoMessageFromBundle("message_updated_vehicle");
         }
 
         vehicles = service.getVehicles();
-        
+
         PrimeFaces.current().executeScript("PF('manageVehicleDialog').hide()");
         PrimeFaces.current().ajax().update("form:dt-vehicles");
     }
@@ -61,15 +58,16 @@ public class ManageVehicleBean {
 
         service.deleteVehicle(selectedVehicle.getIdVehicle());
         this.selectedVehicle = null;
-        
+
         vehicles = service.getVehicles();
-        
+
         JsfUtils.addInfoMessageFromBundle("message_deleted_vehicle");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-vehicles");
 
     }
 
     public List<VehicleDto> getVehicles() {
+        vehicles = service.getVehicles();
         return this.vehicles;
     }
 

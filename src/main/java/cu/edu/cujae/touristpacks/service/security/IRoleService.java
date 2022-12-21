@@ -2,7 +2,7 @@ package cu.edu.cujae.touristpacks.service.security;
 
 import java.util.List;
 
-import cu.edu.cujae.touristpacks.dto.RoleDto;
+import cu.edu.cujae.touristpacks.dto.security.RoleDto;
 
 public interface IRoleService {
 	List<RoleDto> getRoles();

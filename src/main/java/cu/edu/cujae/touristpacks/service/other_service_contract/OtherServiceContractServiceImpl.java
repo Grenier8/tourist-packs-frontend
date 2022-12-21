@@ -101,4 +101,23 @@ public class OtherServiceContractServiceImpl implements IOtherServiceContractSer
         restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
+    @Override
+    public List<OtherServiceContractDto> get1121OtherServiceContracts() {
+        List<OtherServiceContractDto> list = new ArrayList<>();
+
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            ApiRestMapper<OtherServiceContractDto> apiRestMapper = new ApiRestMapper<>();
+
+            UriTemplate template = new UriTemplate(endpoint + "/month/{month}/year/{year}");
+            String uri = template.expand(11, 2021).toString();
+            String response = (String) restService.GET(uri, params, String.class, CurrentUserUtils.getTokenBearer())
+                    .getBody();
+            list = apiRestMapper.mapList(response, OtherServiceContractDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

@@ -16,4 +16,6 @@ public interface ITouristPackService {
     void updateTouristPack(TouristPackDto touristPack);
 
     void deleteTouristPack(int idTouristPack);
+
+    List<TouristPackDto> getChristmasTouristPacks();
 }

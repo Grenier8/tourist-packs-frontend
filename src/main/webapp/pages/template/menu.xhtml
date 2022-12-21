@@ -12,11 +12,9 @@
         <div class="menu-category">#{msgs.label_menu_administration}</div>
         <div class="menu-items">
           <p:outputPanel>
-            <a tabindex="0" class="submenu-link">
-              <h:link outcome="/pages/security/user/user-list.xhtml">
-                #{msgs.label_menu_users}
-              </h:link>
-            </a>
+            <h:link outcome="/pages/security/user/user-list.xhtml">
+              #{msgs.label_menu_users}
+            </h:link>
           </p:outputPanel>
         </div>
       </sec:authorize>
@@ -24,13 +22,6 @@
       <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
         <div class="menu-category">#{msgs.label_menu_manage}</div>
         <div class="menu-items">
-          <p:outputPanel>
-            <a tabindex="0" class="submenu-link">
-              <h:link outcome="/pages/crud/contract/contract-list.xhtml">
-                #{msgs.label_menu_contracts}
-              </h:link>
-            </a>
-          </p:outputPanel>
           <p:outputPanel>
             <a tabindex="0" class="submenu-link"> #{msgs.label_menu_hotels} </a>
             <div class="submenu">
@@ -107,13 +98,6 @@
                   </h:link>
                 </li>
                 <li>
-                  <h:link
-                    outcome="/pages/crud/transport_modality/transportModality-list.xhtml"
-                  >
-                    #{msgs.label_menu_transport_modalities}
-                  </h:link>
-                </li>
-                <li>
                   <h:link outcome="/pages/crud/tm_km/tmKm-list.xhtml">
                     #{msgs.label_menu_tm_kms}
                   </h:link>
@@ -184,11 +168,9 @@
             </div>
           </p:outputPanel>
           <p:outputPanel>
-            <a tabindex="0" class="submenu-link">
-              <h:link outcome="/pages/crud/tourist_pack/touristPack-list.xhtml">
-                #{msgs.label_menu_tourist_packs}
-              </h:link>
-            </a>
+            <h:link outcome="/pages/crud/tourist_pack/touristPack-list.xhtml">
+              #{msgs.label_menu_tourist_packs}
+            </h:link>
           </p:outputPanel>
         </div>
       </sec:authorize>
@@ -196,11 +178,20 @@
       <div class="menu-category">#{msgs.label_menu_reports}</div>
       <div class="menu-items">
         <p:outputPanel>
-          <a tabindex="0" class="submenu-link">
-            <h:link outcome="/pages/reports/reportAllIncludedHotels-list.xhtml">
-              #{msgs.label_menu_reports_all_included_hotels}
-            </h:link>
-          </a>
+          <h:link outcome="/pages/crud/contract/contract-list.xhtml">
+            #{msgs.label_menu_contracts}
+          </h:link>
+          <h:link outcome="/pages/reports/reportAllIncludedHotels-list.xhtml">
+            #{msgs.label_menu_reports_all_included_hotels}
+          </h:link>
+          <h:link
+            outcome="/pages/reports/report1121OtherServiceContracts-list.xhtml"
+          >
+            #{msgs.label_menu_reports_1121_other_service_contracts}
+          </h:link>
+          <h:link outcome="/pages/reports/reportChristmasPacks-list.xhtml">
+            #{msgs.label_menu_reports_christmas_packs}
+          </h:link>
         </p:outputPanel>
       </div>
     </div>

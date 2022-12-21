@@ -11,7 +11,7 @@
   <ui:composition template="/pages/template/layout.xhtml">
     <ui:define name="title">
       <p:outputLabel
-        value="#{msgs.label_tourist_pack_list_header}"
+        value="#{msgs.label_report_christmas_pack_list_header}"
         style="font-size: 38px"
       ></p:outputLabel>
     </ui:define>
@@ -19,21 +19,6 @@
       <h:form id="form">
         <div class="card crud-demo">
           <p:toolbar>
-            <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
-              <p:toolbarGroup>
-                <p:commandButton
-                  value="#{msgs.button_new}"
-                  icon="pi pi-plus"
-                  actionListener="#{manageTouristPackBean.openNew}"
-                  update=":form:manage-touristPack-content"
-                  oncomplete="PF('manageTouristPackDialog').show()"
-                  styleClass="ui-button-success"
-                  style="margin-right: 0.5rem"
-                >
-                  <p:resetInput target=":form:manage-touristPack-content" />
-                </p:commandButton>
-              </p:toolbarGroup>
-            </sec:authorize>
             <p:toolbarGroup align="right">
               <p:commandButton
                 value="#{msgs.button_export}"
@@ -54,7 +39,7 @@
             id="dt-touristPacks"
             widgetVar="dtTouristPacks"
             var="touristPack"
-            value="#{manageTouristPackBean.touristPacks}"
+            value="#{manageReportChristmasPackBean.touristPacks}"
             reflow="true"
             paginator="true"
             rows="10"
@@ -144,75 +129,23 @@
             </p:column>
             <p:column
               headerText="#{msgs.label_tourist_pack_transport_services}"
-              sortBy="#{manageTouristPackBean.getTransportServicesNames(touristPack)}"
-              filterBy="#{manageTouristPackBean.getTransportServicesNames(touristPack)}"
+              sortBy="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
+              filterBy="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
             >
               <h:outputText
-                value="#{manageTouristPackBean.getTransportServicesNames(touristPack)}"
+                value="#{manageReportChristmasPackBean.getTransportServicesNames(touristPack)}"
               />
             </p:column>
             <p:column
               headerText="#{msgs.label_tourist_pack_diary_activities}"
-              sortBy="#{manageTouristPackBean.getDiaryActivitiesNames(touristPack)}"
-              filterBy="#{manageTouristPackBean.getDiaryActivitiesNames(touristPack)}"
+              sortBy="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
+              filterBy="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
             >
               <h:outputText
-                value="#{manageTouristPackBean.getDiaryActivitiesNames(touristPack)}"
+                value="#{manageReportChristmasPackBean.getDiaryActivitiesNames(touristPack)}"
               />
             </p:column>
-
-            <sec:authorize access="hasAnyAuthority('admin', 'contratista')">
-              <p:column exportable="false">
-                <p:commandButton
-                  icon="pi pi-pencil"
-                  update=":form:manage-touristPack-content"
-                  action="#{manageTouristPackBean.openForEdit}"
-                  oncomplete="PF('manageTouristPackDialog').show()"
-                  styleClass="edit-button rounded-button ui-button-success"
-                  process="@this"
-                >
-                  <f:setPropertyActionListener
-                    value="#{touristPack}"
-                    target="#{manageTouristPackBean.selectedTouristPack}"
-                  />
-                  <p:resetInput target=":form:manage-touristPack-content" />
-                </p:commandButton>
-                <p:commandButton
-                  class="ui-button-warning rounded-button"
-                  icon="pi pi-trash"
-                  process="@this"
-                  action="#{manageTouristPackBean.deleteTouristPack}"
-                >
-                  <f:setPropertyActionListener
-                    value="#{touristPack}"
-                    target="#{manageTouristPackBean.selectedTouristPack}"
-                  />
-                  <p:confirm
-                    header="Confirmar"
-                    message="Está seguro de eliminar el paquete turístico?"
-                    icon="pi pi-exclamation-triangle"
-                  />
-                </p:commandButton>
-              </p:column>
-            </sec:authorize>
           </p:dataTable>
-
-          <ui:include src="touristPack-form.xhtml"></ui:include>
-
-          <p:confirmDialog global="true" showEffect="fade" width="300">
-            <p:commandButton
-              value="#{msgs.button_yes}"
-              type="button"
-              styleClass="ui-confirmdialog-yes"
-              icon="pi pi-check"
-            />
-            <p:commandButton
-              value="#{msgs.button_no}"
-              type="button"
-              styleClass="ui-confirmdialog-no ui-button-secondary"
-              icon="pi pi-times"
-            />
-          </p:confirmDialog>
         </div>
       </h:form>
     </ui:define>

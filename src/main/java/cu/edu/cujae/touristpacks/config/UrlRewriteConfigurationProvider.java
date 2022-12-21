@@ -49,6 +49,12 @@ public class UrlRewriteConfigurationProvider extends HttpConfigurationProvider {
                                 .addRule(Join.path("/transport-services")
                                                 .to("/pages/crud/transport_service/transportService-list.jsf"))
                                 .addRule(Join.path("/vehicles").to("/pages/crud/vehicle/vehicle-list.jsf"))
+                                .addRule(Join.path("/hotels/all-inclusive/")
+                                                .to("/pages/reports/reportAllIncludedHotels-list.jsf"))
+                                .addRule(Join.path("/other-service-contracts/nov-2022/")
+                                                .to("/pages/reports/report1121OtherServiceContracts-list.jsf"))
+                                .addRule(Join.path("/tourist-packs/christmas/")
+                                                .to("/pages/reports/reportChristmasPacks-list.jsf"))
                                 .addRule(Join.path("/security-users").to("/pages/security/user/user-list.jsf"))
                                 .addRule(Join.path("/security-roles").to("/pages/security/role/role-list.jsf"))
                                 .addRule(Join.path("/welcome").to("/pages/welcome/welcome.jsf"));

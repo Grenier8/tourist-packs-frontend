@@ -99,4 +99,24 @@ public class TouristPackServiceImpl implements ITouristPackService {
         restService.DELETE(uri, params, String.class, CurrentUserUtils.getTokenBearer()).getBody();
     }
 
+    @Override
+    public List<TouristPackDto> getChristmasTouristPacks() {
+        List<TouristPackDto> list = new ArrayList<>();
+        try {
+            String uri = endpoint + "season/{season}";
+            Map<String, String> map = new HashMap<>();
+            map.put("season", "Navidad");
+
+            String response = (String) restService.GETEntity(
+                    uri, map,
+                    String.class, CurrentUserUtils.getTokenBearer()).getBody();
+
+            ApiRestMapper<TouristPackDto> apiRestMapper = new ApiRestMapper<>();
+            list = apiRestMapper.mapList(response, TouristPackDto.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

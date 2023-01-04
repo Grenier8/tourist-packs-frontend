@@ -51,7 +51,7 @@ public class UrlRewriteConfigurationProvider extends HttpConfigurationProvider {
                                 .addRule(Join.path("/vehicles").to("/pages/crud/vehicle/vehicle-list.jsf"))
                                 .addRule(Join.path("/hotels/all-inclusive/")
                                                 .to("/pages/reports/reportAllIncludedHotels-list.jsf"))
-                                .addRule(Join.path("/other-service-contracts/nov-2022/")
+                                .addRule(Join.path("/other-service-contracts/nov-2021/")
                                                 .to("/pages/reports/report1121OtherServiceContracts-list.jsf"))
                                 .addRule(Join.path("/tourist-packs/christmas/")
                                                 .to("/pages/reports/reportChristmasPacks-list.jsf"))

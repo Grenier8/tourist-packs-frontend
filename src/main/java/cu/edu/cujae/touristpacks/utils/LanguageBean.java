@@ -3,18 +3,19 @@ package cu.edu.cujae.touristpacks.utils;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-@SessionScoped
+@ApplicationScoped
 public class LanguageBean {
     private Locale locale;
 
     @PostConstruct
     public void init() {
-        locale = JsfUtils.getCurrentLocale();
+        locale = Locale.getDefault();
     }
 
     public Locale getLocale() {
